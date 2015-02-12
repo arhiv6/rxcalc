@@ -1,0 +1,5 @@
+*~
+*.autosave
+*.pro.user
+*.pro.user.*
+*Makefile
