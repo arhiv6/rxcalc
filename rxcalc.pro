@@ -24,6 +24,8 @@ TEMPLATE = app
 QT += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-SOURCES += sources/main.cpp
+SOURCES +=  sources/main.cpp \
+            sources/rxcalc.cpp
 
-HEADERS += sources/main.h
+HEADERS +=  sources/main.h \
+            sources/rxcalc.h

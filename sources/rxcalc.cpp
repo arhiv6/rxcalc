@@ -18,12 +18,14 @@
  *
  */
 
-#ifndef RXCALC_MAIN_H
-#define RXCALC_MAIN_H
-
 #include "rxcalc.h"
-#include <QApplication>
 
-RxCalcApp *RxCalc;
+RxCalcApp::RxCalcApp()
+{
 
-#endif // ifndef RXCALC_MAIN_H
+}
+
+RxCalcApp::~RxCalcApp()
+{
+
+}

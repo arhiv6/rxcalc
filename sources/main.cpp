@@ -19,12 +19,14 @@
  */
 
 #include "main.h"
-#include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    QDesktopWidget *d = a.desktop();
+    QApplication app(argc, argv);
+
+    RxCalc = new RxCalcApp();
+    app.setActiveWindow(RxCalc);
+    RxCalc->show();
     
-    return a.exec();
+    return app.exec();
 }

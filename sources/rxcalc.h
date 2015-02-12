@@ -18,12 +18,23 @@
  *
  */
 
-#ifndef RXCALC_MAIN_H
-#define RXCALC_MAIN_H
+#ifndef RXCALC_H
+#define RXCALC_H
 
-#include "rxcalc.h"
-#include <QApplication>
+#include <QMainWindow>
+#include <QObject>
+#include <QWidget>
 
-RxCalcApp *RxCalc;
+class RxCalcApp : public QMainWindow
+{
+    Q_OBJECT
+public:
+    explicit RxCalcApp();
+    ~RxCalcApp();
 
-#endif // ifndef RXCALC_MAIN_H
+signals:
+
+public slots:
+};
+
+#endif // RXCALC_H
