@@ -24,6 +24,9 @@ TEMPLATE = app
 QT += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+DEFINES += APP_NAME=\\\"RxCalc\\\"
+
 SOURCES +=  sources/main.cpp \
             sources/rxcalc.cpp
 

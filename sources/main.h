@@ -22,7 +22,9 @@
 #define RXCALC_MAIN_H
 
 #include "rxcalc.h"
+
 #include <QApplication>
+#include <QTextCodec>
 
 RxCalcApp *RxCalc;
 

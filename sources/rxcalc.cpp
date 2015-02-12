@@ -22,10 +22,28 @@
 
 RxCalcApp::RxCalcApp()
 {
-
+    loadSettings();
 }
 
 RxCalcApp::~RxCalcApp()
 {
 
+}
+
+void RxCalcApp::closeEvent(QCloseEvent* Event)
+{
+    saveSettings();
+    Event->accept();
+}
+
+void RxCalcApp::saveSettings()
+{
+    QSettings settings(APP_NAME, APP_NAME);
+    settings.setValue("windowGeometry",this->saveGeometry());
+}
+
+void RxCalcApp::loadSettings()
+{
+    QSettings settings(APP_NAME, APP_NAME);
+    this->restoreGeometry(settings.value("windowGeometry",this->saveGeometry()).toByteArray());
 }

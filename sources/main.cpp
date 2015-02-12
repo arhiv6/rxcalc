@@ -22,6 +22,8 @@
 
 int main(int argc, char *argv[])
 {
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF8"));
+
     QApplication app(argc, argv);
 
     RxCalc = new RxCalcApp();

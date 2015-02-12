@@ -22,8 +22,9 @@
 #define RXCALC_H
 
 #include <QMainWindow>
-#include <QObject>
-#include <QWidget>
+#include <QDebug>
+#include <QCloseEvent>
+#include <QSettings>
 
 class RxCalcApp : public QMainWindow
 {
@@ -34,7 +35,12 @@ public:
 
 signals:
 
+protected:
+    void closeEvent(QCloseEvent*);
+
 public slots:
+    void saveSettings();
+    void loadSettings();
 };
 
 #endif // RXCALC_H
