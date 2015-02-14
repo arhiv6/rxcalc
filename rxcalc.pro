@@ -28,7 +28,9 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += APP_NAME=\\\"RxCalc\\\"
 
 SOURCES +=  sources/main.cpp \
-            sources/rxcalc.cpp
+            sources/rxcalc.cpp \
+            sources/stage.cpp
 
 HEADERS +=  sources/main.h \
-            sources/rxcalc.h
+            sources/rxcalc.h \
+            sources/stage.h

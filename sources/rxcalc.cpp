@@ -23,6 +23,12 @@
 RxCalcApp::RxCalcApp()
 {
     loadSettings();
+
+    Stage *st = new Stage;
+    st->setName("test");
+    st->setPowerGain(10);
+    st->setIp1db(3);
+    qDebug() << st->op1db();
 }
 
 RxCalcApp::~RxCalcApp()

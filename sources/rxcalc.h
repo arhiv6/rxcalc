@@ -21,6 +21,8 @@
 #ifndef RXCALC_H
 #define RXCALC_H
 
+#include "stage.h"
+
 #include <QMainWindow>
 #include <QDebug>
 #include <QCloseEvent>
