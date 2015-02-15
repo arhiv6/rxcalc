@@ -59,12 +59,12 @@ void Stage::setPowerGain(float gain)
 {
     m_powerGain = gain;
 
-    if (iip3Priority == true)
+    if (m_iip3Priority == true)
         m_oip3 = m_iip3 + m_powerGain;
     else
         m_iip3 = m_oip3 - m_powerGain;
 
-    if (ip1dbPriority == true)
+    if (m_ip1dbPriority == true)
         m_op1db = m_ip1db + (m_powerGain - 1);
     else
         m_ip1db = m_op1db - (m_powerGain - 1);
@@ -89,7 +89,7 @@ void Stage::setOip3(float oip3)
 {
     m_oip3 = oip3;
     m_iip3 = m_oip3 - m_powerGain;
-    iip3Priority = false;
+    m_iip3Priority = false;
 }
 
 float Stage::oip3()
@@ -101,7 +101,7 @@ void Stage::setOp1db(float op1db)
 {
     m_op1db = op1db;
     m_ip1db = m_op1db - (m_powerGain - 1);
-    ip1dbPriority = false;
+    m_ip1dbPriority = false;
 }
 
 float Stage::op1db()
@@ -113,7 +113,7 @@ void Stage::setIip3(float iip3)
 {
     m_iip3 = iip3;
     m_oip3 = m_iip3 + m_powerGain;
-    iip3Priority = true;
+    m_iip3Priority = true;
 }
 
 float Stage::iip3()
@@ -125,7 +125,7 @@ void Stage::setIp1db(float ip1db)
 {
     m_ip1db = ip1db;
     m_op1db = m_ip1db + (m_powerGain - 1);
-    ip1dbPriority = true;
+    m_ip1dbPriority = true;
 }
 
 float Stage::ip1db()

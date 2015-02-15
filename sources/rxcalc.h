@@ -22,6 +22,7 @@
 #define RXCALC_H
 
 #include "stage.h"
+#include "system.h"
 
 #include <QMainWindow>
 #include <QDebug>

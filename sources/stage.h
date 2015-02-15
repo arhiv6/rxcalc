@@ -54,9 +54,8 @@ private:
     float m_op1db;
     float m_iip3;
     float m_ip1db;
-
-    bool iip3Priority;
-    bool ip1dbPriority;
+    bool m_iip3Priority;
+    bool m_ip1dbPriority;
 };
 
 #endif // STAGE_H
