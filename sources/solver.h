@@ -18,33 +18,22 @@
  *
  */
 
-#ifndef RXCALC_H
-#define RXCALC_H
+#ifndef SOLVER_H
+#define SOLVER_H
 
 #include "stage.h"
 #include "system.h"
-#include "solver.h"
 
-#include <QMainWindow>
-#include <QDebug>
-#include <QCloseEvent>
-#include <QSettings>
+#include <math.h>
 
-class RxCalcApp : public QMainWindow
+class Solver
 {
-    Q_OBJECT
 public:
-    explicit RxCalcApp();
-    ~RxCalcApp();
+    Solver(System *system);
+    ~Solver();
 
-signals:
-
-protected:
-    void closeEvent(QCloseEvent*);
-
-public slots:
-    void saveSettings();
-    void loadSettings();
+private:
+    System *m_system;
 };
 
-#endif // RXCALC_H
+#endif // SOLVER_H
