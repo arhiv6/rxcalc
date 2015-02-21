@@ -32,7 +32,7 @@ class System
 public:
     System();
     ~System();
-    QList<Stage*> *m_stageList;
+    QList<Stage*> *stageList;
     void setInputPower(float inputPower);
     float inputPower();
     void setNoiseBand(float noiseBand);

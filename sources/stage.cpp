@@ -28,6 +28,16 @@ Stage::Stage()
     setNoiseFigure(0);
     setIip3(0);
     setIp1db(0);
+    // System params:
+    m_sys_inputPower=NAN;
+    m_sys_outputPower=NAN;
+    m_sys_powerGain=NAN;
+    m_sys_noiseFigure=NAN;
+    m_sys_ip1db=NAN;
+    m_sys_op1db=NAN;
+    m_sys_iip3=NAN;
+    m_sys_oip3=NAN;
+    m_sys_stageNoiseFigureToSysNoiseFigure=NAN;
 }
 
 Stage::~Stage()
@@ -134,3 +144,47 @@ float Stage::ip1db()
 }
 
 
+float Stage::sys_inputPower()
+{
+    return m_sys_inputPower;
+}
+
+float Stage::sys_outputPower()
+{
+    return m_sys_outputPower;
+}
+
+float Stage::sys_powerGain()
+{
+    return m_sys_powerGain;
+}
+
+float Stage::sys_noiseFigure()
+{
+    return m_sys_noiseFigure;
+}
+
+float Stage::sys_ip1db()
+{
+    return m_sys_ip1db;
+}
+
+float Stage::sys_op1db()
+{
+    return m_sys_op1db;
+}
+
+float Stage::sys_iip3()
+{
+    return m_sys_iip3;
+}
+
+float Stage::sys_oip3()
+{
+    return m_sys_oip3;
+}
+
+float Stage::sys_stageNoiseFigureToSysNoiseFigure()
+{
+    return m_sys_stageNoiseFigureToSysNoiseFigure;
+}

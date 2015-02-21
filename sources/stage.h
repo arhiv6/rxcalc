@@ -22,12 +22,14 @@
 #define STAGE_H
 
 #include <QString>
+#include <math.h>
 
 class Stage
 {
 public:
     Stage();
     ~Stage();
+    // Stage params:
     void setName(QString name);
     QString name();
     void setEnabled(bool enabled);
@@ -44,8 +46,19 @@ public:
     float iip3();
     void setIp1db(float ip1db);
     float ip1db();
+    // System params:
+    float sys_inputPower();
+    float sys_outputPower();
+    float sys_powerGain();
+    float sys_noiseFigure();
+    float sys_ip1db();
+    float sys_op1db();
+    float sys_iip3();
+    float sys_oip3();
+    float sys_stageNoiseFigureToSysNoiseFigure();
 
 private:
+    // Stage params:
     QString m_name;
     bool m_enabled;
     float m_powerGain;
@@ -56,6 +69,16 @@ private:
     float m_ip1db;
     bool m_iip3Priority;
     bool m_ip1dbPriority;
+    // System params:
+    float m_sys_inputPower;
+    float m_sys_outputPower;
+    float m_sys_powerGain;
+    float m_sys_noiseFigure;
+    float m_sys_ip1db;
+    float m_sys_op1db;
+    float m_sys_iip3;
+    float m_sys_oip3;
+    float m_sys_stageNoiseFigureToSysNoiseFigure;
 };
 
 #endif // STAGE_H

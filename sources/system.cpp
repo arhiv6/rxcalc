@@ -22,7 +22,7 @@
 
 System::System()
 {
-    m_stageList = new QList<Stage*>;
+    stageList = new QList<Stage*>;
 }
 
 System::~System()
