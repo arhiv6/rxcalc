@@ -30,11 +30,9 @@ DEFINES += APP_NAME=\\\"RxCalc\\\"
 SOURCES +=  sources/main.cpp \
             sources/rxcalc.cpp \
             sources/stage.cpp \
-            sources/system.cpp \
-            sources/solver.cpp
+            sources/system.cpp
 
 HEADERS +=  sources/main.h \
             sources/rxcalc.h \
             sources/stage.h \
-            sources/system.h \
-            sources/solver.h
+            sources/system.h

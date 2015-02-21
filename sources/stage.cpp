@@ -22,6 +22,7 @@
 
 Stage::Stage()
 {
+    // Stage params:
     setName("Name");
     setEnabled(true);
     setPowerGain(0);
@@ -29,15 +30,16 @@ Stage::Stage()
     setIip3(0);
     setIp1db(0);
     // System params:
-    m_sys_inputPower=NAN;
-    m_sys_outputPower=NAN;
-    m_sys_powerGain=NAN;
-    m_sys_noiseFigure=NAN;
-    m_sys_ip1db=NAN;
-    m_sys_op1db=NAN;
-    m_sys_iip3=NAN;
-    m_sys_oip3=NAN;
-    m_sys_stageNoiseFigureToSysNoiseFigure=NAN;
+    sys.powerGain=NAN;
+    sys.noiseFigure=NAN;
+    sys.iip3=NAN;
+    sys.oip3=NAN;
+    sys.inputPower=NAN;
+    sys.outputPower=NAN;
+    sys.noiseFigureToSystemNoiseFigure=NAN;
+    sys.stageIip3ToSystemIip3=NAN;
+    sys.powerOutBackoff=NAN;
+    sys.peakPowerOutBackoff=NAN;
 }
 
 Stage::~Stage()
@@ -141,50 +143,4 @@ void Stage::setIp1db(float ip1db)
 float Stage::ip1db()
 {
     return m_ip1db;
-}
-
-
-float Stage::sys_inputPower()
-{
-    return m_sys_inputPower;
-}
-
-float Stage::sys_outputPower()
-{
-    return m_sys_outputPower;
-}
-
-float Stage::sys_powerGain()
-{
-    return m_sys_powerGain;
-}
-
-float Stage::sys_noiseFigure()
-{
-    return m_sys_noiseFigure;
-}
-
-float Stage::sys_ip1db()
-{
-    return m_sys_ip1db;
-}
-
-float Stage::sys_op1db()
-{
-    return m_sys_op1db;
-}
-
-float Stage::sys_iip3()
-{
-    return m_sys_iip3;
-}
-
-float Stage::sys_oip3()
-{
-    return m_sys_oip3;
-}
-
-float Stage::sys_stageNoiseFigureToSysNoiseFigure()
-{
-    return m_sys_stageNoiseFigureToSysNoiseFigure;
 }

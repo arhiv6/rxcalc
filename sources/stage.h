@@ -47,15 +47,19 @@ public:
     void setIp1db(float ip1db);
     float ip1db();
     // System params:
-    float sys_inputPower();
-    float sys_outputPower();
-    float sys_powerGain();
-    float sys_noiseFigure();
-    float sys_ip1db();
-    float sys_op1db();
-    float sys_iip3();
-    float sys_oip3();
-    float sys_stageNoiseFigureToSysNoiseFigure();
+    struct
+    {
+        float powerGain;
+        float noiseFigure;
+        float iip3;
+        float oip3;
+        float inputPower;
+        float outputPower;
+        float noiseFigureToSystemNoiseFigure;
+        float stageIip3ToSystemIip3;
+        float powerOutBackoff;
+        float peakPowerOutBackoff;
+    } sys;
 
 private:
     // Stage params:
@@ -69,16 +73,6 @@ private:
     float m_ip1db;
     bool m_iip3Priority;
     bool m_ip1dbPriority;
-    // System params:
-    float m_sys_inputPower;
-    float m_sys_outputPower;
-    float m_sys_powerGain;
-    float m_sys_noiseFigure;
-    float m_sys_ip1db;
-    float m_sys_op1db;
-    float m_sys_iip3;
-    float m_sys_oip3;
-    float m_sys_stageNoiseFigureToSysNoiseFigure;
 };
 
 #endif // STAGE_H

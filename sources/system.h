@@ -30,9 +30,8 @@
 class System
 {
 public:
-    System();
+    System(QList<Stage*> *stageList);
     ~System();
-    QList<Stage*> *stageList;
     void setInputPower(float inputPower);
     float inputPower();
     void setNoiseBand(float noiseBand);
@@ -45,14 +44,49 @@ public:
     float temperature_C();
     void setPeakToRatio(float peakToRatio);
     float peakToRatio();
+    void solve();
 
 private:
+    float converdBtoKp(float dB);
+    float converKptodB(float Kp);
+    void solveSysPowerGain();
+    void solveSysNoiseFigure();
+    void solveSysIp3();
+    void solveSysOutputPower();
+    void solveSysP1db();
+    void solveSysNoiseParam();
+    void solveDynamicParam();
+    void postSolveParam();
+
+private:
+    QList<Stage*> *m_stageList;
+    //Input param
     float m_inputPower;
     float m_noiseBand;
     float m_minSignalToNoise;
     float m_temperature_K;
     float m_temperature_C;
     float m_peakToRatio;
+    //Output param
+    float m_sysPowerGain;
+    float m_sysNoiseFigure;
+    float m_sysIip3;
+    float m_sysOip3;
+    float m_sysIp1db;
+    float m_sysOp1db;
+    float m_sysOutputPower;
+    float m_sysNoiseFloor_dbmHz;
+    float m_sysOutputNsd_dbmHz;
+    float m_sysNoiseFloor_dbm;
+    float m_snr;
+    float m_mds;
+    float m_noiseTemperature;
+    float m_sensivity;
+    float m_inputImLevel;
+    float m_outputImLevel;
+    float m_imLevel_dbc;
+    float m_imd;
+    float m_sfdr;
 };
 
 #endif // SYSTEM_H
