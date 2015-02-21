@@ -23,7 +23,6 @@
 
 #include "stage.h"
 #include "system.h"
-#include "solver.h"
 
 #include <QMainWindow>
 #include <QDebug>
@@ -36,6 +35,7 @@ class RxCalcApp : public QMainWindow
 public:
     explicit RxCalcApp();
     ~RxCalcApp();
+    QTableWidget *table;
 
 signals:
 

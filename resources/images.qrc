@@ -1,4 +1,4 @@
- #
+<!--
  # Copyright 2014, 2015 Verkhovin Vyacheslav
  #
  # This file is part of RxCalc.
@@ -15,26 +15,16 @@
  #
  # You should have received a copy of the GNU General Public License
  # along with RxCalc. If not, see <http://www.gnu.org/licenses/>.
- #
+-->
 
-TARGET   = rxcalc
-VERSION  = 0.1
-TEMPLATE = app
+<RCC>
+    <qresource prefix="/img">
+	<file>rxcalc.png</file>
+        <file>amplifier.svg</file>
+        <file>attenuator.svg</file>
+        <file>filter.svg</file>
+        <file>mixer.svg</file>
+        <file>other.svg</file>
+    </qresource>
+</RCC>
 
-QT += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-DEFINES += APP_VERSION=\\\"$$VERSION\\\"
-DEFINES += APP_NAME=\\\"RxCalc\\\"
-
-SOURCES +=  sources/main.cpp \
-            sources/rxcalc.cpp \
-            sources/stage.cpp \
-            sources/system.cpp
-
-HEADERS +=  sources/main.h \
-            sources/rxcalc.h \
-            sources/stage.h \
-            sources/system.h
-
-RESOURCES += resources/images.qrc

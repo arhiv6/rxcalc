@@ -22,13 +22,75 @@
 
 RxCalcApp::RxCalcApp()
 {
-    loadSettings();
+    QWidget *centralWidget = new QWidget(this);
+    setCentralWidget(centralWidget);
 
-    Stage *st = new Stage;
-    st->setName("test");
-    st->setPowerGain(10);
-    st->setIp1db(3);
-    qDebug() << st->op1db();
+    // set application icon
+    setWindowIcon(QPixmap(":/img/rxcalc.png"));
+    setWindowTitle(APP_NAME " v" APP_VERSION);
+/*
+    // --------  create menubar  -------------------
+    QMenu *fileMenu = new QMenu(tr("&File"));
+
+    QAction * fileQuit = new QAction(tr("E&xit"), this);
+    fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
+    connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
+
+    fileMenu->addAction(fileQuit);
+
+    QMenu *helpMenu = new QMenu(tr("&Help"), this);
+    QAction * helpHelp = new QAction(tr("Help..."), this);
+    helpHelp->setShortcut(Qt::Key_F1);
+    connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+
+    QAction * helpAbout = new QAction(tr("&About QucsFilter..."), this);
+    helpMenu->addAction(helpAbout);
+    connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
+
+    QAction * helpAboutQt = new QAction(tr("About Qt..."), this);
+    helpMenu->addAction(helpAboutQt);
+    connect(helpAboutQt, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
+
+    helpMenu->addAction(helpHelp);
+    helpMenu->addSeparator();
+    helpMenu->addAction(helpAbout);
+    helpMenu->addAction(helpAboutQt);
+
+    menuBar()->addMenu(fileMenu);
+    menuBar()->addSeparator();
+    menuBar()->addMenu(helpMenu);
+
+    // -------  create main windows widgets --------
+    all  = new QGridLayout();
+    all->setSpacing(3);
+
+    // assign layout to central widget
+    centralWidget->setLayout(all);
+
+    // ...........................................................
+    box1 = new QGroupBox(tr("Filter"), this);
+    all->addWidget(box1,0,0);
+
+    gbox1 = new QGridLayout();
+    gbox1->setSpacing(3);
+
+    box1->setLayout(gbox1);
+
+    QLabel *Label0 = new QLabel(tr("Realization:"), this);
+    gbox1->addWidget(Label0, 0,0);
+    ComboRealize = new QComboBox(this);
+    ComboRealize->addItem("LC ladder (pi type)");
+    ComboRealize->addItem("LC ladder (tee type)");
+    ComboRealize->addItem("C-coupled transmission lines");
+    ComboRealize->addItem("Microstrip end-coupled");
+    ComboRealize->addItem("Coupled transmission lines");
+    ComboRealize->addItem("Coupled microstrip");
+    ComboRealize->addItem("Stepped-impedance");
+    ComboRealize->addItem("Stepped-impedance microstrip");
+    ComboRealize->addItem("Equation-defined");
+    gbox1->addWidget(ComboRealize, 0,1);
+    connect(ComboRealize, SIGNAL(activated(int)), SLOT(slotRealizationChanged(int)));
+    */
 }
 
 RxCalcApp::~RxCalcApp()
