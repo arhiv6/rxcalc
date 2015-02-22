@@ -135,56 +135,32 @@ RxCalcApp::RxCalcApp()
     all->addWidget(box2,2,0);
 
     QGridLayout *gbox2 = new QGridLayout();
-    gbox1->setVerticalSpacing(0);
-    gbox1->setHorizontalSpacing(3);
+    gbox2->setVerticalSpacing(0);
+    gbox2->setHorizontalSpacing(3);
 
     box2->setLayout(gbox2);
+
+    // ...........................................................
+    QGroupBox *box3 = new QGroupBox(tr("Noise Analysis"), this);
+    all->addWidget(box3,2,1);
+
+    QGridLayout *gbox3 = new QGridLayout();
+    gbox3->setVerticalSpacing(0);
+    gbox3->setHorizontalSpacing(3);
+
+    box3->setLayout(gbox3);
+
+    // ...........................................................
+    QGroupBox *box4 = new QGroupBox(tr("Dynamic Analysis"), this);
+    all->addWidget(box4,2,2);
+
+    QGridLayout *gbox4 = new QGridLayout();
+    gbox4->setVerticalSpacing(0);
+    gbox4->setHorizontalSpacing(3);
+
+    box4->setLayout(gbox4);
+
 /*
-    QLabel *Label3 = new QLabel(tr("Relative permittivity:"), this);
-    gbox2->addWidget(Label3, 0,0);
-    ComboEr = new QComboBox(this);
-    ComboEr->setEditable(true);
-    ComboEr->lineEdit()->setValidator(DoubleVal);
-    connect(ComboEr, SIGNAL(activated(const QString&)), SLOT(slotTakeEr(const QString&)));
-    gbox2->addWidget(ComboEr, 0,1);
-
-    const char **p = List_er;
-    while(*(++p))
-    ComboEr->addItem(*p);  // put material properties into combobox
-    ComboEr->lineEdit()->setText("9.8");
-
-    QLabel *Label4 = new QLabel(tr("Substrate height:"), this);
-    gbox2->addWidget(Label4, 1,0);
-    EditHeight = new QLineEdit("1.0", this);
-    EditHeight->setValidator(DoubleVal);
-    gbox2->addWidget(EditHeight, 1,1);
-    QLabel *Label5 = new QLabel("mm", this);
-    gbox2->addWidget(Label5, 1,2);
-
-    QLabel *Label6 = new QLabel(tr("metal thickness:"), this);
-    gbox2->addWidget(Label6, 2,0);
-    EditThickness = new QLineEdit("12.5", this);
-    EditThickness->setValidator(DoubleVal);
-    gbox2->addWidget(EditThickness, 2,1);
-    QLabel *Label7 = new QLabel("um", this);
-    gbox2->addWidget(Label7, 2,2);
-
-    QLabel *Label8 = new QLabel(tr("minimum width:"), this);
-    gbox2->addWidget(Label8, 3,0);
-    EditMinWidth = new QLineEdit("0.4", this);
-    EditMinWidth->setValidator(DoubleVal);
-    gbox2->addWidget(EditMinWidth, 3,1);
-    QLabel *Label9 = new QLabel("mm", this);
-    gbox2->addWidget(Label9, 3,2);
-
-    QLabel *Label10 = new QLabel(tr("maximum width:"), this);
-    gbox2->addWidget(Label10, 4,0);
-    EditMaxWidth = new QLineEdit("5.0", this);
-    EditMaxWidth->setValidator(DoubleVal);
-    gbox2->addWidget(EditMaxWidth, 4,1);
-    QLabel *Label11 = new QLabel("mm", this);
-    gbox2->addWidget(Label11, 4,2);
-
     QSpacerItem *mySpacer=new QSpacerItem(1,1, QSizePolicy::Minimum, QSizePolicy::Expanding);
     gbox2->addItem(mySpacer, 5, 0, 1, -1);
 
