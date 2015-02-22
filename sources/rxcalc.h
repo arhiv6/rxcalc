@@ -28,6 +28,12 @@
 #include <QDebug>
 #include <QCloseEvent>
 #include <QSettings>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QTableWidget>
 
 class RxCalcApp : public QMainWindow
 {
@@ -36,6 +42,12 @@ public:
     explicit RxCalcApp();
     ~RxCalcApp();
     QTableWidget *table;
+    QLineEdit *inputPower, *noiseBand, *minSn, *temperature, *perToRms;
+    QComboBox *temperatureUnit, *freqUnit;
+    enum temperatureUnits {
+        celsius,
+        kelvin
+    };
 
 signals:
 
@@ -45,6 +57,7 @@ protected:
 public slots:
     void saveSettings();
     void loadSettings();
+    void validate();
 };
 
 #endif // RXCALC_H
