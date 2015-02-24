@@ -62,7 +62,7 @@ RxCalcApp::RxCalcApp()
 */
     // -------  create main windows widgets --------
     QVBoxLayout *all  = new QVBoxLayout();
-    QHBoxLayout *top  = new QHBoxLayout();
+    QGridLayout *top  = new QGridLayout();
     QHBoxLayout *bot  = new QHBoxLayout();
     all->setSpacing(3);
     top->setSpacing(3);
@@ -75,7 +75,7 @@ RxCalcApp::RxCalcApp()
     all->addLayout(top, 0);
     QGroupBox *box1 = new QGroupBox(tr("System Parametrs"), this);
     box1->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
-    top->addWidget(box1,0);
+    top->addWidget(box1,0,0,-1,1);
 
     QGridLayout *gbox1 = new QGridLayout();
     gbox1->setVerticalSpacing(0);
@@ -90,6 +90,8 @@ RxCalcApp::RxCalcApp()
     gbox1->addWidget(inputPower_dBm, 0,1);
     QLabel *Label1 = new QLabel(tr("dBm"), this);
     gbox1->addWidget(Label1, 0,2);
+
+    inputPower_dBm->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     QLabel *Label2 = new QLabel(tr("Noise Bandwidth:"), this);
     gbox1->addWidget(Label2, 1,0);
@@ -131,20 +133,41 @@ RxCalcApp::RxCalcApp()
     gbox1->addWidget(Label7, 4,2);
 
     // ...........................................................
-    QSpacerItem *spacer1=new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    top->insertSpacerItem(1, spacer1);
-/*
-    // ...........................................................
-    QPushButton *ButtonGo = new QPushButton(tr("Calculate and put into Clipboard"), this);
-    connect(ButtonGo, SIGNAL(clicked()), SLOT(slotCalculate()));
-    all->addWidget(ButtonGo, 1, 0, 1, -1);
+    QSpacerItem *spacer4 = new QSpacerItem(20, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
+    top->addItem(spacer4, 0, 1, -1, 1);
 
-    LabelResult = new QLabel(this);
-    ResultState = 100;
-    slotShowResult();
-    LabelResult->setAlignment(Qt::AlignHCenter);
-    all->addWidget(LabelResult, 2, 0, 1, -1);
-*/
+    // ...........................................................
+    QLabel *Label50 = new QLabel(tr("Number of Stages:"), this);
+    top->addWidget(Label50, 2, 2, 1, 1);
+
+    // ...........................................................
+    numberOfStages = new QSpinBox(this);
+    numberOfStages->setMinimum(0);
+    //connect(calcButton, SIGNAL(clicked()), SLOT(slotCalculate()));
+    top->addWidget(numberOfStages, 2, 3, 1, 1);
+
+    // ...........................................................
+    QPushButton *calcButton = new QPushButton(tr("Calculate"), this);
+    //connect(calcButton, SIGNAL(clicked()), SLOT(slotCalculate()));
+    top->addWidget(calcButton, 4, 2, 1, 2);
+
+    // ...........................................................
+    QSpacerItem *spacer3 = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    top->addItem(spacer3, 5, 2, 1, 2);
+
+    // ...........................................................
+    QSpacerItem *spacer6 = new QSpacerItem(20, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
+    top->addItem(spacer6, 0, 4, -1, 1);
+
+    // ...........................................................
+    QLabel *Label51 = new QLabel(tr("Comments of the project:"), this);
+    top->addWidget(Label51, 0, 5, 1, 1);
+
+    // ...........................................................
+    comment = new QPlainTextEdit(this);
+    comment->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+    top->addWidget(comment, 1, 5, -1, 1);
+
     // ...........................................................
     table = new QTableWidget(this);
     //table->horizontalHeader()->setMovable(true);
@@ -171,6 +194,8 @@ RxCalcApp::RxCalcApp()
     gbox2->addWidget(gain_dB, 0,1);
     QLabel *Label9 = new QLabel(tr("dB"), this);
     gbox2->addWidget(Label9, 0,2);
+
+    gain_dB->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     QLabel *Label10 = new QLabel(tr("Noise Figure:"), this);
     gbox2->addWidget(Label10, 1,0);
@@ -239,6 +264,8 @@ RxCalcApp::RxCalcApp()
     QLabel *Label23 = new QLabel(tr("dBm/Hz"), this);
     gbox3->addWidget(Label23, 0,2);
 
+    noiseFloor_dBmHz->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
     QLabel *Label24 = new QLabel(tr("Output NSD:"), this);
     gbox3->addWidget(Label24, 1,0);
     outputNSD_dBmHz = new QLineEdit("", this);
@@ -305,6 +332,8 @@ RxCalcApp::RxCalcApp()
     gbox4->addWidget(outpuiIMlevel_dBm, 0,1);
     QLabel *Label37 = new QLabel(tr("dBm"), this);
     gbox4->addWidget(Label37, 0,2);
+
+    outpuiIMlevel_dBm->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     QLabel *Label38 = new QLabel(tr("Output IM Level:"), this);
     gbox4->addWidget(Label38, 1,0);

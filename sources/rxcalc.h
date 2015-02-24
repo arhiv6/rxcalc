@@ -36,6 +36,9 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QTableWidget>
+#include <QPushButton>
+#include <QPlainTextEdit>
+#include <QSpinBox>
 
 class RxCalcApp : public QMainWindow
 {
@@ -49,6 +52,9 @@ public:
     QLineEdit *noiseFloor_dBmHz, *outputNSD_dBmHz, *outputNoiseFloor_dBm, *snr_dB, *mds_dBm, *sensivity_dBm, *noiseTemperature_K;
     QLineEdit *outpuiIMlevel_dBm, *outpuiIMlevel_dBc, *inpuiIMlevel_dBm, *inpuiIMlevel_dBc, *imd_dB, *sfdr_dB, *ildr_dB;
     QComboBox *temperatureUnit, *freqUnit;
+    QPushButton *calcButton;
+    QSpinBox *numberOfStages;
+    QPlainTextEdit *comment;
     enum temperatureUnits {
         celsius,
         kelvin
