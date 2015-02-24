@@ -74,6 +74,7 @@ RxCalcApp::RxCalcApp()
     // ...........................................................
     all->addLayout(top, 0);
     QGroupBox *box1 = new QGroupBox(tr("System Parametrs"), this);
+    box1->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
     top->addWidget(box1,0);
 
     QGridLayout *gbox1 = new QGridLayout();
@@ -130,14 +131,31 @@ RxCalcApp::RxCalcApp()
     gbox1->addWidget(Label7, 4,2);
 
     // ...........................................................
+    QSpacerItem *spacer1=new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    top->insertSpacerItem(1, spacer1);
+/*
+    // ...........................................................
+    QPushButton *ButtonGo = new QPushButton(tr("Calculate and put into Clipboard"), this);
+    connect(ButtonGo, SIGNAL(clicked()), SLOT(slotCalculate()));
+    all->addWidget(ButtonGo, 1, 0, 1, -1);
+
+    LabelResult = new QLabel(this);
+    ResultState = 100;
+    slotShowResult();
+    LabelResult->setAlignment(Qt::AlignHCenter);
+    all->addWidget(LabelResult, 2, 0, 1, -1);
+*/
+    // ...........................................................
     table = new QTableWidget(this);
     //table->horizontalHeader()->setMovable(true);
     table->setSelectionMode(QAbstractItemView::NoSelection);
+    table->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     all->addWidget(table, 1);
 
     // ...........................................................
     all->addLayout(bot, 2);
     QGroupBox *box2 = new QGroupBox(tr("System Analysis"), this);
+    box2->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     bot->addWidget(box2,0);
 
     QGridLayout *gbox2 = new QGridLayout();
@@ -204,6 +222,7 @@ RxCalcApp::RxCalcApp()
 
     // ...........................................................
     QGroupBox *box3 = new QGroupBox(tr("Noise Analysis"), this);
+    box3->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     bot->addWidget(box3,1);
 
     QGridLayout *gbox3 = new QGridLayout();
@@ -270,6 +289,7 @@ RxCalcApp::RxCalcApp()
 
     // ...........................................................
     QGroupBox *box4 = new QGroupBox(tr("Dynamic Analysis"), this);
+    box4->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     bot->addWidget(box4,2);
 
     QGridLayout *gbox4 = new QGridLayout();
@@ -334,26 +354,11 @@ RxCalcApp::RxCalcApp()
     QLabel *Label49 = new QLabel(tr("dB"), this);
     gbox4->addWidget(Label49, 6,2);
 
-
-/*
-    QSpacerItem *mySpacer=new QSpacerItem(1,1, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    gbox2->addItem(mySpacer, 5, 0, 1, -1);
-
     // ...........................................................
-    QPushButton *ButtonGo = new QPushButton(tr("Calculate and put into Clipboard"), this);
-    connect(ButtonGo, SIGNAL(clicked()), SLOT(slotCalculate()));
-    all->addWidget(ButtonGo, 1, 0, 1, -1);
-
-    LabelResult = new QLabel(this);
-    ResultState = 100;
-    slotShowResult();
-    LabelResult->setAlignment(Qt::AlignHCenter);
-    all->addWidget(LabelResult, 2, 0, 1, -1);
+    QSpacerItem *spacer2=new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    bot->insertSpacerItem(3, spacer2);
 
     // -------  finally set initial state  --------
-    slotTypeChanged(0);
-    slotClassChanged(0);
-*/
     loadSettings();
 }
 
