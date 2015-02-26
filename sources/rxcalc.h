@@ -23,6 +23,7 @@
 
 #include "stage.h"
 #include "system.h"
+#include "rxtable.h"
 
 #include <QMainWindow>
 #include <QDebug>
@@ -35,7 +36,6 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
-#include <QTableWidget>
 #include <QPushButton>
 #include <QPlainTextEdit>
 #include <QSpinBox>
@@ -46,7 +46,7 @@ class RxCalcApp : public QMainWindow
 public:
     explicit RxCalcApp();
     ~RxCalcApp();
-    QTableWidget *table;
+    RxTable *table;
     QLineEdit *inputPower_dBm, *noiseBand_Hz, *minSignalToNoise_dB, *temperature_K_C, *perToRms_dB;
     QLineEdit *gain_dB, *noiseFigure_dB, *inputIP3_dBm, *outputIP3_dBm, *inputP1dB_dBm, *outputP1dB_dBm, *outpupPower_dBm;
     QLineEdit *noiseFloor_dBmHz, *outputNSD_dBmHz, *outputNoiseFloor_dBm, *snr_dB, *mds_dBm, *sensivity_dBm, *noiseTemperature_K;

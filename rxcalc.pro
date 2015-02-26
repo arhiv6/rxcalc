@@ -30,11 +30,13 @@ DEFINES += APP_NAME=\\\"RxCalc\\\"
 SOURCES +=  sources/main.cpp \
             sources/rxcalc.cpp \
             sources/stage.cpp \
-            sources/system.cpp
+            sources/system.cpp \
+            sources/rxtable.cpp
 
 HEADERS +=  sources/main.h \
             sources/rxcalc.h \
             sources/stage.h \
-            sources/system.h
+            sources/system.h \
+            sources/rxtable.h
 
 RESOURCES += resources/images.qrc
