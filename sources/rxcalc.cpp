@@ -143,12 +143,12 @@ RxCalcApp::RxCalcApp()
     // ...........................................................
     numberOfStages = new QSpinBox(this);
     numberOfStages->setMinimum(0);
-    //connect(calcButton, SIGNAL(clicked()), SLOT(slotCalculate()));
+    connect(numberOfStages, SIGNAL(editingFinished()), SLOT(setStagesNumber()));
     top->addWidget(numberOfStages, 2, 3, 1, 1);
 
     // ...........................................................
     QPushButton *calcButton = new QPushButton(tr("Calculate"), this);
-    //connect(calcButton, SIGNAL(clicked()), SLOT(slotCalculate()));
+    connect(calcButton, SIGNAL(clicked()), SLOT(clickOnCalcButton()));
     top->addWidget(calcButton, 4, 2, 1, 2);
 
     // ...........................................................
@@ -449,4 +449,28 @@ void RxCalcApp::validate()
         else
             sender->setStyleSheet("");
     }
+}
+
+void RxCalcApp::setStagesNumber()
+{
+    int newStageNumber = numberOfStages->value();
+    int oldStageNumber = table->columnCount();
+
+    if (newStageNumber == oldStageNumber)
+        return;
+
+    table->setColumnCount(newStageNumber);
+
+    if (newStageNumber>oldStageNumber)
+    {   // create new column
+        for (int i = oldStageNumber; i < newStageNumber; i++)
+        {
+            //createCount(i);
+        }
+    }
+}
+
+void RxCalcApp::clickOnCalcButton()
+{
+
 }

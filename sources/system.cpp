@@ -27,7 +27,26 @@ System::System(QList<Stage*> *stageList)
 
 System::~System()
 {
-
+    // System params:
+    sys1.sysPowerGain = NAN;
+    sys1.sysNoiseFigure = NAN;
+    sys1.sysIip3 = NAN;
+    sys1.sysOip3 = NAN;
+    sys1.sysIp1db = NAN;
+    sys1.sysOp1db = NAN;
+    sys1.sysOutputPower = NAN;
+    sys1.sysNoiseFloor_dbmHz = NAN;
+    sys1.sysOutputNsd_dbmHz = NAN;
+    sys1.sysNoiseFloor_dbm = NAN;
+    sys1.snr = NAN;
+    sys1.mds = NAN;
+    sys1.noiseTemperature = NAN;
+    sys1.sensivity = NAN;
+    sys1.inputImLevel = NAN;
+    sys1.outputImLevel = NAN;
+    sys1.imLevel_dbc = NAN;
+    sys1.imd = NAN;
+    sys1.sfdr = NAN;
 }
 
 void System::setInputPower(float inputPower)
@@ -102,6 +121,26 @@ void System::solve()
     solveSysNoiseParam();//sixth
     solveDynamicParam(); //saeventh
     postSolveParam(); //eighth
+
+    sys1.sysPowerGain = m_sysPowerGain;
+    sys1.sysNoiseFigure = m_sysNoiseFigure;
+    sys1.sysIip3 = m_sysIip3;
+    sys1.sysOip3 = m_sysOip3;
+    sys1.sysIp1db = m_sysIp1db;
+    sys1.sysOp1db = m_sysOp1db;
+    sys1.sysOutputPower = m_sysOutputPower;
+    sys1.sysNoiseFloor_dbmHz = m_sysNoiseFloor_dbmHz;
+    sys1.sysOutputNsd_dbmHz = m_sysOutputNsd_dbmHz;
+    sys1.sysNoiseFloor_dbm = m_sysNoiseFloor_dbm;
+    sys1.snr = m_snr;
+    sys1.mds = m_mds;
+    sys1.noiseTemperature = m_noiseTemperature;
+    sys1.sensivity = m_sensivity;
+    sys1.inputImLevel = m_inputImLevel;
+    sys1.outputImLevel = m_outputImLevel;
+    sys1.imLevel_dbc = m_imLevel_dbc;
+    sys1.imd = m_imd;
+    sys1.sfdr = m_sfdr;
 }
 
 float System::converdBtoKp(float dB)

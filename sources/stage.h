@@ -47,7 +47,7 @@ public:
     void setIp1db(float ip1db);
     float ip1db();
     // System params:
-    struct
+    typedef struct
     {
         float powerGain;
         float noiseFigure;
@@ -59,7 +59,8 @@ public:
         float stageIip3ToSystemIip3;
         float powerOutBackoff;
         float peakPowerOutBackoff;
-    } sys;
+    } sysStruct;
+    sysStruct sys;
 
 private:
     // Stage params:

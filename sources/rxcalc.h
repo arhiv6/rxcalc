@@ -75,6 +75,8 @@ public slots:
     void saveSettings();
     void loadSettings();
     void validate();
+    void setStagesNumber();
+    void clickOnCalcButton();
 };
 
 #endif // RXCALC_H

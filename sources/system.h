@@ -45,6 +45,30 @@ public:
     void setPeakToRatio(float peakToRatio);
     float peakToRatio();
     void solve();
+    // System params:
+    typedef struct
+    {
+        float sysPowerGain;
+        float sysNoiseFigure;
+        float sysIip3;
+        float sysOip3;
+        float sysIp1db;
+        float sysOp1db;
+        float sysOutputPower;
+        float sysNoiseFloor_dbmHz;
+        float sysOutputNsd_dbmHz;
+        float sysNoiseFloor_dbm;
+        float snr;
+        float mds;
+        float noiseTemperature;
+        float sensivity;
+        float inputImLevel;
+        float outputImLevel;
+        float imLevel_dbc;
+        float imd;
+        float sfdr;
+    } sysStruct;
+    sysStruct sys1;
 
 private:
     float converdBtoKp(float dB);
