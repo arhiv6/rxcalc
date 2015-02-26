@@ -21,14 +21,20 @@
 #ifndef RXTABLE_H
 #define RXTABLE_H
 
+#include "rxtablecell.h"
+
 #include <QTableWidget>
-#include <QObject>
 
 class RxTable : public QTableWidget
 {
 public:
-    RxTable();
+    RxTable(QWidget *parent = 0);
     ~RxTable();
+    void setSizeAfterDecimalPoint (unsigned int size);
+
+private:
+    unsigned int sizeAfterDecimalPoint;
+
 };
 
 #endif // RXTABLE_H

@@ -169,9 +169,7 @@ RxCalcApp::RxCalcApp()
     top->addWidget(comment, 1, 5, -1, 1);
 
     // ...........................................................
-    table = new RxTable();
-    //table->horizontalHeader()->setMovable(true);
-    table->setSelectionMode(QAbstractItemView::NoSelection);
+    table = new RxTable(this);
     table->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     all->addWidget(table, 1);
 

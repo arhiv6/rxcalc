@@ -31,12 +31,14 @@ SOURCES +=  sources/main.cpp \
             sources/rxcalc.cpp \
             sources/stage.cpp \
             sources/system.cpp \
-            sources/rxtable.cpp
+            sources/rxtable.cpp \
+            sources/rxtablecell.cpp
 
 HEADERS +=  sources/main.h \
             sources/rxcalc.h \
             sources/stage.h \
             sources/system.h \
-            sources/rxtable.h
+            sources/rxtable.h \
+            sources/rxtablecell.h
 
 RESOURCES += resources/images.qrc

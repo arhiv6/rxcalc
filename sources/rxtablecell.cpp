@@ -18,25 +18,15 @@
  *
  */
 
-#include "rxtable.h"
+#include "rxtablecell.h"
 
-RxTable::RxTable(QWidget *parent)
-    : QTableWidget(parent)
-{
-    sizeAfterDecimalPoint = 2;
-    setItemPrototype(new rxTableCell);
-    //horizontalHeader()->setMovable(true);
-    setSelectionMode(QAbstractItemView::NoSelection);
-}
-
-RxTable::~RxTable()
+rxTableCell::rxTableCell()
 {
 
 }
 
-void RxTable::setSizeAfterDecimalPoint (unsigned int size)
+rxTableCell::~rxTableCell()
 {
-    if (size > 0)
-        sizeAfterDecimalPoint = size;
+
 }
 
