@@ -23,8 +23,8 @@
 RxTable::RxTable(QWidget *parent)
     : QTableWidget(parent)
 {
-    sizeAfterDecimalPoint = 2;
-    setItemPrototype(new rxTableCell);
+    m_sizeAfterDecimalPoint = 2;
+    setItemPrototype(new RxTableCell);
     //horizontalHeader()->setMovable(true);
     setSelectionMode(QAbstractItemView::NoSelection);
 }
@@ -37,6 +37,11 @@ RxTable::~RxTable()
 void RxTable::setSizeAfterDecimalPoint (unsigned int size)
 {
     if (size > 0)
-        sizeAfterDecimalPoint = size;
+        m_sizeAfterDecimalPoint = size;
+}
+
+RxTableCell* RxTable::cell(int row, int column) const
+{
+    return static_cast<RxTableCell *>(item(row, column));
 }
 

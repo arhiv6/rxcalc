@@ -20,13 +20,25 @@
 
 #include "rxtablecell.h"
 
-rxTableCell::rxTableCell()
+RxTableCell::RxTableCell()
+{
+        m_sizeAfterDecimalPoint = 2;
+}
+
+RxTableCell::~RxTableCell()
 {
 
 }
 
-rxTableCell::~rxTableCell()
+void RxTableCell::setFloat(float number)
 {
-
+    setText(QString::number(rounding((number))));
 }
 
+float RxTableCell::rounding (float input)
+{
+    float tmp=qRound(input*100.0);
+    return tmp/100.0;
+
+    return input;
+}

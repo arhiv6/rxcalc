@@ -143,7 +143,7 @@ RxCalcApp::RxCalcApp()
     // ...........................................................
     numberOfStages = new QSpinBox(this);
     numberOfStages->setMinimum(0);
-    connect(numberOfStages, SIGNAL(editingFinished()), SLOT(setStagesNumber()));
+    connect(numberOfStages, SIGNAL(editingFinished()), SLOT(setStagesNumberSlot()));
     top->addWidget(numberOfStages, 2, 3, 1, 1);
 
     // ...........................................................
@@ -449,7 +449,13 @@ void RxCalcApp::validate()
     }
 }
 
-void RxCalcApp::setStagesNumber()
+void RxCalcApp::setStagesNumber(unsigned int number)
+{
+     numberOfStages->setValue(number);
+     setStagesNumberSlot();
+}
+
+void RxCalcApp::setStagesNumberSlot()
 {
     int newStageNumber = numberOfStages->value();
     int oldStageNumber = table->columnCount();
@@ -470,5 +476,13 @@ void RxCalcApp::setStagesNumber()
 
 void RxCalcApp::clickOnCalcButton()
 {
-
+    //  ---  TEST ---
+    //setStagesNumber(1);
+    table->setColumnCount(2);
+    table->setRowCount(2);
+   table->setItem(0, 0, new QTableWidgetItem());
+//    /table->item(0,0)->setText("21");
+//   table->item(0, 0)->setText("123");
+    table->setSizeAfterDecimalPoint(2);
+    table->cell(0, 0)->setFloat(123.456);
 }

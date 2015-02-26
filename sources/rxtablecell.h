@@ -23,11 +23,16 @@
 
 #include <QTableWidgetItem>
 
-class rxTableCell : public QTableWidgetItem
+class RxTableCell : public QTableWidgetItem
 {
 public:
-    rxTableCell();
-    ~rxTableCell();
+    RxTableCell();
+    ~RxTableCell();
+    void setFloat(float number);
+
+private:
+    float rounding (float input);
+    unsigned int m_sizeAfterDecimalPoint;
 };
 
 #endif // RXTABLECELL_H

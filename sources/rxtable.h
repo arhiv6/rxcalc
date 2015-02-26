@@ -31,9 +31,10 @@ public:
     RxTable(QWidget *parent = 0);
     ~RxTable();
     void setSizeAfterDecimalPoint (unsigned int size);
+    RxTableCell *cell(int row, int column) const;
 
 private:
-    unsigned int sizeAfterDecimalPoint;
+    unsigned int m_sizeAfterDecimalPoint;
 
 };
 
