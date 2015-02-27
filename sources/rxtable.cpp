@@ -28,12 +28,7 @@ RxTable::RxTable(QWidget *parent)
     //horizontalHeader()->setMovable(true);
     setSelectionMode(QAbstractItemView::NoSelection);
 
-
-    // создаем и заполняем массив
-    //int i=0;
-//    while(i < END_STAGE_TYPE)
-//        i++;
-
+    // --------------------------------------------
     stageType = new Type[END_STAGE_TYPE];
 
     stageType[other].name = "Other";
@@ -51,12 +46,7 @@ RxTable::RxTable(QWidget *parent)
     stageType[attenuator].name = "Atten";
     stageType[attenuator].picture = QPixmap(":/img/attenuator.svg");
 
-    // создаем и заполняем массив настроек строк
-//    i=0;
-//    while(i < END_ROW_NAMES)
-//        i++;
-
-   // i= END_ROW_NAMES;
+    // --------------------------------------------
     rows = new Row[END_ROW_NAMES];
 
     rows[type].Handlre = "Stage type";
@@ -114,8 +104,8 @@ RxTable::RxTable(QWidget *parent)
     rows[ip3StageToIp3System].Handlre = "Stage IIP3 / Full IIP3";
     rows[ip3StageToIp3System].writable = false;
 
-//    rows[oip3StageToOp3System].Handlre = "Stage OIP3 / Full OIP3";
-//    rows[oip3StageToOp3System].writable = false;
+    //rows[oip3StageToOp3System].Handlre = "Stage OIP3 / Full OIP3";
+    //rows[oip3StageToOp3System].writable = false;
 
     rows[p_backoff].Handlre = "Pout backoff";
     rows[p_backoff].writable = false;
@@ -123,8 +113,7 @@ RxTable::RxTable(QWidget *parent)
     rows[p_backoff_peak].Handlre = "Peak backoff";
     rows[p_backoff_peak].writable = false;
 
-
-     //Настраиваем свойства строк
+    // --------------------------------------------
     setRowCount(END_ROW_NAMES);
     QStringList rowList;
     int i=0;

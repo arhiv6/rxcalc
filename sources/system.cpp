@@ -23,10 +23,7 @@
 System::System(QList<Stage*> *stageList)
 {
     m_stageList=stageList;
-}
 
-System::~System()
-{
     // System params:
     sys1.sysPowerGain = NAN;
     sys1.sysNoiseFigure = NAN;
@@ -42,11 +39,17 @@ System::~System()
     sys1.mds = NAN;
     sys1.noiseTemperature = NAN;
     sys1.sensivity = NAN;
-    sys1.inputImLevel = NAN;
-    sys1.outputImLevel = NAN;
-    sys1.imLevel_dbc = NAN;
+    sys1.inputImLevel_dBm = NAN;
+    sys1.outputImLevel_dBm = NAN;
+    sys1.inputImLevel_dBc = NAN;
+    sys1.outputImLevel_dBc = NAN;
     sys1.imd = NAN;
     sys1.sfdr = NAN;
+}
+
+System::~System()
+{
+
 }
 
 void System::setInputPower(float inputPower)
@@ -136,9 +139,10 @@ void System::solve()
     sys1.mds = m_mds;
     sys1.noiseTemperature = m_noiseTemperature;
     sys1.sensivity = m_sensivity;
-    sys1.inputImLevel = m_inputImLevel;
-    sys1.outputImLevel = m_outputImLevel;
-    sys1.imLevel_dbc = m_imLevel_dbc;
+    sys1.inputImLevel_dBm = m_inputImLevel_dBm;
+    sys1.outputImLevel_dBm = m_outputImLevel_dBm;
+    sys1.inputImLevel_dBc = m_inputImLevel_dBc;
+    sys1.outputImLevel_dBc = m_outputImLevel_dBc;
     sys1.imd = m_imd;
     sys1.sfdr = m_sfdr;
 }
@@ -329,9 +333,10 @@ void System::solveDynamicParam()
     float outpIMLevel = m_sysOutputPower - 2*(m_sysOip3 - m_sysOutputPower);
     float inIMLevel = m_inputPower - 2*((m_sysOip3-m_sysPowerGain) - m_inputPower);
 
-    m_inputImLevel = inIMLevel;
-    m_outputImLevel = outpIMLevel;
-    m_imLevel_dbc = outpIMLevel - m_sysOutputPower;
+    m_inputImLevel_dBm = inIMLevel;
+    m_outputImLevel_dBm = outpIMLevel;
+    m_outputImLevel_dBc = outpIMLevel - m_sysOutputPower;
+    m_inputImLevel_dBc = inIMLevel - m_inputPower;
     m_imd = 2*((m_sysOutputPower-3.0) - m_sysOip3);
     m_sfdr = (2.0/3.0)*(m_sysOip3 - m_sysNoiseFloor_dbm);
 }
@@ -355,7 +360,7 @@ void System::postSolveParam()
         if (firstStage == true)
         {
             // only first stage
-            m_stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = m_stageList->at(i)->sys.noiseFigureToSystemNoiseFigure/m_sysNoiseFigure; // add data in paramList
+            m_stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = m_stageList->at(i)->sys.noiseFigure/m_sysNoiseFigure; // add data in paramList
             m_stageList->at(i)->sys.stageIip3ToSystemIip3 = 0; // add data in paramList
             ip3_0_val= m_stageList->at(i)->sys.iip3;
             firstStage = false;

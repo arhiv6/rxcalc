@@ -62,9 +62,10 @@ public:
         float mds;
         float noiseTemperature;
         float sensivity;
-        float inputImLevel;
-        float outputImLevel;
-        float imLevel_dbc;
+        float inputImLevel_dBm;
+        float outputImLevel_dBm;
+        float inputImLevel_dBc;
+        float outputImLevel_dBc;
         float imd;
         float sfdr;
     } sysStruct;
@@ -106,9 +107,10 @@ private:
     float m_mds;
     float m_noiseTemperature;
     float m_sensivity;
-    float m_inputImLevel;
-    float m_outputImLevel;
-    float m_imLevel_dbc;
+    float m_inputImLevel_dBm;
+    float m_outputImLevel_dBm;
+    float m_inputImLevel_dBc;
+    float m_outputImLevel_dBc;
     float m_imd;
     float m_sfdr;
 };
