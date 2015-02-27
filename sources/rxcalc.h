@@ -75,7 +75,7 @@ public slots:
     void saveSettings();
     void loadSettings();
     void validate();
-    void setStagesNumber(unsigned int number);
+   // void setStagesNumber(unsigned int number);
     void setStagesNumberSlot();
     void clickOnCalcButton();
 };

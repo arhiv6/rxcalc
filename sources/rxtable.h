@@ -24,6 +24,8 @@
 #include "rxtablecell.h"
 
 #include <QTableWidget>
+#include <QLabel>
+#include <QComboBox>
 
 class RxTable : public QTableWidget
 {
@@ -32,6 +34,66 @@ public:
     ~RxTable();
     void setSizeAfterDecimalPoint (unsigned int size);
     RxTableCell *cell(int row, int column) const;
+    void setStageCount(int newStageNumber);
+    enum rowNames {
+        type,
+        //input freq
+        //df_gain
+        //df_noise
+        pic,
+        name,
+        //z_in,
+        //z_out,
+        gain,
+        //volt_gain,
+        noiseFigure,
+        iip3,
+        oip3,
+        ip1db,
+        oip1db,
+        stageGain,
+        systemNF,
+        systemIIP3,
+        systemOIP3,
+        //corr_gain
+        //corr_noise
+        inputPower,
+        outputPower,
+        //voltage,
+        //current,
+        //power
+        nfStageToNfSystem,
+        //nf_gain
+        ip3StageToIp3System,
+        //oip3StageToOp3System,
+        p_backoff,
+        p_backoff_peak,
+        END_ROW_NAMES
+    };
+    typedef struct
+    {
+        QString Handlre;
+        bool writable;
+        QString defaultValue;
+    } Row;
+    Row *rows;
+
+    enum stageTypes {
+        other,
+        amplifier,
+        filter,
+        mixer,
+        attenuator,
+        END_STAGE_TYPE
+    };
+    typedef struct
+    {
+        QString name;
+        QPixmap picture;
+    } Type;
+    Type *stageType;
+
+    QMap<QComboBox*,int> comboboxToImage;
 
 private:
     unsigned int m_sizeAfterDecimalPoint;

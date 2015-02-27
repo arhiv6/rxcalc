@@ -449,40 +449,12 @@ void RxCalcApp::validate()
     }
 }
 
-void RxCalcApp::setStagesNumber(unsigned int number)
-{
-     numberOfStages->setValue(number);
-     setStagesNumberSlot();
-}
-
 void RxCalcApp::setStagesNumberSlot()
 {
-    int newStageNumber = numberOfStages->value();
-    int oldStageNumber = table->columnCount();
-
-    if (newStageNumber == oldStageNumber)
-        return;
-
-    table->setColumnCount(newStageNumber);
-
-    if (newStageNumber>oldStageNumber)
-    {   // create new column
-        for (int i = oldStageNumber; i < newStageNumber; i++)
-        {
-            //createCount(i);
-        }
-    }
+    table->setStageCount(numberOfStages->value());
 }
 
 void RxCalcApp::clickOnCalcButton()
 {
-    //  ---  TEST ---
-    //setStagesNumber(1);
-    table->setColumnCount(2);
-    table->setRowCount(2);
-   table->setItem(0, 0, new QTableWidgetItem());
-//    /table->item(0,0)->setText("21");
-//   table->item(0, 0)->setText("123");
-    table->setSizeAfterDecimalPoint(2);
-    table->cell(0, 0)->setFloat(123.456);
+
 }
