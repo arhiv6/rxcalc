@@ -85,7 +85,8 @@ RxCalcApp::RxCalcApp()
 
     QLabel *Label0 = new QLabel(tr("Input Power:"), this);
     gbox1->addWidget(Label0, 0,0);
-    inputPower_dBm = new QLineEdit("-60", this);
+    inputPower_dBm = new QDoubleSpinBox(this);
+    inputPower_dBm->setValue(-60);
     connect(inputPower_dBm, SIGNAL(editingFinished()), SLOT(validate()));
     gbox1->addWidget(inputPower_dBm, 0,1);
     QLabel *Label1 = new QLabel(tr("dBm"), this);
@@ -95,7 +96,8 @@ RxCalcApp::RxCalcApp()
 
     QLabel *Label2 = new QLabel(tr("Noise Bandwidth:"), this);
     gbox1->addWidget(Label2, 1,0);
-    noiseBand_Hz = new QLineEdit("1000", this);
+    noiseBand_Hz = new QDoubleSpinBox(this);
+    noiseBand_Hz->setValue(1000);
     connect(noiseBand_Hz, SIGNAL(editingFinished()), SLOT(validate()));
     gbox1->addWidget(noiseBand_Hz, 1,1);
     freqUnit = new QComboBox(this);
@@ -107,7 +109,8 @@ RxCalcApp::RxCalcApp()
 
     QLabel *Label3 = new QLabel(tr("Min S/N for Demod:"), this);
     gbox1->addWidget(Label3, 2,0);
-    minSignalToNoise_dB = new QLineEdit("10", this);
+    minSignalToNoise_dB = new QDoubleSpinBox(this);
+    minSignalToNoise_dB->setValue(10);
     connect(minSignalToNoise_dB, SIGNAL(editingFinished()), SLOT(validate()));
     gbox1->addWidget(minSignalToNoise_dB, 2,1);
     QLabel *Label4 = new QLabel(tr("dB"), this);
@@ -115,7 +118,8 @@ RxCalcApp::RxCalcApp()
 
     QLabel *Label5 = new QLabel(tr("Temperature:"), this);
     gbox1->addWidget(Label5, 3,0);
-    temperature_K_C = new QLineEdit("25", this);
+    temperature_K_C = new QDoubleSpinBox(this);
+    temperature_K_C->setValue(25);
     connect(temperature_K_C, SIGNAL(editingFinished()), SLOT(validate()));
     gbox1->addWidget(temperature_K_C, 3,1);
     temperatureUnit = new QComboBox(this);
@@ -126,7 +130,8 @@ RxCalcApp::RxCalcApp()
 
     QLabel *Label6 = new QLabel(tr("PER-to-RMS ratio:"), this);
     gbox1->addWidget(Label6, 4,0);
-    perToRms_dB = new QLineEdit("0", this);
+    perToRms_dB = new QDoubleSpinBox(this);
+    perToRms_dB->setValue(0);
     connect(perToRms_dB, SIGNAL(editingFinished()), SLOT(validate()));
     gbox1->addWidget(perToRms_dB, 4,1);
     QLabel *Label7 = new QLabel(tr("dB"), this);
@@ -414,7 +419,7 @@ void RxCalcApp::loadSettings()
 
 void RxCalcApp::validate()
 {
-    QLineEdit *sender;
+/*    QLineEdit *sender;
     bool toFloat;
 
     if ((QComboBox *)QObject::sender() == temperatureUnit)
@@ -446,7 +451,7 @@ void RxCalcApp::validate()
             sender->setStyleSheet("background-color:red;");
         else
             sender->setStyleSheet("");
-    }
+    }*/
 }
 
 void RxCalcApp::setStagesNumberSlot()
@@ -522,14 +527,14 @@ void RxCalcApp::clickOnCalcButton()
     }
 
     System *system = new System(stageList);
-    system->setInputPower(inputPower_dBm->text().toFloat());
-    system->setMinSignalToNoise(minSignalToNoise_dB->text().toFloat());
-    system->setPeakToRatio(perToRms_dB->text().toFloat());
+    system->setInputPower(inputPower_dBm->value());
+    system->setMinSignalToNoise(minSignalToNoise_dB->value());
+    system->setPeakToRatio(perToRms_dB->value());
     if (temperatureUnit->currentIndex() == celsius)
-        system->setTemperature_C(temperature_K_C->text().toFloat());
+        system->setTemperature_C(temperature_K_C->value());
     else if (temperatureUnit->currentIndex() == kelvin)
-        system->setTemperature_K(temperature_K_C->text().toFloat());
-    system->setNoiseBand(noiseBand_Hz->text().toFloat()*pow(10.0, 3*freqUnit->currentIndex()));
+        system->setTemperature_K(temperature_K_C->value());
+    system->setNoiseBand(noiseBand_Hz->value()*pow(10.0, 3*freqUnit->currentIndex()));
 
     system->solve();
 

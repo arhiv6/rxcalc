@@ -47,7 +47,7 @@ public:
     explicit RxCalcApp();
     ~RxCalcApp();
     RxTable *table;
-    QLineEdit *inputPower_dBm, *noiseBand_Hz, *minSignalToNoise_dB, *temperature_K_C, *perToRms_dB;
+    QDoubleSpinBox *inputPower_dBm, *noiseBand_Hz, *minSignalToNoise_dB, *temperature_K_C, *perToRms_dB;
     QLineEdit *gain_dB, *noiseFigure_dB, *inputIP3_dBm, *outputIP3_dBm, *inputP1dB_dBm, *outputP1dB_dBm, *outpupPower_dBm;
     QLineEdit *noiseFloor_dBmHz, *outputNSD_dBmHz, *outputNoiseFloor_dBm, *snr_dB, *mds_dBm, *sensivity_dBm, *noiseTemperature_K;
     QLineEdit *outpuiIMlevel_dBm, *outpuiIMlevel_dBc, *inpuiIMlevel_dBm, *inpuiIMlevel_dBc, *imd_dB, *sfdr_dB, *ildr_dB;
