@@ -74,7 +74,7 @@ protected:
 public slots:
     void saveSettings();
     void loadSettings();
-    void validate();
+    void validateTemperature();
    // void setStagesNumber(unsigned int number);
     void setStagesNumberSlot();
     void clickOnCalcButton();

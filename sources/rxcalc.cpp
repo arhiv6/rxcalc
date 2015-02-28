@@ -86,8 +86,9 @@ RxCalcApp::RxCalcApp()
     QLabel *Label0 = new QLabel(tr("Input Power:"), this);
     gbox1->addWidget(Label0, 0,0);
     inputPower_dBm = new QDoubleSpinBox(this);
+    inputPower_dBm->setMinimum(-9999.99);
+    inputPower_dBm->setMaximum(9999.99);
     inputPower_dBm->setValue(-60);
-    connect(inputPower_dBm, SIGNAL(editingFinished()), SLOT(validate()));
     gbox1->addWidget(inputPower_dBm, 0,1);
     QLabel *Label1 = new QLabel(tr("dBm"), this);
     gbox1->addWidget(Label1, 0,2);
@@ -97,8 +98,9 @@ RxCalcApp::RxCalcApp()
     QLabel *Label2 = new QLabel(tr("Noise Bandwidth:"), this);
     gbox1->addWidget(Label2, 1,0);
     noiseBand_Hz = new QDoubleSpinBox(this);
+    noiseBand_Hz->setMinimum(0);
+    noiseBand_Hz->setMaximum(9999999.99);
     noiseBand_Hz->setValue(1000);
-    connect(noiseBand_Hz, SIGNAL(editingFinished()), SLOT(validate()));
     gbox1->addWidget(noiseBand_Hz, 1,1);
     freqUnit = new QComboBox(this);
     freqUnit->addItem(tr("Hz")); // see enum freqUnits
@@ -110,8 +112,9 @@ RxCalcApp::RxCalcApp()
     QLabel *Label3 = new QLabel(tr("Min S/N for Demod:"), this);
     gbox1->addWidget(Label3, 2,0);
     minSignalToNoise_dB = new QDoubleSpinBox(this);
+    minSignalToNoise_dB->setMinimum(-9999.99);
+    minSignalToNoise_dB->setMaximum(9999.99);
     minSignalToNoise_dB->setValue(10);
-    connect(minSignalToNoise_dB, SIGNAL(editingFinished()), SLOT(validate()));
     gbox1->addWidget(minSignalToNoise_dB, 2,1);
     QLabel *Label4 = new QLabel(tr("dB"), this);
     gbox1->addWidget(Label4, 2,2);
@@ -119,20 +122,24 @@ RxCalcApp::RxCalcApp()
     QLabel *Label5 = new QLabel(tr("Temperature:"), this);
     gbox1->addWidget(Label5, 3,0);
     temperature_K_C = new QDoubleSpinBox(this);
+    temperature_K_C->setMinimum(ABS_ZERO);
+    temperature_K_C->setMaximum(9999.99);
     temperature_K_C->setValue(25);
-    connect(temperature_K_C, SIGNAL(editingFinished()), SLOT(validate()));
+    connect(temperature_K_C, SIGNAL(valueChanged(double)), SLOT(validateTemperature()));
     gbox1->addWidget(temperature_K_C, 3,1);
     temperatureUnit = new QComboBox(this);
     temperatureUnit->addItem(QString(Qt::Key_degree) +tr("C")); // see enum temperatureUnits
     temperatureUnit->addItem(QString(Qt::Key_degree) +tr("K"));
-    connect(temperatureUnit, SIGNAL(currentIndexChanged(int)), SLOT(validate()));
+    temperatureUnit->setCurrentIndex(celsius);
+    connect(temperatureUnit, SIGNAL(currentIndexChanged(int)), SLOT(validateTemperature()));
     gbox1->addWidget(temperatureUnit, 3,2);
 
     QLabel *Label6 = new QLabel(tr("PER-to-RMS ratio:"), this);
     gbox1->addWidget(Label6, 4,0);
     perToRms_dB = new QDoubleSpinBox(this);
+    perToRms_dB->setMinimum(-9999.99);
+    perToRms_dB->setMaximum(9999.99);
     perToRms_dB->setValue(0);
-    connect(perToRms_dB, SIGNAL(editingFinished()), SLOT(validate()));
     gbox1->addWidget(perToRms_dB, 4,1);
     QLabel *Label7 = new QLabel(tr("dB"), this);
     gbox1->addWidget(Label7, 4,2);
@@ -417,41 +424,19 @@ void RxCalcApp::loadSettings()
     this->restoreGeometry(settings.value("windowGeometry",this->saveGeometry()).toByteArray());
 }
 
-void RxCalcApp::validate()
+void RxCalcApp::validateTemperature()
 {
-/*    QLineEdit *sender;
-    bool toFloat;
+//    if (temperatureUnit->currentIndex() == celsius)
+//        temperature_K_C->setMinimum(ABS_ZERO);
+//    else if (temperatureUnit->currentIndex() == kelvin)
+//        temperature_K_C->setMinimum(0);
 
-    if ((QComboBox *)QObject::sender() == temperatureUnit)
-        sender = temperature_K_C;
+    if ((temperatureUnit->currentIndex() == celsius) && (temperature_K_C->value() <= ABS_ZERO))
+        temperature_K_C->setStyleSheet("background-color:red;");
+    else if ((temperatureUnit->currentIndex() == kelvin) && (temperature_K_C->value() <= 0))
+        temperature_K_C->setStyleSheet("background-color:red;");
     else
-         sender = (QLineEdit *)QObject::sender();
-
-    float num = sender->text().toFloat(&toFloat);
-    if (toFloat == false)
-    {
-        sender->setStyleSheet("background-color:red;");
-        return;
-    }
-    else
-        sender->setStyleSheet("");
-
-    if (sender == noiseBand_Hz)
-    {
-        if (num <= 0)
-            sender->setStyleSheet("background-color:red;");
-        else
-            sender->setStyleSheet("");
-    }
-    else if (sender == temperature_K_C)
-    {
-        if ((temperatureUnit->currentIndex() == celsius) && (num <= ABS_ZERO))
-            sender->setStyleSheet("background-color:red;");
-        else if ((temperatureUnit->currentIndex() == kelvin) && (num <= 0))
-            sender->setStyleSheet("background-color:red;");
-        else
-            sender->setStyleSheet("");
-    }*/
+        temperature_K_C->setStyleSheet("");
 }
 
 void RxCalcApp::setStagesNumberSlot()
