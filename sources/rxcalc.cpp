@@ -37,35 +37,35 @@ RxCalcApp::RxCalcApp()
     fileNew->setIcon(QIcon::fromTheme("document-new"));
     fileNew->setIconVisibleInMenu(true);
     fileNew->setShortcut(Qt::CTRL+Qt::Key_N);
-    //connect(fileNew, SIGNAL(activated()), this, SLOT(slotNew()));
+    connect(fileNew, SIGNAL(activated()), this, SLOT(slotNew()));
 
     QAction *fileOpen = new QAction(tr("Open"), this);
     //fileOpen->setIcon(QIcon::fromTheme("document-open", this->style()->standardIcon(QStyle::SP_DialogOpenButton))); //TODO test in Windows
     fileOpen->setIcon(QIcon::fromTheme("document-open"));
     fileOpen->setIconVisibleInMenu(true);
     fileOpen->setShortcut(Qt::CTRL+Qt::Key_O);
-    //connect(fileOpen, SIGNAL(activated()), this, SLOT(slotOpen()));
+    connect(fileOpen, SIGNAL(activated()), this, SLOT(slotOpen()));
 
     QAction *fileSave = new QAction(tr("Save"), this);
     //fileSave->setIcon(QIcon::fromTheme("document-save", this->style()->standardIcon(QStyle::SP_DialogSaveButton))); //TODO test in Windows
     fileSave->setIcon(QIcon::fromTheme("document-save"));
     fileSave->setIconVisibleInMenu(true);
     fileSave->setShortcut(Qt::CTRL+Qt::Key_S);
-    //connect(fileSave, SIGNAL(activated()), this, SLOT(slotSave()));
+    connect(fileSave, SIGNAL(activated()), this, SLOT(slotSave()));
 
     QAction *fileSaveAs = new QAction(tr("Save as..."), this);
     //fileSaveAs->setIcon(QIcon::fromTheme("document-save-as", this->style()->standardIcon(QStyle::))); //TODO test in Windows
     fileSaveAs->setIcon(QIcon::fromTheme("document-save-as"));
     fileSaveAs->setIconVisibleInMenu(true);
     fileSaveAs->setShortcut(Qt::SHIFT+Qt::CTRL+Qt::Key_S);
-    //connect(fileSaveAs, SIGNAL(activated()), this, SLOT(slotSaveAs()));
+    connect(fileSaveAs, SIGNAL(activated()), this, SLOT(slotSaveAs()));
 
     QAction *fileQuit = new QAction(tr("Exit"), this);
     //fileQuit->setIcon(QIcon::fromTheme("application-exit", this->style()->standardIcon(QStyle::))); //TODO test in Windows
     fileQuit->setIcon(QIcon::fromTheme("application-exit"));
     fileQuit->setIconVisibleInMenu(true);
     fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
-    //connect(fileQuit, SIGNAL(activated()), this, SLOT(slotQuit()));
+    connect(fileQuit, SIGNAL(activated()), qApp, SLOT(closeAllWindows())); // see closeEvent()
 
     fileMenu->addAction(fileNew);
     fileMenu->addAction(fileOpen);
@@ -83,13 +83,13 @@ RxCalcApp::RxCalcApp()
     helpHelp->setIcon(QIcon::fromTheme("help-contents"));
     helpHelp->setIconVisibleInMenu(true);
     helpHelp->setShortcut(Qt::Key_F1);
-    //connect(helpHelp, SIGNAL(activated()), this, SLOT(slotHelpIntro()));
+    connect(helpHelp, SIGNAL(activated()), this, SLOT(slotHelp()));
 
     QAction * helpAbout = new QAction(tr("About "APP_NAME"..."), this);
     helpAbout->setIcon(QIcon::fromTheme("help-about"));
     helpAbout->setIconVisibleInMenu(true);
     helpMenu->addAction(helpAbout);
-    //connect(helpAbout, SIGNAL(activated()), this, SLOT(slotHelpAbout()));
+    connect(helpAbout, SIGNAL(activated()), this, SLOT(slotAbout()));
 
     QAction * helpAboutQt = new QAction(tr("About Qt..."), this);
     helpAboutQt->setIcon(QIcon::fromTheme("help-about"));
@@ -469,6 +469,50 @@ void RxCalcApp::loadSettings()
 {
     QSettings settings(APP_NAME, APP_NAME);
     this->restoreGeometry(settings.value("windowGeometry",this->saveGeometry()).toByteArray());
+}
+
+void RxCalcApp::slotNew()
+{
+    //TODO
+}
+
+void RxCalcApp::slotOpen()
+{
+    //TODO
+}
+
+void RxCalcApp::slotSave()
+{
+    //TODO
+}
+
+void RxCalcApp::slotSaveAs()
+{
+    //TODO
+}
+
+void RxCalcApp::slotHelp()
+{
+    //TODO
+}
+
+void RxCalcApp::slotAbout()
+{
+    QMessageBox::about(this, tr("About " APP_NAME),
+        APP_NAME + tr(" version ") + APP_VERSION + "<br>" +
+        tr("Copyright (C)")+" 2014-2015 " + tr("by Verkhovin Vyacheslav") +
+
+        "<br><br><a href='http://github.com/arhiv6/rxcalc'>http://github.com/arhiv6/rxcalc</a>" //
+        "<br><a href='http://sourceforge.net/projects/rxcalc'>http://sourceforge.net/projects/rxcalc</a><br><br>" +
+
+        tr("RxCalc is a calculator for the analysis of multi-stage receiver. The software can calculate " //
+        "cascaded and system parameters: gain, noise, sensitivity, input and output IP1 and IP3, noise " //
+        "floor, spur-free dynamic range, MDS, SNR, and others.") + "<br><br>" +
+
+        tr("This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; " //
+        "without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. " //
+        "See the GNU General Public License for more details.") +
+        " <a href='http://www.gnu.org/licenses/gpl.html'>http://www.gnu.org/licenses/gpl.html</a>");
 }
 
 void RxCalcApp::validateTemperature()

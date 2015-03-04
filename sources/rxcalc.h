@@ -43,6 +43,7 @@
 #include <QMenuBar>
 #include <QAction>
 #include <QApplication>
+#include <QMessageBox>
 
 class RxCalcApp : public QMainWindow
 {
@@ -78,6 +79,12 @@ protected:
 public slots:
     void saveSettings();
     void loadSettings();
+    void slotNew();
+    void slotOpen();
+    void slotSave();
+    void slotSaveAs();
+    void slotHelp();
+    void slotAbout();
     void validateTemperature();
    // void setStagesNumber(unsigned int number);
     void setStagesNumberSlot();
