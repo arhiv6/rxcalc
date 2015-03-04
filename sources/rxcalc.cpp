@@ -28,38 +28,85 @@ RxCalcApp::RxCalcApp()
     // set application icon
     setWindowIcon(QPixmap(":/img/rxcalc.png"));
     setWindowTitle(APP_NAME " " APP_VERSION);
-/*
+
     // --------  create menubar  -------------------
-    QMenu *fileMenu = new QMenu(tr("&File"));
+    QMenu *fileMenu = new QMenu(tr("File"));
 
-    QAction * fileQuit = new QAction(tr("E&xit"), this);
+    QAction *fileNew = new QAction(tr("New"), this);
+    //fileNew->setIcon(QIcon::fromTheme("document-new", this->style()->standardIcon(QStyle::SP_FileIcon))); //TODO test in Windows
+    fileNew->setIcon(QIcon::fromTheme("document-new"));
+    fileNew->setIconVisibleInMenu(true);
+    fileNew->setShortcut(Qt::CTRL+Qt::Key_N);
+    //connect(fileNew, SIGNAL(activated()), this, SLOT(slotNew()));
+
+    QAction *fileOpen = new QAction(tr("Open"), this);
+    //fileOpen->setIcon(QIcon::fromTheme("document-open", this->style()->standardIcon(QStyle::SP_DialogOpenButton))); //TODO test in Windows
+    fileOpen->setIcon(QIcon::fromTheme("document-open"));
+    fileOpen->setIconVisibleInMenu(true);
+    fileOpen->setShortcut(Qt::CTRL+Qt::Key_O);
+    //connect(fileOpen, SIGNAL(activated()), this, SLOT(slotOpen()));
+
+    QAction *fileSave = new QAction(tr("Save"), this);
+    //fileSave->setIcon(QIcon::fromTheme("document-save", this->style()->standardIcon(QStyle::SP_DialogSaveButton))); //TODO test in Windows
+    fileSave->setIcon(QIcon::fromTheme("document-save"));
+    fileSave->setIconVisibleInMenu(true);
+    fileSave->setShortcut(Qt::CTRL+Qt::Key_S);
+    //connect(fileSave, SIGNAL(activated()), this, SLOT(slotSave()));
+
+    QAction *fileSaveAs = new QAction(tr("Save as..."), this);
+    //fileSaveAs->setIcon(QIcon::fromTheme("document-save-as", this->style()->standardIcon(QStyle::))); //TODO test in Windows
+    fileSaveAs->setIcon(QIcon::fromTheme("document-save-as"));
+    fileSaveAs->setIconVisibleInMenu(true);
+    fileSaveAs->setShortcut(Qt::SHIFT+Qt::CTRL+Qt::Key_S);
+    //connect(fileSaveAs, SIGNAL(activated()), this, SLOT(slotSaveAs()));
+
+    QAction *fileQuit = new QAction(tr("Exit"), this);
+    //fileQuit->setIcon(QIcon::fromTheme("application-exit", this->style()->standardIcon(QStyle::))); //TODO test in Windows
+    fileQuit->setIcon(QIcon::fromTheme("application-exit"));
+    fileQuit->setIconVisibleInMenu(true);
     fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
-    connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
+    //connect(fileQuit, SIGNAL(activated()), this, SLOT(slotQuit()));
 
+    fileMenu->addAction(fileNew);
+    fileMenu->addAction(fileOpen);
+    fileMenu->addSeparator();
+    fileMenu->addAction(fileSave);
+    fileMenu->addAction(fileSaveAs);
+    fileMenu->addSeparator();
     fileMenu->addAction(fileQuit);
 
-    QMenu *helpMenu = new QMenu(tr("&Help"), this);
-    QAction * helpHelp = new QAction(tr("Help..."), this);
-    helpHelp->setShortcut(Qt::Key_F1);
-    connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+    // ------------------------------
+    QMenu *helpMenu = new QMenu(tr("Help"), this);
 
-    QAction * helpAbout = new QAction(tr("&About QucsFilter..."), this);
+    QAction * helpHelp = new QAction(tr("Help"), this);
+    //helpHelp->setIcon(QIcon::fromTheme("help-contents", this->style()->standardIcon(QStyle::SP_DialogHelpButton))); //TODO test in Windows
+    helpHelp->setIcon(QIcon::fromTheme("help-contents"));
+    helpHelp->setIconVisibleInMenu(true);
+    helpHelp->setShortcut(Qt::Key_F1);
+    //connect(helpHelp, SIGNAL(activated()), this, SLOT(slotHelpIntro()));
+
+    QAction * helpAbout = new QAction(tr("About "APP_NAME"..."), this);
+    helpAbout->setIcon(QIcon::fromTheme("help-about"));
+    helpAbout->setIconVisibleInMenu(true);
     helpMenu->addAction(helpAbout);
-    connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
+    //connect(helpAbout, SIGNAL(activated()), this, SLOT(slotHelpAbout()));
 
     QAction * helpAboutQt = new QAction(tr("About Qt..."), this);
+    helpAboutQt->setIcon(QIcon::fromTheme("help-about"));
+    helpAboutQt->setIconVisibleInMenu(true);
     helpMenu->addAction(helpAboutQt);
-    connect(helpAboutQt, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
+    connect(helpAboutQt, SIGNAL(activated()), qApp, SLOT(aboutQt()));
 
     helpMenu->addAction(helpHelp);
     helpMenu->addSeparator();
     helpMenu->addAction(helpAbout);
     helpMenu->addAction(helpAboutQt);
 
+    // ------------------------------
     menuBar()->addMenu(fileMenu);
     menuBar()->addSeparator();
     menuBar()->addMenu(helpMenu);
-*/
+
     // -------  create main windows widgets --------
     QVBoxLayout *all  = new QVBoxLayout();
     QGridLayout *top  = new QGridLayout();
@@ -449,9 +496,6 @@ void RxCalcApp::clickOnCalcButton()
     numberOfStages->setValue(4);
     setStagesNumberSlot();
 
-    //заполняем тестовыми знаяениями //TODO delete it
-    //ui->spinBox->setValue(4);
-    //on_spinBox_editingFinished();
     QComboBox *combo;
     int i=0;
     table->item(RxTable::name, i)->setText("ampl1");

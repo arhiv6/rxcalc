@@ -39,6 +39,10 @@
 #include <QPushButton>
 #include <QPlainTextEdit>
 #include <QSpinBox>
+#include <QMenu>
+#include <QMenuBar>
+#include <QAction>
+#include <QApplication>
 
 class RxCalcApp : public QMainWindow
 {
