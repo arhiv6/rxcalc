@@ -31,86 +31,86 @@ RxTable::RxTable(QWidget *parent)
     // --------------------------------------------
     stageType = new Type[END_STAGE_TYPE];
 
-    stageType[other].name = "Other";
+    stageType[other].name = tr("Other");
     stageType[other].picture = QPixmap(":/img/other.svg");
 
-    stageType[amplifier].name = "Ampl";
+    stageType[amplifier].name = tr("Ampl");
     stageType[amplifier].picture = QPixmap(":/img/amplifier.svg");
 
-    stageType[filter].name = "Filter";
+    stageType[filter].name = tr("Filter");
     stageType[filter].picture = QPixmap(":/img/filter.svg");
 
-    stageType[mixer].name = "Mix";
+    stageType[mixer].name = tr("Mixer");
     stageType[mixer].picture = QPixmap(":/img/mixer.svg");
 
-    stageType[attenuator].name = "Atten";
+    stageType[attenuator].name = tr("Atten");
     stageType[attenuator].picture = QPixmap(":/img/attenuator.svg");
 
     // --------------------------------------------
     rows = new Row[END_ROW_NAMES];
 
-    rows[type].Handlre = "Stage type";
-    rows[pic].Handlre = "Disable/Enable";
+    rows[type].Handlre = tr("Stage type");
+    rows[pic].Handlre = tr("Disable/Enable");
 
-    rows[name].Handlre = "Stage Name";
+    rows[name].Handlre = tr("Stage Name");
     rows[name].writable = true;
-    rows[name].defaultValue = "name";
+    rows[name].defaultValue = tr("Name");
 
-    rows[gain].Handlre = "Gain (dB)";
+    rows[gain].Handlre = tr("Gain (dB)");
     rows[gain].writable = true;
     rows[gain].defaultValue = "0";
 
-    rows[stageGain].Handlre = "System Gain (dB)";
+    rows[stageGain].Handlre = tr("System Gain (dB)");
     rows[stageGain].writable = false;
 
-    rows[noiseFigure].Handlre = "Noise Figure (dB)";
+    rows[noiseFigure].Handlre = tr("Noise Figure (dB)");
     rows[noiseFigure].writable = true;
     rows[noiseFigure].defaultValue = "0";
 
-    rows[ip1db].Handlre = "IP1dB (dBm)";
+    rows[ip1db].Handlre = tr("IP1dB (dBm)");
     rows[ip1db].writable = true;
     rows[ip1db].defaultValue = "100";
 
-    rows[oip1db].Handlre = "OP1dB (dBm)";
+    rows[oip1db].Handlre = tr("OP1dB (dBm)");
     rows[oip1db].writable = true;
     rows[oip1db].defaultValue = "100";
 
-    rows[systemNF].Handlre = "System Noise Figure (dB)";
+    rows[systemNF].Handlre = tr("System Noise Figure (dB)");
     rows[systemNF].writable = false;
 
-    rows[oip3].Handlre = "OIP3 (dBm)";
+    rows[oip3].Handlre = tr("OIP3 (dBm)");
     rows[oip3].writable = true;
     rows[oip3].defaultValue = "100";
 
-    rows[iip3].Handlre = "IIP3 (dBm)";
+    rows[iip3].Handlre = tr("IIP3 (dBm)");
     rows[iip3].writable = true;
     rows[iip3].defaultValue = "100";
 
-    rows[inputPower].Handlre = "Input Power (dBm)";
+    rows[inputPower].Handlre = tr("Input Power (dBm)");
     rows[inputPower].writable = false;
 
-    rows[outputPower].Handlre = "Output Power (dBm)";
+    rows[outputPower].Handlre = tr("Output Power (dBm)");
     rows[outputPower].writable = false;
 
-    rows[nfStageToNfSystem].Handlre = "Stage NF / Full NF";
+    rows[nfStageToNfSystem].Handlre = tr("Stage NF / Full NF");
     rows[nfStageToNfSystem].writable = false;
 
-    rows[systemIIP3].Handlre = "System IIP3";
+    rows[systemIIP3].Handlre = tr("System IIP3");
     rows[systemIIP3].writable = false;
 
-    rows[systemOIP3].Handlre = "System OIP3";
+    rows[systemOIP3].Handlre = tr("System OIP3");
     rows[systemOIP3].writable = false;
 
-    rows[ip3StageToIp3System].Handlre = "Stage IIP3 / Full IIP3";
+    rows[ip3StageToIp3System].Handlre = tr("Stage IIP3 / Full IIP3");
     rows[ip3StageToIp3System].writable = false;
 
-    //rows[oip3StageToOp3System].Handlre = "Stage OIP3 / Full OIP3";
+    //rows[oip3StageToOp3System].Handlre = tr("Stage OIP3 / Full OIP3");
     //rows[oip3StageToOp3System].writable = false;
 
-    rows[p_backoff].Handlre = "Pout backoff";
+    rows[p_backoff].Handlre = tr("Pout backoff");
     rows[p_backoff].writable = false;
 
-    rows[p_backoff_peak].Handlre = "Peak backoff";
+    rows[p_backoff_peak].Handlre = tr("Peak backoff");
     rows[p_backoff_peak].writable = false;
 
     // --------------------------------------------
