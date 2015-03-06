@@ -26,6 +26,7 @@
 #include <QTableWidget>
 #include <QLabel>
 #include <QComboBox>
+#include <QMouseEvent>
 
 class RxTable : public QTableWidget
 {
@@ -37,6 +38,7 @@ public:
     void setSizeAfterDecimalPoint (unsigned int size);
     RxTableCell *cell(int row, int column) const;
     void setStageCount(int newStageNumber);
+
     enum rowNames {
         type,
         //input freq
@@ -102,6 +104,7 @@ private:
 
 public slots:
     void slotSetPicture(int types);
+    bool eventFilter(QObject *obj, QEvent *event);
 };
 
 #endif // RXTABLE_H

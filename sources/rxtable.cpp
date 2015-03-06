@@ -213,3 +213,18 @@ void RxTable::slotSetPicture(int types)
     QLabel *label= (QLabel*)cellWidget(pic, stage);
     label->setPixmap(stageType[types].picture);
 }
+
+bool RxTable::eventFilter(QObject *obj, QEvent *event)
+{
+    if ((event->type() == QEvent::MouseButtonPress))
+     {
+        QMouseEvent *key = static_cast<QMouseEvent*>(event);
+
+        if ((key->button() == Qt::LeftButton) && ((QString)obj->metaObject()->className() == "QLabel"))
+        {
+            QLabel *label = (QLabel*)obj;
+            label->setEnabled(!label->isEnabled());
+        }
+    }
+    return false;
+}
