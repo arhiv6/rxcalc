@@ -27,6 +27,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QMouseEvent>
+#include <QMenu>
 
 class RxTable : public QTableWidget
 {
@@ -102,9 +103,16 @@ public:
 private:
     unsigned int m_sizeAfterDecimalPoint;
 
-public slots:
+private slots:
     void slotSetPicture(int types);
     bool eventFilter(QObject *obj, QEvent *event);
+    void slotShowContextMenu(const QPoint &pos);
+    void actionSlotEnableStage();
+    void actionSlotDisableStage();
+    void actionSlotMoveStageLeft();
+    void actionSlotMoveStageRight();
+    void actionSlotAddStage();
+    void actionSlotRemoveStage();
 };
 
 #endif // RXTABLE_H
