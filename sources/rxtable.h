@@ -29,6 +29,8 @@
 
 class RxTable : public QTableWidget
 {
+    Q_OBJECT
+
 public:
     RxTable(QWidget *parent = 0);
     ~RxTable();
@@ -98,6 +100,8 @@ public:
 private:
     unsigned int m_sizeAfterDecimalPoint;
 
+public slots:
+    void slotSetPicture(int types);
 };
 
 #endif // RXTABLE_H

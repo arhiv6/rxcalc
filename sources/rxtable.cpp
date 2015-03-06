@@ -148,9 +148,7 @@ void RxTable::setStageCount( int newStageNumber)
     if ((newStageNumber == oldStageNumber)||(newStageNumber < 0))
             return;
 
-
     setColumnCount(newStageNumber);
-
 
     if (newStageNumber>oldStageNumber)
     {
@@ -183,7 +181,7 @@ void RxTable::setStageCount( int newStageNumber)
                     comboboxToImage[test] = column;
                     test->setCurrentIndex(other);
 
-                   // connect(test, SIGNAL(currentIndexChanged(int)), this, SLOT(setPicture(int)));
+                    connect(test, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSetPicture(int)));
                 }
                 else
                 {
@@ -196,5 +194,22 @@ void RxTable::setStageCount( int newStageNumber)
             }
         }
     }
-   //
+}
+
+void RxTable::slotSetPicture(int types)
+{
+    QComboBox* comboBox = (QComboBox*)sender();
+    int stage=-1;
+
+    for (int i=0; i<columnCount(); i++)
+    {
+        if (comboBox == cellWidget(type, i))
+        {
+            stage = i;
+            break;
+        }
+    }
+
+    QLabel *label= (QLabel*)cellWidget(pic, stage);
+    label->setPixmap(stageType[types].picture);
 }

@@ -48,6 +48,7 @@
 class RxCalcApp : public QMainWindow
 {
     Q_OBJECT
+
 public:
     explicit RxCalcApp();
     ~RxCalcApp();
