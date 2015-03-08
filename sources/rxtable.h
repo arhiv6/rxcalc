@@ -24,10 +24,13 @@
 #include "rxtablecell.h"
 
 #include <QTableWidget>
+#include <QHeaderView>
 #include <QLabel>
 #include <QComboBox>
 #include <QMouseEvent>
 #include <QMenu>
+//#include <QContextMenuEvent>
+#include <QVariant>
 
 class RxTable : public QTableWidget
 {
@@ -102,6 +105,11 @@ public:
 
 private:
     unsigned int m_sizeAfterDecimalPoint;
+    QMenu *contextMenu;
+    QAction *actionEnableStage;
+    QAction *actionDisableStage;
+    QAction *actionMoveStageLeft;
+    QAction *actionMoveStageRight;
 
 private slots:
     void slotSetPicture(int types);

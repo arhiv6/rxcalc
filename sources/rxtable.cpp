@@ -31,40 +31,40 @@ RxTable::RxTable(QWidget *parent)
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotShowContextMenu(const QPoint &)));
 
     // --------  create contextmenu  -------------------
-    QMenu *contextMenu = new QMenu();
+    contextMenu = new QMenu();
 
-    QAction *actionEnableStage = new QAction(tr("Enable stage"),this);
+    actionEnableStage = new QAction(tr("Enable stage"),this);
     //actionEnableStage->setIcon(QIcon::fromTheme("dialog-yes", this->style()->standardIcon(QStyle::SP_DialogYesButton))); //TODO test in Windows
     actionEnableStage->setIcon(QIcon::fromTheme("dialog-yes"));
     actionEnableStage->setIconVisibleInMenu(true);
     connect(actionEnableStage, SIGNAL(triggered()), this, SLOT(actionSlotEnableStage()));
 
-    QAction *actionDisableStage = new QAction(tr("Disable stage"),this);
-    //actionEnableStage->setIcon(QIcon::fromTheme("dialog-no", this->style()->standardIcon(QStyle::SP_DialogNoButton))); //TODO test in Windows
-    actionEnableStage->setIcon(QIcon::fromTheme("dialog-no"));
+    actionDisableStage = new QAction(tr("Disable stage"),this);
+    //actionDisableStage->setIcon(QIcon::fromTheme("dialog-no", this->style()->standardIcon(QStyle::SP_DialogNoButton))); //TODO test in Windows
+    actionDisableStage->setIcon(QIcon::fromTheme("dialog-no"));
     actionDisableStage->setIconVisibleInMenu(true);
     connect(actionDisableStage, SIGNAL(triggered()), this, SLOT(actionSlotDisableStage()));
 
-    QAction *actionMoveStageLeft = new QAction(tr("Move stage left"),this);
-    //actionEnableStage->setIcon(QIcon::fromTheme("go-previous", this->style()->standardIcon(QStyle::SP_ArrowLeft))); //TODO test in Windows
-    actionEnableStage->setIcon(QIcon::fromTheme("go-previous"));
+    actionMoveStageLeft = new QAction(tr("Move stage left"),this);
+    //actionMoveStageLeft->setIcon(QIcon::fromTheme("go-previous", this->style()->standardIcon(QStyle::SP_ArrowLeft))); //TODO test in Windows
+    actionMoveStageLeft->setIcon(QIcon::fromTheme("go-previous"));
     actionMoveStageLeft->setIconVisibleInMenu(true);
     connect(actionMoveStageLeft, SIGNAL(triggered()), this, SLOT(actionSlotMoveStageLeft()));
 
-    QAction *actionMoveStageRight = new QAction(tr("Move stage right"),this);
-    //actionEnableStage->setIcon(QIcon::fromTheme("go-next", this->style()->standardIcon(QStyle::SP_ArrowRight))); //TODO test in Windows
-    actionEnableStage->setIcon(QIcon::fromTheme("go-next"));
+    actionMoveStageRight = new QAction(tr("Move stage right"),this);
+    //actionMoveStageRight->setIcon(QIcon::fromTheme("go-next", this->style()->standardIcon(QStyle::SP_ArrowRight))); //TODO test in Windows
+    actionMoveStageRight->setIcon(QIcon::fromTheme("go-next"));
     actionMoveStageRight->setIconVisibleInMenu(true);
     connect(actionMoveStageRight, SIGNAL(triggered()), this, SLOT(actionSlotMoveStageRight()));
 
     QAction *actionAddStage = new QAction(tr("Add stage (left)"),this);
-    actionEnableStage->setIcon(QIcon::fromTheme("list-add"));
+    actionAddStage->setIcon(QIcon::fromTheme("list-add"));
     actionAddStage->setIconVisibleInMenu(true);
     connect(actionAddStage, SIGNAL(triggered()), this, SLOT(actionSlotAddStage()));
 
     QAction *actionRemoveStage = new QAction(tr("Remove stage"),this);
-    //actionEnableStage->setIcon(QIcon::fromTheme("list-remove", this->style()->standardIcon(QStyle::SP_BrowserStop))); //TODO test in Windows
-    actionEnableStage->setIcon(QIcon::fromTheme("list-remove"));
+    //actionRemoveStage->setIcon(QIcon::fromTheme("list-remove", this->style()->standardIcon(QStyle::SP_BrowserStop))); //TODO test in Windows
+    actionRemoveStage->setIcon(QIcon::fromTheme("list-remove"));
     actionRemoveStage->setIconVisibleInMenu(true);
     connect(actionRemoveStage, SIGNAL(triggered()), this, SLOT(actionSlotRemoveStage()));
 
@@ -278,46 +278,45 @@ bool RxTable::eventFilter(QObject *obj, QEvent *event)
     return false;
 }
 
-
 void RxTable::slotShowContextMenu(const QPoint &pos)
-{/*
-    int column = -1;
-
+{
     QWidget *label;
     label = (QWidget*) sender();
 
     QTableWidgetItem *item;
-        item = ui->tableWidget->itemAt(pos);
+    item = itemAt(pos);
 
     if (!item && !label)
         return;
 
-    if(item)
+    int columnNumber = -1;
+
+    if(item) // if column
     {
-        column = ui->tableWidget->column(item);
+        columnNumber = column(item);
     }
-    else if ((QString)label->metaObject()->className() == "QLabel")
+    else if ((QString)label->metaObject()->className() == "QLabel") // if enabled Label
     {
-        for (int i=0; i<ui->tableWidget->columnCount(); i++)
+        for (int i=0; i < columnCount(); i++)
         {
-            if (label == ui->tableWidget->cellWidget(pic, i))
+            if (label == cellWidget(pic, i))
             {
-                column = i;
+                columnNumber = i;
                 break;
             }
         }
     }
-    else if ((QString)label->metaObject()->className() == "QTableWidget")  // TODOкостыль для выключенных qlabel
+    else if ((QString)label->metaObject()->className() == "RxTable")  // if disabled Label
     {
         int X = 0;
 
-        for (int i=0; i<ui->tableWidget->columnCount(); i++)
+        for (int i=0; i < columnCount(); i++)
         {
-            X= X+ui->tableWidget->columnWidth(i);
+            X = X + columnWidth(i);
 
             if (pos.x() < X)
             {
-                column = i;
+                columnNumber = i;
                 break;
             }
         }
@@ -325,18 +324,17 @@ void RxTable::slotShowContextMenu(const QPoint &pos)
     else
         return;
 
-    if (column == -1)
+    if (columnNumber == -1)
         return;
 
     for (int i = 0; i < contextMenu->actions().size(); i++)
-        contextMenu->actions().at(i)->setData(QVariant(column));
+        contextMenu->actions().at(i)->setData(QVariant(columnNumber));
 
-    ui->tableWidget->setSelectionMode(QAbstractItemView::MultiSelection);
-    ui->tableWidget->selectColumn(column);
-    ui->tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+    setSelectionMode(QAbstractItemView::MultiSelection);
+    selectColumn(columnNumber);
+    setSelectionMode(QAbstractItemView::NoSelection);
 
-
-    if (ui->tableWidget->cellWidget(pic,column)->isEnabled() == true)
+    if (cellWidget(pic,columnNumber)->isEnabled() == true)
     {
         actionDisableStage->setVisible(true);
         actionEnableStage->setVisible(false);
@@ -347,20 +345,20 @@ void RxTable::slotShowContextMenu(const QPoint &pos)
         actionEnableStage->setVisible(true);
     }
 
+    int stage=horizontalHeader()->visualIndex(columnNumber);
 
-    int stage=ui->tableWidget->horizontalHeader()->visualIndex(column);
     if (stage == 0)
         actionMoveStageLeft->setEnabled(false);
     else
         actionMoveStageLeft->setEnabled(true);
-    if (stage == (ui->tableWidget->columnCount()-1))
+
+    if (stage == (columnCount()-1))
         actionMoveStageRight->setEnabled(false);
     else
         actionMoveStageRight->setEnabled(true);
 
-    contextMenu->exec(QCursor::pos()); // обязательно в конце функции
-
-    ui->tableWidget->clearSelection(); */
+    contextMenu->exec(QCursor::pos());
+    clearSelection();
 }
 
 void RxTable::actionSlotEnableStage()
