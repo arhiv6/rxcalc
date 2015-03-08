@@ -29,7 +29,6 @@
 #include <QComboBox>
 #include <QMouseEvent>
 #include <QMenu>
-//#include <QContextMenuEvent>
 #include <QVariant>
 
 class RxTable : public QTableWidget
@@ -112,6 +111,7 @@ private:
     QAction *actionMoveStageRight;
 
 private slots:
+    void createCount(int column);
     void slotSetPicture(int types);
     bool eventFilter(QObject *obj, QEvent *event);
     void slotShowContextMenu(const QPoint &pos);
@@ -121,6 +121,10 @@ private slots:
     void actionSlotMoveStageRight();
     void actionSlotAddStage();
     void actionSlotRemoveStage();
+    void renameHeaders();
+
+signals:
+    void editColumnCount(int value);
 };
 
 #endif // RXTABLE_H

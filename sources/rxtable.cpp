@@ -25,7 +25,8 @@ RxTable::RxTable(QWidget *parent)
 {
     m_sizeAfterDecimalPoint = 2;
     setItemPrototype(new RxTableCell);
-    //horizontalHeader()->setMovable(true);
+    connect(horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(renameHeaders()));
+    horizontalHeader()->setMovable(true);
     setSelectionMode(QAbstractItemView::NoSelection);
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotShowContextMenu(const QPoint &)));
@@ -190,7 +191,7 @@ RxTableCell* RxTable::cell(int row, int column) const
     return static_cast<RxTableCell *>(item(row, column));
 }
 
-void RxTable::setStageCount( int newStageNumber)
+void RxTable::setStageCount(int newStageNumber)
 {
     int oldStageNumber = columnCount();
 
@@ -202,45 +203,48 @@ void RxTable::setStageCount( int newStageNumber)
     if (newStageNumber>oldStageNumber)
     {
         for (int column = oldStageNumber; column < newStageNumber; column++)
+            createCount(column);
+    }
+}
+
+void RxTable::createCount(int column)
+{
+    for (int row=0; row<END_ROW_NAMES; row++)
+    {
+        if (row == pic)
         {
-            for (int row=0; row<END_ROW_NAMES; row++)
-            {
-                if (row == pic)
-                {
-                   setRowHeight(row, 100);
-                   setColumnWidth(column, 100);
+           setRowHeight(row, 100);
+           setColumnWidth(column, 100);
 
-                    QLabel *label = new QLabel;
-                    label->setAlignment(Qt::AlignCenter);
-                    label->setPixmap(stageType[other].picture);
-                    //label->setScaledContents(true);
+            QLabel *label = new QLabel;
+            label->setAlignment(Qt::AlignCenter);
+            label->setPixmap(stageType[other].picture);
+            //label->setScaledContents(true);
 
-                    setCellWidget(row, column, label);
-                    label->installEventFilter(this);
-                    label->setContextMenuPolicy(Qt::CustomContextMenu);
-                    connect(label, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(slotShowContextMenu(const QPoint&)));
-                }
-                else if (row == type)
-                {
-                    QComboBox *test = new QComboBox;
-                    for (int a=0; a<END_STAGE_TYPE; a++)
-                        test->addItem(stageType[a].name);
-                    setCellWidget(row, column, test);
+            setCellWidget(row, column, label);
+            label->installEventFilter(this);
+            label->setContextMenuPolicy(Qt::CustomContextMenu);
+            connect(label, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(slotShowContextMenu(const QPoint&)));
+        }
+        else if (row == type)
+        {
+            QComboBox *test = new QComboBox;
+            for (int a=0; a<END_STAGE_TYPE; a++)
+                test->addItem(stageType[a].name);
+            setCellWidget(row, column, test);
 
-                    comboboxToImage[test] = column;
-                    test->setCurrentIndex(other);
+            comboboxToImage[test] = column;
+            test->setCurrentIndex(other);
 
-                    connect(test, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSetPicture(int)));
-                }
-                else
-                {
-                    setItem(row, column, new RxTableCell);
-                    if (rows[row].writable == true)
-                        item(row, column)->setText(rows[row].defaultValue);
-                    else
-                        item(row, column)->setBackgroundColor(Qt::gray);
-                }
-            }
+            connect(test, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSetPicture(int)));
+        }
+        else
+        {
+            setItem(row, column, new RxTableCell);
+            if (rows[row].writable == true)
+                item(row, column)->setText(rows[row].defaultValue);
+            else
+                item(row, column)->setBackgroundColor(Qt::gray);
         }
     }
 }
@@ -316,7 +320,7 @@ void RxTable::slotShowContextMenu(const QPoint &pos)
 
             if (pos.x() < X)
             {
-                columnNumber = i;
+                columnNumber = horizontalHeader()->visualIndex(i);
                 break;
             }
         }
@@ -359,73 +363,117 @@ void RxTable::slotShowContextMenu(const QPoint &pos)
 
     contextMenu->exec(QCursor::pos());
     clearSelection();
+
+/*
+    for (int i = 0; i < contextMenu->actions().size(); i++)
+        contextMenu->actions().at(i)->setData(QVariant(columnNumber));
+
+    setSelectionMode(QAbstractItemView::MultiSelection);
+    selectColumn(columnNumber);
+    setSelectionMode(QAbstractItemView::NoSelection);
+
+    if (cellWidget(pic,columnNumber)->isEnabled() == true)
+    {
+        actionDisableStage->setVisible(true);
+        actionEnableStage->setVisible(false);
+    }
+    else
+    {
+        actionDisableStage->setVisible(false);
+        actionEnableStage->setVisible(true);
+    }
+
+    int stage=horizontalHeader()->visualIndex(columnNumber);
+
+    if (stage == 0)
+        actionMoveStageLeft->setEnabled(false);
+    else
+        actionMoveStageLeft->setEnabled(true);
+
+    if (stage == (columnCount()-1))
+        actionMoveStageRight->setEnabled(false);
+    else
+        actionMoveStageRight->setEnabled(true);
+
+    contextMenu->exec(QCursor::pos());
+    clearSelection();*/
 }
 
 void RxTable::actionSlotEnableStage()
-{/*
+{
     QAction* action = qobject_cast< QAction* >( sender() );
     int column = action->data().toInt();
 
-    ui->tableWidget->cellWidget(pic,column)->setEnabled(true);*/
+    cellWidget(pic,column)->setEnabled(true);
 }
 
 void RxTable::actionSlotDisableStage()
-{/*
+{
     QAction* action = qobject_cast< QAction* >( sender() );
     int column = action->data().toInt();
 
-    ui->tableWidget->cellWidget(pic,column)->setEnabled(false);*/
+    cellWidget(pic,column)->setEnabled(false);
 }
 
 void RxTable::actionSlotMoveStageLeft()
-{/*
+{
     QAction* action = qobject_cast< QAction* >( sender() );
     int column = action->data().toInt();
 
-    int stage=ui->tableWidget->horizontalHeader()->visualIndex(column);
+    int stage=horizontalHeader()->visualIndex(column);
 
     if (stage == 0)
         return;
 
-    ui->tableWidget->horizontalHeader()->swapSections(stage,stage);
-    ui->tableWidget->horizontalHeader()->moveSection(stage, stage-1);
+    horizontalHeader()->swapSections(stage,stage);
+    horizontalHeader()->moveSection(stage, stage-1);
 
-    renameHeaders();*/
+    renameHeaders();
 }
 
 void RxTable::actionSlotMoveStageRight()
-{/*
+{
     QAction* action = qobject_cast< QAction* >( sender() );
     int column = action->data().toInt();
 
-    int stage=ui->tableWidget->horizontalHeader()->visualIndex(column);
+    int stage=horizontalHeader()->visualIndex(column);
 
-    if (stage == (ui->tableWidget->columnCount()-1))
+    if (stage == (columnCount()-1))
         return;
 
-    ui->tableWidget->horizontalHeader()->swapSections(stage,stage);
-    ui->tableWidget->horizontalHeader()->moveSection(stage, stage+1);
+    horizontalHeader()->swapSections(stage,stage);
+    horizontalHeader()->moveSection(stage, stage+1);
 
-    renameHeaders();*/
+    renameHeaders();
 }
 
 void RxTable::actionSlotAddStage()
-{/*
+{
     QAction* action = qobject_cast< QAction* >( sender() );
     int column = action->data().toInt();
 
-    ui->spinBox->setValue(ui->spinBox->value() + 1);
-    ui->tableWidget->insertColumn(column);
-    disconnect(ui->tableWidget, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
+    insertColumn(column);
+    //disconnect(ui->tableWidget, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
     createCount(column);
-    connect(ui->tableWidget, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));*/
+    //connect(ui->tableWidget, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
+    emit editColumnCount(columnCount());
 }
 
 void RxTable::actionSlotRemoveStage()
-{/*
+{
     QAction* action = qobject_cast< QAction* >( sender() );
     int column = action->data().toInt();
 
-    ui->spinBox->setValue(ui->spinBox->value() - 1);
-    ui->tableWidget->removeColumn(column);*/
+    removeColumn(column);
+    emit editColumnCount(columnCount());
+}
+
+void RxTable::renameHeaders()
+{
+    // "convert" logical indexes to visual indexes
+    QStringList colList;
+    for (int c = 0; c < columnCount(); c++)
+        colList << QString::number(horizontalHeader()->visualIndex(c) +1);
+
+    setHorizontalHeaderLabels(colList);
 }

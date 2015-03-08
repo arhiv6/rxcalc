@@ -172,7 +172,7 @@ RxCalcApp::RxCalcApp()
     temperature_K_C->setMinimum(ABS_ZERO);
     temperature_K_C->setMaximum(9999.99);
     temperature_K_C->setValue(25);
-    connect(temperature_K_C, SIGNAL(valueChanged(double)), SLOT(validateTemperature()));
+    connect(temperature_K_C, SIGNAL(valueChanged(double)), this, SLOT(validateTemperature()));
     gbox1->addWidget(temperature_K_C, 3,1);
     temperatureUnit = new QComboBox(this);
     temperatureUnit->addItem(QString(Qt::Key_degree) +tr("C")); // see enum temperatureUnits
@@ -202,7 +202,7 @@ RxCalcApp::RxCalcApp()
     // ...........................................................
     numberOfStages = new QSpinBox(this);
     numberOfStages->setMinimum(0);
-    connect(numberOfStages, SIGNAL(editingFinished()), SLOT(setStagesNumberSlot()));
+    connect(numberOfStages, SIGNAL(editingFinished()), this, SLOT(setStagesNumberSlot()));
     top->addWidget(numberOfStages, 2, 3, 1, 1);
 
     // ...........................................................
@@ -230,6 +230,7 @@ RxCalcApp::RxCalcApp()
     // ...........................................................
     table = new RxTable(this);
     table->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    connect(table, SIGNAL(editColumnCount(int)), numberOfStages, SLOT(setValue(int)));
     all->addWidget(table, 1);
 
     // ...........................................................
