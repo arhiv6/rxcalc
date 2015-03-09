@@ -100,6 +100,7 @@ public slots:
 private slots:
     void clickOnCalcButton();
     void openProjectFile(QString fileName);
+    void saveProjectAs(QString fileName);
 };
 
 #endif // RXCALC_H

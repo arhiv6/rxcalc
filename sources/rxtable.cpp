@@ -117,22 +117,22 @@ RxTable::RxTable(QWidget *parent)
     rows[noiseFigure].writable = true;
     rows[noiseFigure].defaultValue = "0";
 
-    rows[ip1db].Handlre = tr("IP1dB (dBm)");
+    rows[ip1db].Handlre = tr("Input P1dB (dBm)");
     rows[ip1db].writable = true;
     rows[ip1db].defaultValue = "100";
 
-    rows[oip1db].Handlre = tr("OP1dB (dBm)");
+    rows[oip1db].Handlre = tr("Output P1dB (dBm)");
     rows[oip1db].writable = true;
     rows[oip1db].defaultValue = "100";
 
-    rows[systemNF].Handlre = tr("System Noise Figure (dB)");
+    rows[systemNF].Handlre = tr("System NF (dB)");
     rows[systemNF].writable = false;
 
-    rows[oip3].Handlre = tr("OIP3 (dBm)");
+    rows[oip3].Handlre = tr("Output IP3 (dBm)");
     rows[oip3].writable = true;
     rows[oip3].defaultValue = "100";
 
-    rows[iip3].Handlre = tr("IIP3 (dBm)");
+    rows[iip3].Handlre = tr("Input IP3 (dBm)");
     rows[iip3].writable = true;
     rows[iip3].defaultValue = "100";
 
@@ -145,10 +145,10 @@ RxTable::RxTable(QWidget *parent)
     rows[nfStageToNfSystem].Handlre = tr("Stage NF / Full NF");
     rows[nfStageToNfSystem].writable = false;
 
-    rows[systemIIP3].Handlre = tr("System IIP3");
+    rows[systemIIP3].Handlre = tr("System IIP3 (dBm)");
     rows[systemIIP3].writable = false;
 
-    rows[systemOIP3].Handlre = tr("System OIP3");
+    rows[systemOIP3].Handlre = tr("System OIP3 (dBm)");
     rows[systemOIP3].writable = false;
 
     rows[ip3StageToIp3System].Handlre = tr("Stage IIP3 / Full IIP3");
@@ -157,10 +157,10 @@ RxTable::RxTable(QWidget *parent)
     //rows[oip3StageToOp3System].Handlre = tr("Stage OIP3 / Full OIP3");
     //rows[oip3StageToOp3System].writable = false;
 
-    rows[p_backoff].Handlre = tr("Pout backoff");
+    rows[p_backoff].Handlre = tr("Pout backoff (dB)");
     rows[p_backoff].writable = false;
 
-    rows[p_backoff_peak].Handlre = tr("Peak backoff");
+    rows[p_backoff_peak].Handlre = tr("Peak backoff (dB)");
     rows[p_backoff_peak].writable = false;
 
     // --------------------------------------------

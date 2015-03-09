@@ -453,7 +453,6 @@ RxCalcApp::RxCalcApp()
 
 RxCalcApp::~RxCalcApp()
 {
-
 }
 
 void RxCalcApp::closeEvent(QCloseEvent* Event)
@@ -573,12 +572,84 @@ void RxCalcApp::openProjectFile(QString fileName)
 
 void RxCalcApp::slotSave()
 {
-    //TODO
+    if (openProjectPath == "")
+    {
+        slotSaveAs();
+        return;
+    }
+
+    saveProjectAs(openProjectPath);
 }
 
 void RxCalcApp::slotSaveAs()
 {
-    //TODO
+    QFileInfo fileInfo(defaultPath);
+    if (fileInfo.isDir() == false)
+        defaultPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
+
+    QString filter;
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Select file"), defaultPath, QString("RxCalc project (*.rxcp);;All files (*)"),&filter);
+
+    fileInfo.setFile(fileName);
+    if ((fileInfo.suffix() != "rxcp") & (filter.indexOf("(*.rxcp)",0) != -1))
+        fileName.append(".rxcp");
+
+    saveProjectAs(fileName);
+}
+
+void RxCalcApp::saveProjectAs(QString fileName)
+{
+    // Verify file
+    if (fileName.isEmpty())
+        return;
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly | QFile::Text))
+    {
+        QMessageBox::warning(this, APP_NAME, QString(tr("Cannot write file") + "%1:\n%2.").arg(fileName).arg(file.errorString()));
+        return;
+    }
+
+    // Save default path
+    QFileInfo fileInfo(fileName);
+    defaultPath = fileInfo.absolutePath();
+
+    openProjectPath = fileInfo.absoluteFilePath();
+    setWindowTitle(QString(APP_NAME) + " " + QString(APP_VERSION) + " - " + openProjectPath);
+
+    // Save
+    QSettings save(fileName, QSettings::IniFormat);
+
+    save.setValue("program",APP_NAME);
+    save.setValue("version",APP_VERSION);
+    save.setValue("inputPower",inputPower_dBm->text());
+    save.setValue("noiseBand",noiseBand_Hz->text());
+    save.setValue("freqmeasure",freqUnit->currentIndex());
+    save.setValue("minSn",minSignalToNoise_dB->text());
+    save.setValue("temperature",temperature_K_C->text());
+    save.setValue("temperaturemeasure",temperatureUnit->currentIndex());
+    save.setValue("perToRms",perToRms_dB->text());
+    save.setValue("stageCount",numberOfStages->value());
+    save.setValue("comments",comment->toPlainText());
+
+    int stage;
+    for (int column=0; column<table->columnCount(); column++)
+    {
+        QString satgeSection = "stage_"+QString::number(column)+"/";
+
+        stage=table->horizontalHeader()->logicalIndex(column);
+
+        QComboBox *comboBox= (QComboBox*)table->cellWidget(RxTable::type, stage);
+        save.setValue(satgeSection+"type",comboBox->currentIndex());
+        QLabel *label= (QLabel*)table->cellWidget(RxTable::pic, stage);
+        save.setValue(satgeSection+"enabled",label->isEnabled());
+        save.setValue(satgeSection+"name",table->item(RxTable::name, stage)->text());
+        save.setValue(satgeSection+"gain",table->item(RxTable::gain, stage)->text());
+        save.setValue(satgeSection+"noiseFigure",table->item(RxTable::noiseFigure, stage)->text());
+        save.setValue(satgeSection+"iip3",table->item(RxTable::iip3, stage)->text());
+        save.setValue(satgeSection+"oip3",table->item(RxTable::oip3, stage)->text());
+        save.setValue(satgeSection+"iip1",table->item(RxTable::ip1db, stage)->text());
+        save.setValue(satgeSection+"oip1",table->item(RxTable::oip1db, stage)->text());
+    }
 }
 
 void RxCalcApp::slotHelp()
