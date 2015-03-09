@@ -44,6 +44,9 @@
 #include <QAction>
 #include <QApplication>
 #include <QMessageBox>
+#include <QFileInfo>
+#include <QDesktopServices>
+#include <QFileDialog>
 
 class RxCalcApp : public QMainWindow
 {
@@ -52,6 +55,8 @@ class RxCalcApp : public QMainWindow
 public:
     explicit RxCalcApp();
     ~RxCalcApp();
+
+private:
     RxTable *table;
     QDoubleSpinBox *inputPower_dBm, *noiseBand_Hz, *minSignalToNoise_dB, *temperature_K_C, *perToRms_dB;
     QLineEdit *gain_dB, *noiseFigure_dB, *inputIP3_dBm, *outputIP3_dBm, *inputP1dB_dBm, *outputP1dB_dBm, *outpupPower_dBm;
@@ -61,6 +66,8 @@ public:
     QPushButton *calcButton;
     QSpinBox *numberOfStages;
     QPlainTextEdit *comment;
+    QString defaultPath;
+    QString openProjectPath;
     enum temperatureUnits {
         celsius,
         kelvin
@@ -87,9 +94,12 @@ public slots:
     void slotHelp();
     void slotAbout();
     void validateTemperature();
-   // void setStagesNumber(unsigned int number);
     void setStagesNumberSlot();
+    void setStagesNumber(int number);
+
+private slots:
     void clickOnCalcButton();
+    void openProjectFile(QString fileName);
 };
 
 #endif // RXCALC_H

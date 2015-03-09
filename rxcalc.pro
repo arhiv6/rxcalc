@@ -41,4 +41,8 @@ HEADERS +=  sources/main.h \
             sources/rxtable.h \
             sources/rxtablecell.h
 
-RESOURCES += resources/images.qrc
+RESOURCES   +=  resources/images.qrc
+
+OTHER_FILES +=  README.md \
+                LICENSE
+

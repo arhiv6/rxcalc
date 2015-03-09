@@ -447,6 +447,8 @@ RxCalcApp::RxCalcApp()
 
     // -------  finally set initial state  --------
     loadSettings();    
+    if (qApp->argc() > 1)
+        openProjectFile(qApp->arguments().at(1));
 }
 
 RxCalcApp::~RxCalcApp()
@@ -464,12 +466,16 @@ void RxCalcApp::saveSettings()
 {
     QSettings settings(APP_NAME, APP_NAME);
     settings.setValue("windowGeometry",this->saveGeometry());
+    settings.setValue("windowsState",this->saveState());
+    settings.setValue("pathForSaveProjects",defaultPath);
 }
 
 void RxCalcApp::loadSettings()
 {
     QSettings settings(APP_NAME, APP_NAME);
     this->restoreGeometry(settings.value("windowGeometry",this->saveGeometry()).toByteArray());
+    this->restoreState(settings.value("windowsState",this->saveState()).toByteArray());
+    defaultPath = settings.value("pathForSaveProjects",QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)).toString();
 }
 
 void RxCalcApp::slotNew()
@@ -479,7 +485,78 @@ void RxCalcApp::slotNew()
 
 void RxCalcApp::slotOpen()
 {
-    //TODO
+    openProjectFile(NULL);
+}
+
+void RxCalcApp::openProjectFile(QString fileName)
+{
+    QFileInfo fileInfo(defaultPath);
+    if (fileInfo.isDir() == false)
+        defaultPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
+
+    // Select file
+    if (fileName == NULL)
+        fileName = QFileDialog::getOpenFileName(this, tr("Select file"), defaultPath, QString("RxCalc projects (*.rxcp);;All files (*)"));
+
+    // Verify file
+    if (fileName.isEmpty())
+        return;
+    QFile file(fileName);
+    if (!file.open(QFile::ReadWrite | QFile::Text))
+    {
+        QMessageBox::warning(this, APP_NAME, QString(tr("Cannot read file") + " %1:\n%2.").arg(fileName).arg(file.errorString()));
+        return;
+    }
+
+    // Save default path
+    fileInfo.setFile(fileName);
+    defaultPath = fileInfo.absolutePath();
+
+    // Open file
+    QSettings open(fileName, QSettings::IniFormat);
+
+    if (open.value("program") != APP_NAME)
+    {
+        QMessageBox::warning(this, APP_NAME, tr("This does not file RxCalc"));
+        return;
+    }
+
+    //if (open.value("version") != global.appVersion)
+    //    QMessageBox::warning(this, global.appName,tr("Failed - other version"));
+
+    openProjectPath = fileInfo.absoluteFilePath();
+    setWindowTitle(QString(APP_NAME) + " " + QString(APP_VERSION) + " - " + openProjectPath);
+
+    // Open
+    setStagesNumber(0);
+    comment->clear();
+
+    inputPower_dBm->setValue(open.value("inputPower").toFloat());
+    noiseBand_Hz->setValue(open.value("noiseBand").toFloat());
+    freqUnit->setCurrentIndex(open.value("freqmeasure","1").toInt());
+    minSignalToNoise_dB->setValue(open.value("minSn").toFloat());
+    temperature_K_C->setValue(open.value("temperature").toFloat());
+    temperatureUnit->setCurrentIndex(open.value("temperaturemeasure","0").toInt());
+    perToRms_dB->setValue(open.value("perToRms").toFloat());
+    int stageCount = open.value("stageCount").toInt();
+    setStagesNumber(stageCount);
+    comment->appendPlainText(open.value("comments").toString());
+
+    for (int stage=0; stage<stageCount; stage++)
+    {
+        QString satgeSection = "stage_"+QString::number(stage)+"/";
+        QComboBox *comboBox= (QComboBox*)table->cellWidget(RxTable::type, stage);
+        comboBox->setCurrentIndex(open.value(satgeSection+"type","0").toInt());
+        QLabel *label= (QLabel*)table->cellWidget(RxTable::pic, stage);
+        label->setEnabled(open.value(satgeSection+"enabled").toBool());
+        table->item(RxTable::name, stage)->setText(open.value(satgeSection+"name").toString());
+        table->item(RxTable::gain, stage)->setText(open.value(satgeSection+"gain").toString());
+        table->item(RxTable::noiseFigure, stage)->setText(open.value(satgeSection+"noiseFigure").toString());
+        table->item(RxTable::iip3, stage)->setText(open.value(satgeSection+"iip3").toString());
+        table->item(RxTable::oip3, stage)->setText(open.value(satgeSection+"oip3").toString());
+        table->item(RxTable::ip1db, stage)->setText(open.value(satgeSection+"iip1").toString());
+        table->item(RxTable::oip1db, stage)->setText(open.value(satgeSection+"oip1").toString());
+    }
 }
 
 void RxCalcApp::slotSave()
@@ -536,10 +613,15 @@ void RxCalcApp::setStagesNumberSlot()
     table->setStageCount(numberOfStages->value());
 }
 
+void RxCalcApp::setStagesNumber(int number)
+{
+    numberOfStages->setValue(number);
+    table->setStageCount(number);
+}
+
 void RxCalcApp::clickOnCalcButton()
 {
-    numberOfStages->setValue(4);
-    setStagesNumberSlot();
+    setStagesNumber(4);
 
     QComboBox *combo;
     int i=0;
