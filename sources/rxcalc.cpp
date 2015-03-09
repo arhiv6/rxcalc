@@ -480,7 +480,19 @@ void RxCalcApp::loadSettings()
 
 void RxCalcApp::slotNew()
 {
-    //TODO
+    openProjectPath = "";
+    setWindowTitle(APP_NAME " " APP_VERSION);
+
+    setStagesNumber(0);
+    comment->clear();
+
+    inputPower_dBm->setValue(0);
+    noiseBand_Hz->setValue(1000);
+    freqUnit->setCurrentIndex(0);
+    minSignalToNoise_dB->setValue(10);
+    temperature_K_C->setValue(25);
+    temperatureUnit->setCurrentIndex(0);
+    perToRms_dB->setValue(0);
 }
 
 void RxCalcApp::slotOpen()
