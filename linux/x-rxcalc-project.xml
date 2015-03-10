@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-rxcalc-project">
+   <sub-class-of type="text/plain"/>
+   <comment>RxCalc Project</comment>
+   <glob pattern="*.rxcp"/>
+  </mime-type>
+ </mime-info>

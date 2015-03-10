@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=RxCalc
+Comment=Calculator for the analysis of multi-stage receiver
+Comment[en]=Calculator for the analysis of multi-stage receiver
+Comment[en_US]=Calculator for the analysis of multi-stage receiver
+Comment[ru]=Калькулятор анализа многокаскадных приёмников
+Exec=/usr/bin/rxcalc %F
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/rxcalc.xpm
+MimeType=application/x-rxcalc-project
+StartupNotify=false
+Categories=Electronics

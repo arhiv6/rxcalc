@@ -46,3 +46,40 @@ RESOURCES   +=  resources/images.qrc
 OTHER_FILES +=  README.md \
                 LICENSE
 
+# use 'make build' for create .deb package
+unix {
+    #TODO - add icon for .rxcp files
+
+    target.path = /usr/bin
+
+    menu.path = /usr/share/applications
+    menu.files = linux/rxcalc.desktop
+
+    debianmenu.path = /usr/share/menu
+    debianmenu.files = linux/rxcalc.menu
+
+    pixmap.path = /usr/share/pixmaps
+    pixmap.files = linux/rxcalc.xpm
+
+    mimelnk.path = /usr/share/mimelnk/application
+    mimelnk.files = linux/x-rxcalc-project.desktop
+
+    mime.path = /usr/share/mime/packages
+    mime.files = linux/x-rxcalc-project.xml
+
+    #translations.path = /usr/share/rxcalc
+    #translations.files = translations
+
+    #documentation.path = /usr/share/doc/rxcalc
+    #documentation.files = docs
+
+    #manpage.path = /usr/share/man/man8
+    #manpage.files = manpage/rxcalc.8.gz
+
+    INSTALLS += target menu debianmenu pixmap mimelnk mime # translations documentation manpage
+
+    QMAKE_EXTRA_TARGETS += build
+    build.depends = all
+    build.commands =  cp $$PWD/linux/description-pak $$OUT_PWD && \
+        checkinstall --default -D --install=no --fstrans=yes --pkgname=$$TARGET --pkgversion=$$VERSION --deldesc=yes --backup=no --pkglicense=gpl3 --maintainer=arhiv6@users.sf.net --pkggroup=electronics --requires="libqtgui4"
+}

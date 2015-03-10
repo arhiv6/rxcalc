@@ -1,0 +1,3 @@
+?package(rxcalc):needs="X11" section="Applications/Electronics"\
+  title="RxCalc" command="/usr/bin/rxcalc"\
+  icon="/usr/share/pixmaps/rxcalc.xpm"

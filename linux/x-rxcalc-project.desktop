@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=MimeType
+MimeType=application/x-rxcalc-project
+Icon=rxcalc
+Patterns=*.rxcp
+Comment=RxCalc Project
