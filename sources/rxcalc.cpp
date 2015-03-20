@@ -175,13 +175,16 @@ RxCalcApp::RxCalcApp()
     temperature_K_C = new QDoubleSpinBox(this);
     temperature_K_C->setMinimum(ABS_ZERO);
     temperature_K_C->setMaximum(9999.99);
-    temperature_K_C->setValue(system->temperature_C());
+    if (system->useCelsium()==System::kelvin)
+        temperature_K_C->setValue(system->temperature_K());
+    else if (system->useCelsium()==System::celsius)
+        temperature_K_C->setValue(system->temperature_C());
     connect(temperature_K_C, SIGNAL(valueChanged(double)), this, SLOT(validateTemperature()));
     gbox1->addWidget(temperature_K_C, 3,1);
     temperatureUnit = new QComboBox(this);
     temperatureUnit->addItem(QString(Qt::Key_degree) +tr("C")); // see enum temperatureUnits
     temperatureUnit->addItem(QString(Qt::Key_degree) +tr("K"));
-    temperatureUnit->setCurrentIndex(celsius);
+    temperatureUnit->setCurrentIndex(system->useCelsium());
     connect(temperatureUnit, SIGNAL(currentIndexChanged(int)), SLOT(validateTemperature()));
     gbox1->addWidget(temperatureUnit, 3,2);
 
@@ -688,12 +691,23 @@ void RxCalcApp::validateTemperature()
 //    else if (temperatureUnit->currentIndex() == kelvin)
 //        temperature_K_C->setMinimum(0);
 
-    if ((temperatureUnit->currentIndex() == celsius) && (temperature_K_C->value() <= ABS_ZERO))
+    if ((temperatureUnit->currentIndex() == System::celsius) && (temperature_K_C->value() <= ABS_ZERO))
+    {
         temperature_K_C->setStyleSheet("background-color:red;");
-    else if ((temperatureUnit->currentIndex() == kelvin) && (temperature_K_C->value() <= 0))
+        return;
+    }
+    else if ((temperatureUnit->currentIndex() == System::kelvin) && (temperature_K_C->value() <= 0))
+    {
         temperature_K_C->setStyleSheet("background-color:red;");
+        return;
+    }
     else
         temperature_K_C->setStyleSheet("");
+
+    if (temperatureUnit->currentIndex() == System::celsius)
+        system->setTemperature_C(temperature_K_C->value());
+    else if (temperatureUnit->currentIndex() == System::kelvin)
+        system->setTemperature_K(temperature_K_C->value());
 }
 
 void RxCalcApp::setStagesNumberSlot()
@@ -725,11 +739,7 @@ void RxCalcApp::clickOnCalcButton()
         system->stageList->append(st);
     }
 
-    if (temperatureUnit->currentIndex() == celsius)
-        system->setTemperature_C(temperature_K_C->value());
-    else if (temperatureUnit->currentIndex() == kelvin)
-        system->setTemperature_K(temperature_K_C->value());
-    system->setNoiseBand(noiseBand_Hz->value()*pow(10.0, 3*freqUnit->currentIndex()));
+    system->setNoiseBand(noiseBand_Hz->value()*pow(10.0, 3*freqUnit->currentIndex())); // TODO
 
     system->solve();
 

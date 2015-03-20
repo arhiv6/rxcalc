@@ -69,10 +69,7 @@ private:
     QString defaultPath;
     QString openProjectPath;
     System *system;
-    enum temperatureUnits {
-        celsius,
-        kelvin
-    };
+
     enum freqUnits {
         Hz,
         kHz,

@@ -61,6 +61,10 @@ public:
         float sfdr;
     } sysStruct;
     sysStruct sys1;
+    enum temperatureUnits {
+        celsius,
+        kelvin
+    };
 
 public slots:
     void setInputPower(double inputPower);
@@ -76,8 +80,8 @@ public slots:
     void setPeakToRatio(double peakToRatio);
     double peakToRatio();
     void solve();
-    void setUseCelsium(bool val);
-    bool useCelsium();
+    void setUseCelsium(temperatureUnits val);
+    temperatureUnits useCelsium();
 
 private slots:
     float converdBtoKp(float dB);
@@ -120,7 +124,7 @@ private:
     float m_outputImLevel_dBc;
     float m_imd;
     float m_sfdr;
-    bool m_useCelsium;
+    temperatureUnits m_useCelsium;
 };
 
 #endif // SYSTEM_H

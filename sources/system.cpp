@@ -93,7 +93,7 @@ void System::setTemperature_K(float temperature)
 {
     m_temperature_K = temperature;
     m_temperature_C = temperature + ABS_ZERO;
-    m_useCelsium = false;
+    m_useCelsium = kelvin;
 }
 
 float System::temperature_K()
@@ -105,7 +105,7 @@ void System::setTemperature_C(float temperature)
 {
     m_temperature_C = temperature;
     m_temperature_K = temperature - ABS_ZERO;
-    m_useCelsium = true;
+    m_useCelsium = celsius;
 }
 
 float System::temperature_C()
@@ -123,12 +123,12 @@ double System::peakToRatio()
     return m_peakToRatio;
 }
 
-void System::setUseCelsium(bool val)
+void System::setUseCelsium(System::temperatureUnits val)
 {
     m_useCelsium = val;
 }
 
-bool System::useCelsium()
+System::temperatureUnits System::useCelsium()
 {
     return m_useCelsium;
 }
