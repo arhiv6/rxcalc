@@ -20,9 +20,16 @@
 
 #include "system.h"
 
-System::System(QList<Stage*> *stageList)
+System::System():QObject()
 {
-    m_stageList=stageList;
+    stageList  = new QList<Stage*> ();
+
+    setInputPower(-60);
+    setNoiseBand(1000);
+    setMinSignalToNoise(10);
+    setTemperature_C(25);
+    setPeakToRatio(0);
+
 
     // System params:
     sys1.sysPowerGain = NAN;
@@ -52,12 +59,12 @@ System::~System()
 
 }
 
-void System::setInputPower(float inputPower)
+void System::setInputPower(double inputPower)
 {
     m_inputPower = inputPower;
 }
 
-float System::inputPower()
+double System::inputPower()
 {
     return m_inputPower;
 }
@@ -72,12 +79,12 @@ float System::noiseBand()
     return m_noiseBand;
 }
 
-void System::setMinSignalToNoise(float minSignalToNoise)
+void System::setMinSignalToNoise(double minSignalToNoise)
 {
     m_minSignalToNoise = minSignalToNoise;
 }
 
-float System::minSignalToNoise()
+double System::minSignalToNoise()
 {
     return m_minSignalToNoise;
 }
@@ -86,6 +93,7 @@ void System::setTemperature_K(float temperature)
 {
     m_temperature_K = temperature;
     m_temperature_C = temperature + ABS_ZERO;
+    m_useCelsium = false;
 }
 
 float System::temperature_K()
@@ -97,6 +105,7 @@ void System::setTemperature_C(float temperature)
 {
     m_temperature_C = temperature;
     m_temperature_K = temperature - ABS_ZERO;
+    m_useCelsium = true;
 }
 
 float System::temperature_C()
@@ -104,14 +113,24 @@ float System::temperature_C()
     return m_temperature_C;
 }
 
-void System::setPeakToRatio(float peakToRatio)
+void System::setPeakToRatio(double peakToRatio)
 {
     m_peakToRatio = peakToRatio;
 }
 
-float System::peakToRatio()
+double System::peakToRatio()
 {
     return m_peakToRatio;
+}
+
+void System::setUseCelsium(bool val)
+{
+    m_useCelsium = val;
+}
+
+bool System::useCelsium()
+{
+    return m_useCelsium;
 }
 
 void System::solve()
@@ -163,16 +182,16 @@ void System::solveSysPowerGain()
 
     m_sysPowerGain = 0;
 
-    for (int i=0; i<m_stageList->count(); i++)
+    for (int i=0; i<stageList->count(); i++)
     {
-        if (m_stageList->at(i)->enabled() == false)
+        if (stageList->at(i)->enabled() == false)
         {
-            m_stageList->at(i)->sys.powerGain = NAN; // add data in paramList
+            stageList->at(i)->sys.powerGain = NAN; // add data in paramList
             continue;
         }
 
-        m_sysPowerGain += m_stageList->at(i)->powerGain();
-        m_stageList->at(i)->sys.powerGain = m_sysPowerGain; // add data in paramList
+        m_sysPowerGain += stageList->at(i)->powerGain();
+        stageList->at(i)->sys.powerGain = m_sysPowerGain; // add data in paramList
     }
 }
 
@@ -184,28 +203,28 @@ void System::solveSysNoiseFigure()
     float tmp_gain = 0;
     m_sysNoiseFigure=0;
 
-    for (int i=0; i<m_stageList->count(); i++)
+    for (int i=0; i<stageList->count(); i++)
     {
-        if (m_stageList->at(i)->enabled() == false)
+        if (stageList->at(i)->enabled() == false)
         {
-            m_stageList->at(i)->sys.noiseFigure = NAN; // add data in paramList
+            stageList->at(i)->sys.noiseFigure = NAN; // add data in paramList
             continue;
         }
 
         if (firstStage == true)
         {
             // only first stage
-            m_sysNoiseFigure = converdBtoKp(m_stageList->at(i)->noiseFigure());
+            m_sysNoiseFigure = converdBtoKp(stageList->at(i)->noiseFigure());
             firstStage = false;
         }
         else
         {
             // other stages
-            m_sysNoiseFigure += (converdBtoKp(m_stageList->at(i)->noiseFigure()) - 1)/converdBtoKp(tmp_gain);
+            m_sysNoiseFigure += (converdBtoKp(stageList->at(i)->noiseFigure()) - 1)/converdBtoKp(tmp_gain);
         }
 
-        tmp_gain += m_stageList->at(i)->powerGain();
-        m_stageList->at(i)->sys.noiseFigure = converKptodB(m_sysNoiseFigure); // add data in paramList
+        tmp_gain += stageList->at(i)->powerGain();
+        stageList->at(i)->sys.noiseFigure = converKptodB(m_sysNoiseFigure); // add data in paramList
     }
      m_sysNoiseFigure = converKptodB(m_sysNoiseFigure);
 }
@@ -219,29 +238,29 @@ void System::solveSysIp3()
     bool firstStage = true;
     m_sysOip3=0;
 
-    for (int i=0; i<m_stageList->count(); i++)
+    for (int i=0; i<stageList->count(); i++)
     {
-        if (m_stageList->at(i)->enabled() == false)
+        if (stageList->at(i)->enabled() == false)
         {
-            m_stageList->at(i)->sys.iip3 = NAN; // add data in paramList
-            m_stageList->at(i)->sys.oip3 = NAN; // add data in paramList
+            stageList->at(i)->sys.iip3 = NAN; // add data in paramList
+            stageList->at(i)->sys.oip3 = NAN; // add data in paramList
             continue;
         }
 
         if (firstStage == true)
         {
             // only first stage
-            m_sysOip3 = converdBtoKp(m_stageList->at(i)->oip3());
+            m_sysOip3 = converdBtoKp(stageList->at(i)->oip3());
             firstStage = false;
         }
         else
         {
             // other stages
-            m_sysOip3 = 1/((1/(m_sysOip3*converdBtoKp(m_stageList->at(i)->powerGain())))+(1/converdBtoKp(m_stageList->at(i)->oip3())));
+            m_sysOip3 = 1/((1/(m_sysOip3*converdBtoKp(stageList->at(i)->powerGain())))+(1/converdBtoKp(stageList->at(i)->oip3())));
         }
 
-        m_stageList->at(i)->sys.oip3 = converKptodB(m_sysOip3); // add data in paramList
-        m_stageList->at(i)->sys.iip3 =  m_stageList->at(i)->sys.oip3 -  m_stageList->at(i)->sys.powerGain; // add data in paramList
+        stageList->at(i)->sys.oip3 = converKptodB(m_sysOip3); // add data in paramList
+        stageList->at(i)->sys.iip3 =  stageList->at(i)->sys.oip3 -  stageList->at(i)->sys.powerGain; // add data in paramList
     }
      m_sysOip3 = converKptodB(m_sysOip3);
      m_sysIip3 = m_sysOip3 - m_sysPowerGain;
@@ -255,28 +274,28 @@ void System::solveSysP1db()
     bool firstStage = true;
     m_sysOp1db=0;
 
-    for (int i=0; i<m_stageList->count(); i++)
+    for (int i=0; i<stageList->count(); i++)
     {
-        if (m_stageList->at(i)->enabled() == false)
+        if (stageList->at(i)->enabled() == false)
         {
-            m_stageList->at(i)->sys.powerOutBackoff = NAN; // add data in paramList
-            m_stageList->at(i)->sys.peakPowerOutBackoff = NAN; // add data in paramList
+            stageList->at(i)->sys.powerOutBackoff = NAN; // add data in paramList
+            stageList->at(i)->sys.peakPowerOutBackoff = NAN; // add data in paramList
             continue;
         }
 
         if (firstStage == true)
         {
             // only first stage
-            m_sysOp1db = converdBtoKp(m_stageList->at(i)->op1db());
+            m_sysOp1db = converdBtoKp(stageList->at(i)->op1db());
             firstStage = false;
         }
         else
         {
             // other stages
-            m_sysOp1db = 1/((1/(m_sysOp1db*converdBtoKp(m_stageList->at(i)->powerGain())))+(1/converdBtoKp(m_stageList->at(i)->op1db())));
+            m_sysOp1db = 1/((1/(m_sysOp1db*converdBtoKp(stageList->at(i)->powerGain())))+(1/converdBtoKp(stageList->at(i)->op1db())));
         }
-        m_stageList->at(i)->sys.powerOutBackoff = m_stageList->at(i)->op1db() - m_stageList->at(i)->sys.outputPower; // add data in paramList
-        m_stageList->at(i)->sys.peakPowerOutBackoff = m_stageList->at(i)->sys.powerOutBackoff - m_peakToRatio; // add data in paramList
+        stageList->at(i)->sys.powerOutBackoff = stageList->at(i)->op1db() - stageList->at(i)->sys.outputPower; // add data in paramList
+        stageList->at(i)->sys.peakPowerOutBackoff = stageList->at(i)->sys.powerOutBackoff - m_peakToRatio; // add data in paramList
     }
      m_sysOp1db = converKptodB(m_sysOp1db);
      m_sysIp1db = m_sysOp1db - (m_sysPowerGain - 1);
@@ -287,28 +306,28 @@ void System::solveSysOutputPower()
     bool firstStage = true;
     float tmp_OutputPower = 0;
 
-    for (int i=0; i<m_stageList->count(); i++)
+    for (int i=0; i<stageList->count(); i++)
     {
-        if (m_stageList->at(i)->enabled() == false)
+        if (stageList->at(i)->enabled() == false)
         {
-            m_stageList->at(i)->sys.inputPower = NAN; // add data in paramList
-            m_stageList->at(i)->sys.outputPower = NAN; // add data in paramList
+            stageList->at(i)->sys.inputPower = NAN; // add data in paramList
+            stageList->at(i)->sys.outputPower = NAN; // add data in paramList
             continue;
         }
 
         if (firstStage == true)
         {
             // only first stage
-            m_stageList->at(i)->sys.inputPower = m_inputPower; // add data in paramList
+            stageList->at(i)->sys.inputPower = m_inputPower; // add data in paramList
             firstStage = false;
         }
         else
         {
             // other stages
-            m_stageList->at(i)->sys.inputPower = tmp_OutputPower;
+            stageList->at(i)->sys.inputPower = tmp_OutputPower;
         }
-        tmp_OutputPower = m_stageList->at(i)->sys.inputPower + m_stageList->at(i)->powerGain(); // add data in paramList
-        m_stageList->at(i)->sys.outputPower = tmp_OutputPower;
+        tmp_OutputPower = stageList->at(i)->sys.inputPower + stageList->at(i)->powerGain(); // add data in paramList
+        stageList->at(i)->sys.outputPower = tmp_OutputPower;
     }
     m_sysOutputPower = m_inputPower + m_sysPowerGain;
 }
@@ -348,30 +367,30 @@ void System::postSolveParam()
     float oldNF = 0;
     float oldIP = 0;
 
-    for (int i=0; i<m_stageList->count(); i++)
+    for (int i=0; i<stageList->count(); i++)
     {
-        if (m_stageList->at(i)->enabled() == false)
+        if (stageList->at(i)->enabled() == false)
         {
-            m_stageList->at(i)->sys.stageIip3ToSystemIip3 = NAN; // add data in paramList
-            m_stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = NAN; // add data in paramList
+            stageList->at(i)->sys.stageIip3ToSystemIip3 = NAN; // add data in paramList
+            stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = NAN; // add data in paramList
             continue;
         }
 
         if (firstStage == true)
         {
             // only first stage
-            m_stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = m_stageList->at(i)->sys.noiseFigure/m_sysNoiseFigure; // add data in paramList
-            m_stageList->at(i)->sys.stageIip3ToSystemIip3 = 0; // add data in paramList
-            ip3_0_val= m_stageList->at(i)->sys.iip3;
+            stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = stageList->at(i)->sys.noiseFigure/m_sysNoiseFigure; // add data in paramList
+            stageList->at(i)->sys.stageIip3ToSystemIip3 = 0; // add data in paramList
+            ip3_0_val= stageList->at(i)->sys.iip3;
             firstStage = false;
         }
         else
         {
             // other stages
-            m_stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = (m_stageList->at(i)->sys.noiseFigure- oldNF )/m_sysNoiseFigure;
-            m_stageList->at(i)->sys.stageIip3ToSystemIip3 = (oldIP - m_stageList->at(i)->sys.iip3)/(ip3_0_val-m_sysIip3); // add data in paramList
+            stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = (stageList->at(i)->sys.noiseFigure- oldNF )/m_sysNoiseFigure;
+            stageList->at(i)->sys.stageIip3ToSystemIip3 = (oldIP - stageList->at(i)->sys.iip3)/(ip3_0_val-m_sysIip3); // add data in paramList
         }
-        oldNF=m_stageList->at(i)->sys.noiseFigure;
-        oldIP=m_stageList->at(i)->sys.iip3;
+        oldNF=stageList->at(i)->sys.noiseFigure;
+        oldIP=stageList->at(i)->sys.iip3;
     }
 }

@@ -68,6 +68,7 @@ private:
     QPlainTextEdit *comment;
     QString defaultPath;
     QString openProjectPath;
+    System *system;
     enum temperatureUnits {
         celsius,
         kelvin

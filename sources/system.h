@@ -26,25 +26,16 @@
 #include "stage.h"
 
 #include <QList>
+#include <QObject>
 
-class System
+class System : public QObject
 {
+Q_OBJECT
+
 public:
-    System(QList<Stage*> *stageList);
+    System();
     ~System();
-    void setInputPower(float inputPower);
-    float inputPower();
-    void setNoiseBand(float noiseBand);
-    float noiseBand();
-    void setMinSignalToNoise(float minSignalToNoise);
-    float minSignalToNoise();
-    void setTemperature_K(float temperature_K);
-    float temperature_K();
-    void setTemperature_C(float temperature_C);
-    float temperature_C();
-    void setPeakToRatio(float peakToRatio);
-    float peakToRatio();
-    void solve();
+    QList<Stage*> *stageList;
     // System params:
     typedef struct
     {
@@ -71,7 +62,24 @@ public:
     } sysStruct;
     sysStruct sys1;
 
-private:
+public slots:
+    void setInputPower(double inputPower);
+    double inputPower();
+    void setNoiseBand(float noiseBand);
+    float noiseBand();
+    void setMinSignalToNoise(double minSignalToNoise);
+    double minSignalToNoise();
+    void setTemperature_K(float temperature_K);
+    float temperature_K();
+    void setTemperature_C(float temperature_C);
+    float temperature_C();
+    void setPeakToRatio(double peakToRatio);
+    double peakToRatio();
+    void solve();
+    void setUseCelsium(bool val);
+    bool useCelsium();
+
+private slots:
     float converdBtoKp(float dB);
     float converKptodB(float Kp);
     void solveSysPowerGain();
@@ -84,14 +92,13 @@ private:
     void postSolveParam();
 
 private:
-    QList<Stage*> *m_stageList;
     //Input param
-    float m_inputPower;
+    double m_inputPower;
     float m_noiseBand;
-    float m_minSignalToNoise;
+    double m_minSignalToNoise;
     float m_temperature_K;
     float m_temperature_C;
-    float m_peakToRatio;
+    double m_peakToRatio;
     //Output param
     float m_sysPowerGain;
     float m_sysNoiseFigure;
@@ -113,6 +120,7 @@ private:
     float m_outputImLevel_dBc;
     float m_imd;
     float m_sfdr;
+    bool m_useCelsium;
 };
 
 #endif // SYSTEM_H

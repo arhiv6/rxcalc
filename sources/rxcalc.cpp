@@ -22,6 +22,8 @@
 
 RxCalcApp::RxCalcApp()
 {
+    system = new System();
+
     QWidget *centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
 
@@ -135,7 +137,8 @@ RxCalcApp::RxCalcApp()
     inputPower_dBm = new QDoubleSpinBox(this);
     inputPower_dBm->setMinimum(-9999.99);
     inputPower_dBm->setMaximum(9999.99);
-    inputPower_dBm->setValue(-60);
+    inputPower_dBm->setValue(system->inputPower());
+    connect(inputPower_dBm,SIGNAL(valueChanged(double)),system,SLOT(setInputPower(double)));
     gbox1->addWidget(inputPower_dBm, 0,1);
     QLabel *Label1 = new QLabel(tr("dBm"), this);
     gbox1->addWidget(Label1, 0,2);
@@ -147,7 +150,7 @@ RxCalcApp::RxCalcApp()
     noiseBand_Hz = new QDoubleSpinBox(this);
     noiseBand_Hz->setMinimum(0);
     noiseBand_Hz->setMaximum(9999999.99);
-    noiseBand_Hz->setValue(1000);
+    noiseBand_Hz->setValue(system->noiseBand());
     gbox1->addWidget(noiseBand_Hz, 1,1);
     freqUnit = new QComboBox(this);
     freqUnit->addItem(tr("Hz")); // see enum freqUnits
@@ -161,7 +164,8 @@ RxCalcApp::RxCalcApp()
     minSignalToNoise_dB = new QDoubleSpinBox(this);
     minSignalToNoise_dB->setMinimum(-9999.99);
     minSignalToNoise_dB->setMaximum(9999.99);
-    minSignalToNoise_dB->setValue(10);
+    minSignalToNoise_dB->setValue(system->minSignalToNoise());
+    connect(minSignalToNoise_dB,SIGNAL(valueChanged(double)),system,SLOT(setMinSignalToNoise(double)));
     gbox1->addWidget(minSignalToNoise_dB, 2,1);
     QLabel *Label4 = new QLabel(tr("dB"), this);
     gbox1->addWidget(Label4, 2,2);
@@ -171,7 +175,7 @@ RxCalcApp::RxCalcApp()
     temperature_K_C = new QDoubleSpinBox(this);
     temperature_K_C->setMinimum(ABS_ZERO);
     temperature_K_C->setMaximum(9999.99);
-    temperature_K_C->setValue(25);
+    temperature_K_C->setValue(system->temperature_C());
     connect(temperature_K_C, SIGNAL(valueChanged(double)), this, SLOT(validateTemperature()));
     gbox1->addWidget(temperature_K_C, 3,1);
     temperatureUnit = new QComboBox(this);
@@ -186,7 +190,8 @@ RxCalcApp::RxCalcApp()
     perToRms_dB = new QDoubleSpinBox(this);
     perToRms_dB->setMinimum(-9999.99);
     perToRms_dB->setMaximum(9999.99);
-    perToRms_dB->setValue(0);
+    perToRms_dB->setValue(system->peakToRatio());
+    connect(perToRms_dB,SIGNAL(valueChanged(double)),system,SLOT(setPeakToRatio(double)));
     gbox1->addWidget(perToRms_dB, 4,1);
     QLabel *Label7 = new QLabel(tr("dB"), this);
     gbox1->addWidget(Label7, 4,2);
@@ -704,8 +709,8 @@ void RxCalcApp::setStagesNumber(int number)
 
 void RxCalcApp::clickOnCalcButton()
 {
-    QList<Stage*> *stageList;
-    stageList= new QList<Stage*> ();
+    system->stageList->clear();
+
     for (int i=0; i<table->columnCount(); i++ )
     {
         Stage* st = new Stage();
@@ -717,13 +722,9 @@ void RxCalcApp::clickOnCalcButton()
         st->setOp1db(table->item(RxTable::oip1db, i)->text().toFloat());
         st->setIp1db(table->item(RxTable::ip1db, i)->text().toFloat());
 
-        stageList->append(st);
+        system->stageList->append(st);
     }
 
-    System *system = new System(stageList);
-    system->setInputPower(inputPower_dBm->value());
-    system->setMinSignalToNoise(minSignalToNoise_dB->value());
-    system->setPeakToRatio(perToRms_dB->value());
     if (temperatureUnit->currentIndex() == celsius)
         system->setTemperature_C(temperature_K_C->value());
     else if (temperatureUnit->currentIndex() == kelvin)
@@ -733,7 +734,6 @@ void RxCalcApp::clickOnCalcButton()
     system->solve();
 
     //-----------------------------------------
-
     gain_dB->setText(rounding(system->sys1.sysPowerGain));
     noiseFigure_dB->setText(rounding(system->sys1.sysNoiseFigure));
     inputIP3_dBm->setText(rounding(system->sys1.sysIip3));
@@ -757,16 +757,16 @@ void RxCalcApp::clickOnCalcButton()
 
     for (int i=0; i<table->columnCount(); i++ )
     {
-        table->cell(RxTable::stageGain, i)->setFloat(stageList->at(i)->sys.powerGain);
-        table->cell(RxTable::systemNF, i)->setFloat(stageList->at(i)->sys.noiseFigure);
-        table->cell(RxTable::systemIIP3, i)->setFloat(stageList->at(i)->sys.iip3);
-        table->cell(RxTable::systemOIP3, i)->setFloat(stageList->at(i)->sys.oip3);
-        table->cell(RxTable::inputPower, i)->setFloat(stageList->at(i)->sys.inputPower);
-        table->cell(RxTable::outputPower, i)->setFloat(stageList->at(i)->sys.outputPower);
-        table->cell(RxTable::nfStageToNfSystem, i)->setFloat(stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);
-        table->cell(RxTable::ip3StageToIp3System, i)->setFloat(stageList->at(i)->sys.stageIip3ToSystemIip3);
-        table->cell(RxTable::p_backoff, i)->setFloat(stageList->at(i)->sys.powerOutBackoff);
-        table->cell(RxTable::p_backoff_peak, i)->setFloat(stageList->at(i)->sys.peakPowerOutBackoff);
+        table->cell(RxTable::stageGain, i)->setFloat(system->stageList->at(i)->sys.powerGain);
+        table->cell(RxTable::systemNF, i)->setFloat(system->stageList->at(i)->sys.noiseFigure);
+        table->cell(RxTable::systemIIP3, i)->setFloat(system->stageList->at(i)->sys.iip3);
+        table->cell(RxTable::systemOIP3, i)->setFloat(system->stageList->at(i)->sys.oip3);
+        table->cell(RxTable::inputPower, i)->setFloat(system->stageList->at(i)->sys.inputPower);
+        table->cell(RxTable::outputPower, i)->setFloat(system->stageList->at(i)->sys.outputPower);
+        table->cell(RxTable::nfStageToNfSystem, i)->setFloat(system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);
+        table->cell(RxTable::ip3StageToIp3System, i)->setFloat(system->stageList->at(i)->sys.stageIip3ToSystemIip3);
+        table->cell(RxTable::p_backoff, i)->setFloat(system->stageList->at(i)->sys.powerOutBackoff);
+        table->cell(RxTable::p_backoff_peak, i)->setFloat(system->stageList->at(i)->sys.peakPowerOutBackoff);
     }
 }
 
