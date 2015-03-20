@@ -37,8 +37,6 @@ void RxTableCell::setFloat(float number)
 
 float RxTableCell::rounding (float input)
 {
-    float tmp=qRound(input*100.0);
-    return tmp/100.0;
-
-    return input;
+    float tmp=qRound(input*1000.0);
+    return tmp/1000.0;
 }

@@ -704,57 +704,12 @@ void RxCalcApp::setStagesNumber(int number)
 
 void RxCalcApp::clickOnCalcButton()
 {
-    setStagesNumber(4);
-
-    QComboBox *combo;
-    int i=0;
-    table->item(RxTable::name, i)->setText("ampl1");
-    table->item(RxTable::noiseFigure, i)->setText("1.25");
-    table->item(RxTable::gain, i)->setText("9.5");
-    table->item(RxTable::oip3, i)->setText("15");
-    table->item(RxTable::oip1db, i)->setText("16");
-    table->item(RxTable::iip3, i)->setText("5.5");
-    table->item(RxTable::ip1db, i)->setText("7.5");
-    combo = (QComboBox*)table->cellWidget(RxTable::type, i);
-    combo->setCurrentIndex(RxTable::amplifier);
-    i++;
-    table->item(RxTable::name, i)->setText("ampl2");
-    table->item(RxTable::noiseFigure, i)->setText("1.4");
-    table->item(RxTable::gain, i)->setText("10");
-    table->item(RxTable::oip3, i)->setText("15");
-    table->item(RxTable::oip1db, i)->setText("17");
-    table->item(RxTable::iip3, i)->setText("5");
-    table->item(RxTable::ip1db, i)->setText("8");
-    combo = (QComboBox*)table->cellWidget(RxTable::type, i);
-    combo->setCurrentIndex(RxTable::amplifier);
-    i++;
-    table->item(RxTable::name, i)->setText("mixer");
-    table->item(RxTable::noiseFigure, i)->setText("5.9");
-    table->item(RxTable::gain, i)->setText("2.8");
-    table->item(RxTable::oip3, i)->setText("2");
-    table->item(RxTable::oip1db, i)->setText("1.8");
-    table->item(RxTable::iip3, i)->setText("-0.8");
-    table->item(RxTable::ip1db, i)->setText("0");
-    combo = (QComboBox*)table->cellWidget(RxTable::type, i);
-    combo->setCurrentIndex(RxTable::mixer);
-    i++;
-    table->item(RxTable::name, i)->setText("ampl3");
-    table->item(RxTable::noiseFigure, i)->setText("5");
-    table->item(RxTable::gain, i)->setText("21.5");
-    table->item(RxTable::oip3, i)->setText("15.3");
-    table->item(RxTable::oip1db, i)->setText("20.5");
-    table->item(RxTable::iip3, i)->setText("-6.2");
-    table->item(RxTable::ip1db, i)->setText("0");
-    combo = (QComboBox*)table->cellWidget(RxTable::type, i);
-    combo->setCurrentIndex(RxTable::amplifier);
-
-    //-----------------------------------------
     QList<Stage*> *stageList;
     stageList= new QList<Stage*> ();
     for (int i=0; i<table->columnCount(); i++ )
     {
         Stage* st = new Stage();
-
+        st->setEnabled((QLabel*)table->cellWidget(RxTable::pic, i)->isEnabled());
         st->setPowerGain(table->item(RxTable::gain, i)->text().toFloat());
         st->setNoiseFigure(table->item(RxTable::noiseFigure, i)->text().toFloat());
         st->setOip3(table->item(RxTable::oip3, i)->text().toFloat());
@@ -779,38 +734,44 @@ void RxCalcApp::clickOnCalcButton()
 
     //-----------------------------------------
 
-     gain_dB->setText(QString::number(system->sys1.sysPowerGain));
-      noiseFigure_dB->setText(QString::number(system->sys1.sysNoiseFigure));
-      inputIP3_dBm->setText(QString::number(system->sys1.sysIip3));
-      outputIP3_dBm->setText(QString::number(system->sys1.sysOip3));
-      inputP1dB_dBm->setText(QString::number(system->sys1.sysIp1db));
-      outputP1dB_dBm->setText(QString::number(system->sys1.sysOp1db));
-      outpupPower_dBm->setText(QString::number(system->sys1.sysOutputPower));
-     noiseFloor_dBmHz->setText(QString::number(system->sys1.sysNoiseFloor_dbmHz));
-      outputNSD_dBmHz->setText(QString::number(system->sys1.sysOutputNsd_dbmHz));
-      outputNoiseFloor_dBm->setText(QString::number(system->sys1.sysNoiseFloor_dbm));
-      snr_dB->setText(QString::number(system->sys1.snr));
-      mds_dBm->setText(QString::number(system->sys1.mds));
-      sensivity_dBm->setText(QString::number(system->sys1.sensivity));
-      noiseTemperature_K->setText(QString::number(system->sys1.noiseTemperature));
-     outpuiIMlevel_dBm->setText(QString::number(system->sys1.outputImLevel_dBm));   // ?
-      outpuiIMlevel_dBc->setText(QString::number(system->sys1.outputImLevel_dBc));  // ?
-      inpuiIMlevel_dBm->setText(QString::number(system->sys1.inputImLevel_dBm));
-      inpuiIMlevel_dBc->setText(QString::number(system->sys1.inputImLevel_dBc));
-      imd_dB->setText(QString::number(system->sys1.imd));
-      sfdr_dB->setText(QString::number(system->sys1.sfdr));
+    gain_dB->setText(rounding(system->sys1.sysPowerGain));
+    noiseFigure_dB->setText(rounding(system->sys1.sysNoiseFigure));
+    inputIP3_dBm->setText(rounding(system->sys1.sysIip3));
+    outputIP3_dBm->setText(rounding(system->sys1.sysOip3));
+    inputP1dB_dBm->setText(rounding(system->sys1.sysIp1db));
+    outputP1dB_dBm->setText(rounding(system->sys1.sysOp1db));
+    outpupPower_dBm->setText(rounding(system->sys1.sysOutputPower));
+    noiseFloor_dBmHz->setText(rounding(system->sys1.sysNoiseFloor_dbmHz));
+    outputNSD_dBmHz->setText(rounding(system->sys1.sysOutputNsd_dbmHz));
+    outputNoiseFloor_dBm->setText(rounding(system->sys1.sysNoiseFloor_dbm));
+    snr_dB->setText(rounding(system->sys1.snr));
+    mds_dBm->setText(rounding(system->sys1.mds));
+    sensivity_dBm->setText(rounding(system->sys1.sensivity));
+    noiseTemperature_K->setText(rounding(system->sys1.noiseTemperature));
+    outpuiIMlevel_dBm->setText(rounding(system->sys1.outputImLevel_dBm));   // ?
+    outpuiIMlevel_dBc->setText(rounding(system->sys1.outputImLevel_dBc));  // ?
+    inpuiIMlevel_dBm->setText(rounding(system->sys1.inputImLevel_dBm));
+    inpuiIMlevel_dBc->setText(rounding(system->sys1.inputImLevel_dBc));
+    imd_dB->setText(rounding(system->sys1.imd));
+    sfdr_dB->setText(rounding(system->sys1.sfdr));
 
-      for (int i=0; i<table->columnCount(); i++ )
-      {
-          table->cell(RxTable::stageGain, i)->setFloat(stageList->at(i)->sys.powerGain);
-          table->cell(RxTable::systemNF, i)->setFloat(stageList->at(i)->sys.noiseFigure);
-          table->cell(RxTable::systemIIP3, i)->setFloat(stageList->at(i)->sys.iip3);
-          table->cell(RxTable::systemOIP3, i)->setFloat(stageList->at(i)->sys.oip3);
-          table->cell(RxTable::inputPower, i)->setFloat(stageList->at(i)->sys.inputPower);
-          table->cell(RxTable::outputPower, i)->setFloat(stageList->at(i)->sys.outputPower);
-          table->cell(RxTable::nfStageToNfSystem, i)->setFloat(stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);
-          table->cell(RxTable::ip3StageToIp3System, i)->setFloat(stageList->at(i)->sys.stageIip3ToSystemIip3);
-          table->cell(RxTable::p_backoff, i)->setFloat(stageList->at(i)->sys.powerOutBackoff);
-          table->cell(RxTable::p_backoff_peak, i)->setFloat(stageList->at(i)->sys.peakPowerOutBackoff);
-      }
+    for (int i=0; i<table->columnCount(); i++ )
+    {
+        table->cell(RxTable::stageGain, i)->setFloat(stageList->at(i)->sys.powerGain);
+        table->cell(RxTable::systemNF, i)->setFloat(stageList->at(i)->sys.noiseFigure);
+        table->cell(RxTable::systemIIP3, i)->setFloat(stageList->at(i)->sys.iip3);
+        table->cell(RxTable::systemOIP3, i)->setFloat(stageList->at(i)->sys.oip3);
+        table->cell(RxTable::inputPower, i)->setFloat(stageList->at(i)->sys.inputPower);
+        table->cell(RxTable::outputPower, i)->setFloat(stageList->at(i)->sys.outputPower);
+        table->cell(RxTable::nfStageToNfSystem, i)->setFloat(stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);
+        table->cell(RxTable::ip3StageToIp3System, i)->setFloat(stageList->at(i)->sys.stageIip3ToSystemIip3);
+        table->cell(RxTable::p_backoff, i)->setFloat(stageList->at(i)->sys.powerOutBackoff);
+        table->cell(RxTable::p_backoff_peak, i)->setFloat(stageList->at(i)->sys.peakPowerOutBackoff);
+    }
+}
+
+QString RxCalcApp::rounding (float input)
+{
+    float tmp=qRound(input*1000.0);
+    return QString::number(tmp/1000.0);
 }

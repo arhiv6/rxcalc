@@ -101,6 +101,7 @@ private slots:
     void clickOnCalcButton();
     void openProjectFile(QString fileName);
     void saveProjectAs(QString fileName);
+    QString rounding(float input);
 };
 
 #endif // RXCALC_H
