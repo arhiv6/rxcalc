@@ -122,9 +122,10 @@ private slots:
     void actionSlotAddStage();
     void actionSlotRemoveStage();
     void renameHeaders();
+    void itemChanged(int row, int column);
 
 signals:
-    void editColumnCount(int value);
+    void editColumnCount(int value);    
 };
 
 #endif // RXTABLE_H

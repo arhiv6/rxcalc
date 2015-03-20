@@ -173,6 +173,8 @@ RxTable::RxTable(QWidget *parent)
         i++;
     }
     setVerticalHeaderLabels(rowList);
+
+    connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
 }
 
 RxTable::~RxTable()
@@ -320,7 +322,7 @@ void RxTable::slotShowContextMenu(const QPoint &pos)
 
             if (pos.x() < X)
             {
-                columnNumber = horizontalHeader()->visualIndex(i);
+                columnNumber = horizontalHeader()->logicalIndex(i);
                 break;
             }
         }
@@ -363,40 +365,6 @@ void RxTable::slotShowContextMenu(const QPoint &pos)
 
     contextMenu->exec(QCursor::pos());
     clearSelection();
-
-/*
-    for (int i = 0; i < contextMenu->actions().size(); i++)
-        contextMenu->actions().at(i)->setData(QVariant(columnNumber));
-
-    setSelectionMode(QAbstractItemView::MultiSelection);
-    selectColumn(columnNumber);
-    setSelectionMode(QAbstractItemView::NoSelection);
-
-    if (cellWidget(pic,columnNumber)->isEnabled() == true)
-    {
-        actionDisableStage->setVisible(true);
-        actionEnableStage->setVisible(false);
-    }
-    else
-    {
-        actionDisableStage->setVisible(false);
-        actionEnableStage->setVisible(true);
-    }
-
-    int stage=horizontalHeader()->visualIndex(columnNumber);
-
-    if (stage == 0)
-        actionMoveStageLeft->setEnabled(false);
-    else
-        actionMoveStageLeft->setEnabled(true);
-
-    if (stage == (columnCount()-1))
-        actionMoveStageRight->setEnabled(false);
-    else
-        actionMoveStageRight->setEnabled(true);
-
-    contextMenu->exec(QCursor::pos());
-    clearSelection();*/
 }
 
 void RxTable::actionSlotEnableStage()
@@ -476,4 +444,17 @@ void RxTable::renameHeaders()
         colList << QString::number(horizontalHeader()->visualIndex(c) +1);
 
     setHorizontalHeaderLabels(colList);
+}
+
+void RxTable::itemChanged(int row, int column)
+{
+    if ((row == name) || (rows[row].writable == false))
+        return;
+
+    bool toFloat=false;
+    float value = item(row, column)->text().toFloat(&toFloat);
+    if ((toFloat != true) || ((row == noiseFigure) && (value < 0)))
+        item(row, column)->setBackgroundColor(Qt::red);
+    else
+        item(row, column)->setBackgroundColor(Qt::white);
 }
