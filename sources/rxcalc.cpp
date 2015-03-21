@@ -151,12 +151,14 @@ RxCalcApp::RxCalcApp()
     noiseBand_Hz->setMinimum(0);
     noiseBand_Hz->setMaximum(9999999.99);
     noiseBand_Hz->setValue(system->noiseBand());
+    connect(noiseBand_Hz,SIGNAL(valueChanged(double)),this,SLOT(validateNoiseBand()));
     gbox1->addWidget(noiseBand_Hz, 1,1);
     freqUnit = new QComboBox(this);
     freqUnit->addItem(tr("Hz")); // see enum freqUnits
     freqUnit->addItem(tr("kHz"));
     freqUnit->addItem(tr("MHz"));
     freqUnit->addItem(tr("GHz"));
+    connect(freqUnit,SIGNAL(currentIndexChanged(int)),this,SLOT(validateNoiseBand()));
     gbox1->addWidget(freqUnit, 1,2);
 
     QLabel *Label3 = new QLabel(tr("Min S/N for Demod:"), this);
@@ -710,6 +712,11 @@ void RxCalcApp::validateTemperature()
         system->setTemperature_K(temperature_K_C->value());
 }
 
+void RxCalcApp::validateNoiseBand()
+{
+    system->setNoiseBand(noiseBand_Hz->value()*pow(10.0, 3*freqUnit->currentIndex()));
+}
+
 void RxCalcApp::setStagesNumberSlot()
 {
     table->setStageCount(numberOfStages->value());
@@ -738,9 +745,6 @@ void RxCalcApp::clickOnCalcButton()
 
         system->stageList->append(st);
     }
-
-    system->setNoiseBand(noiseBand_Hz->value()*pow(10.0, 3*freqUnit->currentIndex())); // TODO
-
     system->solve();
 
     //-----------------------------------------

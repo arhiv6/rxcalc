@@ -92,6 +92,7 @@ public slots:
     void slotHelp();
     void slotAbout();
     void validateTemperature();
+    void validateNoiseBand();
     void setStagesNumberSlot();
     void setStagesNumber(int number);
 
