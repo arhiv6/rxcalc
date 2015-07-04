@@ -29,6 +29,8 @@ Stage::Stage()
     setNoiseFigure(0);
     setIip3(0);
     setIp1db(0);
+    m_iip3Priority = undifinited;
+    m_ip1dbPriority = undifinited;
     // System params:
     sys.powerGain=NAN;
     sys.noiseFigure=NAN;
@@ -71,12 +73,12 @@ void Stage::setPowerGain(float gain)
 {
     m_powerGain = gain;
 
-    if (m_iip3Priority == true)
+    if (m_iip3Priority == input)
         m_oip3 = m_iip3 + m_powerGain;
     else
         m_iip3 = m_oip3 - m_powerGain;
 
-    if (m_ip1dbPriority == true)
+    if (m_ip1dbPriority == input)
         m_op1db = m_ip1db + (m_powerGain - 1);
     else
         m_ip1db = m_op1db - (m_powerGain - 1);
@@ -101,7 +103,7 @@ void Stage::setOip3(float oip3)
 {
     m_oip3 = oip3;
     m_iip3 = m_oip3 - m_powerGain;
-    m_iip3Priority = false;
+    m_iip3Priority = output;
 }
 
 float Stage::oip3()
@@ -113,7 +115,7 @@ void Stage::setOp1db(float op1db)
 {
     m_op1db = op1db;
     m_ip1db = m_op1db - (m_powerGain - 1);
-    m_ip1dbPriority = false;
+    m_ip1dbPriority = output;
 }
 
 float Stage::op1db()
@@ -125,7 +127,7 @@ void Stage::setIip3(float iip3)
 {
     m_iip3 = iip3;
     m_oip3 = m_iip3 + m_powerGain;
-    m_iip3Priority = true;
+    m_iip3Priority = input;
 }
 
 float Stage::iip3()
@@ -137,10 +139,20 @@ void Stage::setIp1db(float ip1db)
 {
     m_ip1db = ip1db;
     m_op1db = m_ip1db + (m_powerGain - 1);
-    m_ip1dbPriority = true;
+    m_ip1dbPriority = input;
 }
 
 float Stage::ip1db()
 {
     return m_ip1db;
+}
+
+Stage::priority Stage::iip3Priority()
+{
+    return m_iip3Priority;
+}
+
+Stage::priority Stage::ip1dbPriority()
+{
+    return m_ip1dbPriority;
 }

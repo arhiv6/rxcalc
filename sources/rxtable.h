@@ -41,6 +41,7 @@ public:
     void setSizeAfterDecimalPoint (unsigned int size);
     RxTableCell *cell(int row, int column) const;
     void setStageCount(int newStageNumber);
+    void update(bool update);
 
     enum rowNames {
         type,
@@ -57,7 +58,7 @@ public:
         iip3,
         oip3,
         ip1db,
-        oip1db,
+        op1db,
         stageGain,
         systemNF,
         systemIIP3,

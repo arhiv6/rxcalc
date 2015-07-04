@@ -27,6 +27,11 @@
 class Stage
 {
 public:
+    enum priority {
+        undifinited,
+        input,
+        output
+    };
     Stage();
     ~Stage();
     // Stage params:
@@ -46,6 +51,8 @@ public:
     float iip3();
     void setIp1db(float ip1db);
     float ip1db();
+    priority iip3Priority();
+    priority ip1dbPriority();
     // System params:
     typedef struct
     {
@@ -72,8 +79,8 @@ private:
     float m_op1db;
     float m_iip3;
     float m_ip1db;
-    bool m_iip3Priority;
-    bool m_ip1dbPriority;
+    priority m_iip3Priority;
+    priority m_ip1dbPriority;
 };
 
 #endif // STAGE_H

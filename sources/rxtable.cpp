@@ -121,9 +121,9 @@ RxTable::RxTable(QWidget *parent)
     rows[ip1db].writable = true;
     rows[ip1db].defaultValue = "100";
 
-    rows[oip1db].Handlre = tr("Output P1dB (dBm)");
-    rows[oip1db].writable = true;
-    rows[oip1db].defaultValue = "100";
+    rows[op1db].Handlre = tr("Output P1dB (dBm)");
+    rows[op1db].writable = true;
+    rows[op1db].defaultValue = "100";
 
     rows[systemNF].Handlre = tr("System NF (dB)");
     rows[systemNF].writable = false;
@@ -209,8 +209,18 @@ void RxTable::setStageCount(int newStageNumber)
     }
 }
 
+void RxTable::update(bool update)
+{
+    if (update == true)
+        connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
+    else
+        disconnect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
+}
+
 void RxTable::createCount(int column)
 {
+    disconnect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
+
     for (int row=0; row<END_ROW_NAMES; row++)
     {
         if (row == pic)
@@ -244,11 +254,16 @@ void RxTable::createCount(int column)
         {
             setItem(row, column, new RxTableCell);
             if (rows[row].writable == true)
+            {
                 item(row, column)->setText(rows[row].defaultValue);
+                item(row, column)->setBackgroundColor(Qt::white);
+            }
             else
                 item(row, column)->setBackgroundColor(Qt::gray);
         }
     }
+
+    connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
 }
 
 void RxTable::slotSetPicture(int types)
@@ -420,10 +435,11 @@ void RxTable::actionSlotAddStage()
     QAction* action = qobject_cast< QAction* >( sender() );
     int column = action->data().toInt();
 
+    //disconnect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
     insertColumn(column);
-    //disconnect(ui->tableWidget, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
     createCount(column);
-    //connect(ui->tableWidget, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
+    //connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
+
     emit editColumnCount(columnCount());
 }
 
@@ -448,13 +464,45 @@ void RxTable::renameHeaders()
 
 void RxTable::itemChanged(int row, int column)
 {
-    if ((row == name) || (rows[row].writable == false))
+    if ((row == name) || (rows[row].writable == false) )//|| (item(row, column)->text().isEmpty()))
         return;
 
     bool toFloat=false;
     float value = item(row, column)->text().toFloat(&toFloat);
     if ((toFloat != true) || ((row == noiseFigure) && (value < 0)))
+    {
         item(row, column)->setBackgroundColor(Qt::red);
+        return;
+    }
     else
-        item(row, column)->setBackgroundColor(Qt::white);
+        item(row, column)->setBackgroundColor(Qt::white); //TODO сделать как troporf
+
+    disconnect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
+
+    if (row == oip3)
+    {
+        item(oip3, column)->setBackgroundColor(Qt::white);
+        item(iip3, column)->setBackgroundColor(Qt::lightGray);
+        item(iip3, column)->setText("");
+    }
+    else if (row == iip3)
+    {
+        item(iip3, column)->setBackgroundColor(Qt::white);
+        item(oip3, column)->setBackgroundColor(Qt::lightGray);
+        item(oip3, column)->setText("");
+    }
+    else if (row == ip1db)
+    {
+        item(ip1db, column)->setBackgroundColor(Qt::white);
+        item(op1db, column)->setBackgroundColor(Qt::lightGray);
+        item(op1db, column)->setText("");
+    }
+    else if (row == op1db)
+    {
+        item(op1db, column)->setBackgroundColor(Qt::white);
+        item(ip1db, column)->setBackgroundColor(Qt::lightGray);
+        item(ip1db, column)->setText("");
+    }
+
+    connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
 }

@@ -563,6 +563,7 @@ void RxCalcApp::openProjectFile(QString fileName)
     setStagesNumber(stageCount);
     comment->appendPlainText(open.value("comments").toString());
 
+    table->update(false);
     for (int stage=0; stage<stageCount; stage++)
     {
         QString satgeSection = "stage_"+QString::number(stage)+"/";
@@ -576,8 +577,13 @@ void RxCalcApp::openProjectFile(QString fileName)
         table->item(RxTable::iip3, stage)->setText(open.value(satgeSection+"iip3").toString());
         table->item(RxTable::oip3, stage)->setText(open.value(satgeSection+"oip3").toString());
         table->item(RxTable::ip1db, stage)->setText(open.value(satgeSection+"iip1").toString());
-        table->item(RxTable::oip1db, stage)->setText(open.value(satgeSection+"oip1").toString());
+        table->item(RxTable::op1db, stage)->setText(open.value(satgeSection+"oip1").toString());
+        table->item(RxTable::iip3, stage)->setBackgroundColor(QColor(open.value(satgeSection+"iip3_color","#ffffff").toString()));
+        table->item(RxTable::oip3, stage)->setBackgroundColor(QColor(open.value(satgeSection+"oip3_color","#ffffff").toString()));
+        table->item(RxTable::ip1db, stage)->setBackgroundColor(QColor(open.value(satgeSection+"iip1_color","#ffffff").toString()));
+        table->item(RxTable::op1db, stage)->setBackgroundColor(QColor(open.value(satgeSection+"oip1_color","#ffffff").toString()));
     }
+    table->update(true);
 }
 
 void RxCalcApp::slotSave()
@@ -658,7 +664,11 @@ void RxCalcApp::saveProjectAs(QString fileName)
         save.setValue(satgeSection+"iip3",table->item(RxTable::iip3, stage)->text());
         save.setValue(satgeSection+"oip3",table->item(RxTable::oip3, stage)->text());
         save.setValue(satgeSection+"iip1",table->item(RxTable::ip1db, stage)->text());
-        save.setValue(satgeSection+"oip1",table->item(RxTable::oip1db, stage)->text());
+        save.setValue(satgeSection+"oip1",table->item(RxTable::op1db, stage)->text());
+        save.setValue(satgeSection+"iip3_color",table->item(RxTable::iip3, stage)->backgroundColor().name());
+        save.setValue(satgeSection+"oip3_color",table->item(RxTable::oip3, stage)->backgroundColor().name());
+        save.setValue(satgeSection+"iip1_color",table->item(RxTable::ip1db, stage)->backgroundColor().name());
+        save.setValue(satgeSection+"oip1_color",table->item(RxTable::op1db, stage)->backgroundColor().name());
     }
 }
 
@@ -738,10 +748,14 @@ void RxCalcApp::clickOnCalcButton()
         st->setEnabled((QLabel*)table->cellWidget(RxTable::pic, i)->isEnabled());
         st->setPowerGain(table->item(RxTable::gain, i)->text().toFloat());
         st->setNoiseFigure(table->item(RxTable::noiseFigure, i)->text().toFloat());
-        st->setOip3(table->item(RxTable::oip3, i)->text().toFloat());
-        st->setIip3(table->item(RxTable::iip3, i)->text().toFloat());
-        st->setOp1db(table->item(RxTable::oip1db, i)->text().toFloat());
-        st->setIp1db(table->item(RxTable::ip1db, i)->text().toFloat());
+        if (table->item(RxTable::oip3, i)->backgroundColor() == Qt::white)
+            st->setOip3(table->item(RxTable::oip3, i)->text().toFloat());
+        if (table->item(RxTable::iip3, i)->backgroundColor() == Qt::white)
+            st->setIip3(table->item(RxTable::iip3, i)->text().toFloat());
+        if (table->item(RxTable::op1db, i)->backgroundColor() == Qt::white)
+            st->setOp1db(table->item(RxTable::op1db, i)->text().toFloat());
+        if (table->item(RxTable::ip1db, i)->backgroundColor() == Qt::white)
+            st->setIp1db(table->item(RxTable::ip1db, i)->text().toFloat());
 
         system->stageList->append(st);
     }
@@ -782,6 +796,20 @@ void RxCalcApp::clickOnCalcButton()
         table->cell(RxTable::p_backoff, i)->setFloat(system->stageList->at(i)->sys.powerOutBackoff);
         table->cell(RxTable::p_backoff_peak, i)->setFloat(system->stageList->at(i)->sys.peakPowerOutBackoff);
     }
+
+    table->update(false);
+    for (int i=0; i<table->columnCount(); i++ )
+    {
+        if (table->item(RxTable::oip3, i)->text().isEmpty())
+            table->cell(RxTable::oip3, i)->setFloat(system->stageList->at(i)->oip3());
+        if (table->item(RxTable::iip3, i)->text().isEmpty())
+            table->cell(RxTable::iip3, i)->setFloat(system->stageList->at(i)->iip3());
+        if (table->item(RxTable::op1db, i)->text().isEmpty())
+            table->cell(RxTable::op1db, i)->setFloat(system->stageList->at(i)->op1db());
+        if (table->item(RxTable::ip1db, i)->text().isEmpty())
+            table->cell(RxTable::ip1db, i)->setFloat(system->stageList->at(i)->ip1db());
+    }
+    table->update(true);
 }
 
 QString RxCalcApp::rounding (float input)
