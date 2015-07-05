@@ -503,6 +503,17 @@ void RxTable::itemChanged(int row, int column)
         item(ip1db, column)->setBackgroundColor(Qt::lightGray);
         item(ip1db, column)->setText("");
     }
+    else if (row == gain)
+    {
+        if (item(ip1db, column)->backgroundColor() == Qt::lightGray)
+            item(ip1db, column)->setText("");
+        if (item(op1db, column)->backgroundColor() == Qt::lightGray)
+            item(op1db, column)->setText("");
+        if (item(iip3, column)->backgroundColor() == Qt::lightGray)
+            item(iip3, column)->setText("");
+        if (item(oip3, column)->backgroundColor() == Qt::lightGray)
+            item(oip3, column)->setText("");
+    }
 
     connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
 }
