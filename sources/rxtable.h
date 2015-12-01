@@ -63,6 +63,8 @@ public:
         systemNF,
         systemIIP3,
         systemOIP3,
+        systemIP1,
+        systemOP1,
         //corr_gain
         //corr_noise
         inputPower,

@@ -60,6 +60,8 @@ public:
         float noiseFigure;
         float iip3;
         float oip3;
+        float ip1db;
+        float op1db;
         float inputPower;
         float outputPower;
         float noiseFigureToSystemNoiseFigure;

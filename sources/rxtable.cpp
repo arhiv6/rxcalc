@@ -151,6 +151,12 @@ RxTable::RxTable(QWidget *parent)
     rows[systemOIP3].Handlre = tr("System OIP3 (dBm)");
     rows[systemOIP3].writable = false;
 
+    rows[systemIP1].Handlre = tr("System IP1dB (dBm)");
+    rows[systemIP1].writable = false;
+
+    rows[systemOP1].Handlre = tr("System OP1dB (dBm)");
+    rows[systemOP1].writable = false;
+
     rows[ip3StageToIp3System].Handlre = tr("Stage IIP3 / Full IIP3");
     rows[ip3StageToIp3System].writable = false;
 

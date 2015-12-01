@@ -789,6 +789,8 @@ void RxCalcApp::clickOnCalcButton()
         table->cell(RxTable::systemNF, i)->setFloat(system->stageList->at(i)->sys.noiseFigure);
         table->cell(RxTable::systemIIP3, i)->setFloat(system->stageList->at(i)->sys.iip3);
         table->cell(RxTable::systemOIP3, i)->setFloat(system->stageList->at(i)->sys.oip3);
+        table->cell(RxTable::systemIP1, i)->setFloat(system->stageList->at(i)->sys.ip1db);
+        table->cell(RxTable::systemOP1, i)->setFloat(system->stageList->at(i)->sys.op1db);
         table->cell(RxTable::inputPower, i)->setFloat(system->stageList->at(i)->sys.inputPower);
         table->cell(RxTable::outputPower, i)->setFloat(system->stageList->at(i)->sys.outputPower);
         table->cell(RxTable::nfStageToNfSystem, i)->setFloat(system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);

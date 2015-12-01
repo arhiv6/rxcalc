@@ -36,6 +36,8 @@ Stage::Stage()
     sys.noiseFigure=NAN;
     sys.iip3=NAN;
     sys.oip3=NAN;
+    sys.ip1db=NAN;
+    sys.op1db=NAN;
     sys.inputPower=NAN;
     sys.outputPower=NAN;
     sys.noiseFigureToSystemNoiseFigure=NAN;

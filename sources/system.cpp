@@ -244,6 +244,7 @@ void System::solveSysIp3()
         {
             stageList->at(i)->sys.iip3 = NAN; // add data in paramList
             stageList->at(i)->sys.oip3 = NAN; // add data in paramList
+            //TODO
             continue;
         }
 
@@ -294,6 +295,9 @@ void System::solveSysP1db()
             // other stages
             m_sysOp1db = 1/((1/(m_sysOp1db*converdBtoKp(stageList->at(i)->powerGain())))+(1/converdBtoKp(stageList->at(i)->op1db())));
         }
+        stageList->at(i)->sys.op1db = converKptodB(m_sysOp1db);
+        stageList->at(i)->sys.ip1db = stageList->at(i)->sys.op1db - (stageList->at(i)->sys.powerGain - 1);
+
         stageList->at(i)->sys.powerOutBackoff = stageList->at(i)->op1db() - stageList->at(i)->sys.outputPower; // add data in paramList
         stageList->at(i)->sys.peakPowerOutBackoff = stageList->at(i)->sys.powerOutBackoff - m_peakToRatio; // add data in paramList
     }
