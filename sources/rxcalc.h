@@ -53,7 +53,7 @@ class RxCalcApp : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit RxCalcApp();
+    explicit RxCalcApp(int argc, char *argv[]);
     ~RxCalcApp();
 
 private:
@@ -95,6 +95,7 @@ public slots:
     void validateNoiseBand();
     void setStagesNumberSlot();
     void setStagesNumber(int number);
+    void colorize();
 
 private slots:
     void clickOnCalcButton();

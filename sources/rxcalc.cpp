@@ -20,7 +20,7 @@
 
 #include "rxcalc.h"
 
-RxCalcApp::RxCalcApp()
+RxCalcApp::RxCalcApp(int argc, char *argv[])
 {
     system = new System();
 
@@ -38,31 +38,31 @@ RxCalcApp::RxCalcApp()
     fileNew->setIcon(QIcon::fromTheme("document-new", this->style()->standardIcon(QStyle::SP_FileIcon)));
     fileNew->setIconVisibleInMenu(true);
     fileNew->setShortcut(Qt::CTRL+Qt::Key_N);
-    connect(fileNew, SIGNAL(activated()), this, SLOT(slotNew()));
+    connect(fileNew, SIGNAL(triggered()), this, SLOT(slotNew()));
 
     QAction *fileOpen = new QAction(tr("Open"), this);
     fileOpen->setIcon(QIcon::fromTheme("document-open", this->style()->standardIcon(QStyle::SP_DialogOpenButton)));
     fileOpen->setIconVisibleInMenu(true);
     fileOpen->setShortcut(Qt::CTRL+Qt::Key_O);
-    connect(fileOpen, SIGNAL(activated()), this, SLOT(slotOpen()));
+    connect(fileOpen, SIGNAL(triggered()), this, SLOT(slotOpen()));
 
     QAction *fileSave = new QAction(tr("Save"), this);
     fileSave->setIcon(QIcon::fromTheme("document-save", this->style()->standardIcon(QStyle::SP_DialogSaveButton)));
     fileSave->setIconVisibleInMenu(true);
     fileSave->setShortcut(Qt::CTRL+Qt::Key_S);
-    connect(fileSave, SIGNAL(activated()), this, SLOT(slotSave()));
+    connect(fileSave, SIGNAL(triggered()), this, SLOT(slotSave()));
 
     QAction *fileSaveAs = new QAction(tr("Save as..."), this);
     fileSaveAs->setIcon(QIcon::fromTheme("document-save-as"));
     fileSaveAs->setIconVisibleInMenu(true);
     fileSaveAs->setShortcut(Qt::SHIFT+Qt::CTRL+Qt::Key_S);
-    connect(fileSaveAs, SIGNAL(activated()), this, SLOT(slotSaveAs()));
+    connect(fileSaveAs, SIGNAL(triggered()), this, SLOT(slotSaveAs()));
 
     QAction *fileQuit = new QAction(tr("Exit"), this);
     fileQuit->setIcon(QIcon::fromTheme("application-exit"));
     fileQuit->setIconVisibleInMenu(true);
     fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
-    connect(fileQuit, SIGNAL(activated()), qApp, SLOT(closeAllWindows())); // see closeEvent()
+    connect(fileQuit, SIGNAL(triggered()), qApp, SLOT(closeAllWindows())); // see closeEvent()
 
     fileMenu->addAction(fileNew);
     fileMenu->addAction(fileOpen);
@@ -79,19 +79,19 @@ RxCalcApp::RxCalcApp()
     helpHelp->setIcon(QIcon::fromTheme("help-contents", this->style()->standardIcon(QStyle::SP_DialogHelpButton)));
     helpHelp->setIconVisibleInMenu(true);
     helpHelp->setShortcut(Qt::Key_F1);
-    connect(helpHelp, SIGNAL(activated()), this, SLOT(slotHelp()));
+    connect(helpHelp, SIGNAL(triggered()), this, SLOT(slotHelp()));
 
     QAction * helpAbout = new QAction(tr("About "APP_NAME"..."), this);
     helpAbout->setIcon(QIcon::fromTheme("help-about"));
     helpAbout->setIconVisibleInMenu(true);
     helpMenu->addAction(helpAbout);
-    connect(helpAbout, SIGNAL(activated()), this, SLOT(slotAbout()));
+    connect(helpAbout, SIGNAL(triggered()), this, SLOT(slotAbout()));
 
     QAction * helpAboutQt = new QAction(tr("About Qt..."), this);
     helpAboutQt->setIcon(QIcon::fromTheme("help-about"));
     helpAboutQt->setIconVisibleInMenu(true);
     helpMenu->addAction(helpAboutQt);
-    connect(helpAboutQt, SIGNAL(activated()), qApp, SLOT(aboutQt()));
+    connect(helpAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     helpMenu->addAction(helpHelp);
     helpMenu->addSeparator();
@@ -110,6 +110,9 @@ RxCalcApp::RxCalcApp()
     all->setSpacing(3);
     top->setSpacing(3);
     bot->setSpacing(3);
+    all->setMargin(3);
+    top->setMargin(3);
+    bot->setMargin(3);
 
     // assign layout to central widget
     centralWidget->setLayout(all);
@@ -123,6 +126,7 @@ RxCalcApp::RxCalcApp()
     QGridLayout *gbox1 = new QGridLayout();
     gbox1->setVerticalSpacing(0);
     gbox1->setHorizontalSpacing(3);
+    gbox1->setMargin(3);
 
     box1->setLayout(gbox1);
 
@@ -246,6 +250,7 @@ RxCalcApp::RxCalcApp()
     QGridLayout *gbox2 = new QGridLayout();
     gbox2->setVerticalSpacing(0);
     gbox2->setHorizontalSpacing(3);
+    gbox2->setMargin(3);
 
     box2->setLayout(gbox2);
 
@@ -308,13 +313,18 @@ RxCalcApp::RxCalcApp()
     gbox2->addWidget(Label21, 6,2);
 
     // ...........................................................
+    QSpacerItem *spacer7=new QSpacerItem(5,5, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    bot->insertSpacerItem(1,spacer7);
+
+    // ...........................................................
     QGroupBox *box3 = new QGroupBox(tr("Noise Analysis"), this);
     box3->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    bot->addWidget(box3,1);
+    bot->addWidget(box3,2);
 
     QGridLayout *gbox3 = new QGridLayout();
     gbox3->setVerticalSpacing(0);
     gbox3->setHorizontalSpacing(3);
+    gbox3->setMargin(3);
 
     box3->setLayout(gbox3);
 
@@ -377,13 +387,18 @@ RxCalcApp::RxCalcApp()
     gbox3->addWidget(Label35, 6,2);
 
     // ...........................................................
+    QSpacerItem *spacer8=new QSpacerItem(5,5, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    bot->insertSpacerItem(3,spacer8);
+
+    // ...........................................................
     QGroupBox *box4 = new QGroupBox(tr("Dynamic Analysis"), this);
     box4->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    bot->addWidget(box4,2);
+    bot->addWidget(box4,5);
 
     QGridLayout *gbox4 = new QGridLayout();
     gbox4->setVerticalSpacing(0);
     gbox4->setHorizontalSpacing(3);
+    gbox4->setMargin(3);
 
     box4->setLayout(gbox4);
 
@@ -447,12 +462,15 @@ RxCalcApp::RxCalcApp()
 
     // ...........................................................
     QSpacerItem *spacer2=new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    bot->insertSpacerItem(3, spacer2);
+    bot->insertSpacerItem(6, spacer2);
 
     // -------  finally set initial state  --------
     loadSettings();    
-    if (qApp->argc() > 1)
-        openProjectFile(qApp->arguments().at(1));
+    if (argc > 1)
+    {
+        openProjectFile(argv[1]);
+        qDebug() << argv[1];
+    }
 }
 
 RxCalcApp::~RxCalcApp()
@@ -478,7 +496,7 @@ void RxCalcApp::loadSettings()
     QSettings settings(APP_NAME, APP_NAME);
     this->restoreGeometry(settings.value("windowGeometry",this->saveGeometry()).toByteArray());
     this->restoreState(settings.value("windowsState",this->saveState()).toByteArray());
-    defaultPath = settings.value("pathForSaveProjects",QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)).toString();
+    defaultPath = settings.value("pathForSaveProjects",QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).toString();
 }
 
 void RxCalcApp::slotNew()
@@ -506,8 +524,14 @@ void RxCalcApp::slotOpen()
 void RxCalcApp::openProjectFile(QString fileName)
 {
     QFileInfo fileInfo(defaultPath);
-    if (fileInfo.isDir() == false)
-        defaultPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
+//    if (fileInfo.isDir() == false)
+//        defaultPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
+    if (!fileInfo.isFile()) // Если это не файл
+    {
+       defaultPath = fileInfo.absoluteDir().absolutePath(); // Пробуем получить директорию
+        if (!fileInfo.isDir()) // Если и это не получилось
+            defaultPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    }
 
     // Select file
     if (fileName == NULL)
@@ -525,7 +549,7 @@ void RxCalcApp::openProjectFile(QString fileName)
 
     // Save default path
     fileInfo.setFile(fileName);
-    defaultPath = fileInfo.absolutePath();
+    defaultPath = fileInfo.absoluteFilePath();
 
     // Open file
     QSettings open(fileName, QSettings::IniFormat);
@@ -594,8 +618,14 @@ void RxCalcApp::slotSave()
 void RxCalcApp::slotSaveAs()
 {
     QFileInfo fileInfo(defaultPath);
-    if (fileInfo.isDir() == false)
-        defaultPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
+//    if (fileInfo.isDir() == false)
+//        defaultPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
+    if (!fileInfo.isFile()) // Если это не файл
+    {
+        defaultPath = fileInfo.absoluteDir().absolutePath(); // Пробуем получить директорию
+        if (!fileInfo.isDir()) // Если и это не получилось
+            defaultPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    }
 
     QString filter;
     QString fileName = QFileDialog::getSaveFileName(this, tr("Select file"), defaultPath, QString("RxCalc project (*.rxcp);;All files (*)"),&filter);
@@ -621,7 +651,7 @@ void RxCalcApp::saveProjectAs(QString fileName)
 
     // Save default path
     QFileInfo fileInfo(fileName);
-    defaultPath = fileInfo.absolutePath();
+    defaultPath = fileInfo.absoluteFilePath();
 
     openProjectPath = fileInfo.absoluteFilePath();
     setWindowTitle(QString(APP_NAME) + " " + QString(APP_VERSION) + " - " + openProjectPath);
@@ -631,13 +661,13 @@ void RxCalcApp::saveProjectAs(QString fileName)
 
     save.setValue("program",APP_NAME);
     save.setValue("version",APP_VERSION);
-    save.setValue("inputPower",inputPower_dBm->text());
-    save.setValue("noiseBand",noiseBand_Hz->text());
+    save.setValue("inputPower",QString::number(inputPower_dBm->value()));
+    save.setValue("noiseBand",QString::number(noiseBand_Hz->value()));
     save.setValue("freqmeasure",freqUnit->currentIndex());
-    save.setValue("minSn",minSignalToNoise_dB->text());
-    save.setValue("temperature",temperature_K_C->text());
+    save.setValue("minSn",QString::number(minSignalToNoise_dB->value()));
+    save.setValue("temperature",QString::number(temperature_K_C->value()));
     save.setValue("temperaturemeasure",temperatureUnit->currentIndex());
-    save.setValue("perToRms",perToRms_dB->text());
+    save.setValue("perToRms",QString::number(perToRms_dB->value()));
     save.setValue("stageCount",numberOfStages->value());
     save.setValue("comments",comment->toPlainText());
 
@@ -824,10 +854,58 @@ void RxCalcApp::clickOnCalcButton()
             table->cell(RxTable::ip1db, i)->setFloat(system->stageList->at(i)->ip1db());
     }
     table->update(true);
+
+    colorize();
 }
 
-//QString RxCalcApp::rounding (float input)
-//{
-//    float tmp=qRound(input*1000.0);
-//    return QString::number(tmp/1000.0);
-//}
+void RxCalcApp::colorize()
+{
+    for (int i=0; i<table->columnCount(); i++ )
+    {
+        if (system->stageList->at(i)->enabled() == true)
+        {
+            float nt_nf_val=0.5*system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure;
+            int color_bl = 164.0*(nt_nf_val*(0.56)+1.0);
+            int color_gr = 164.0-(164.0*nt_nf_val);
+            table->item(RxTable::nfStageToNfSystem, i)->setBackgroundColor(QColor(color_gr,color_gr,color_bl));
+
+            float ip3StageToIp3System_val=0.5*system->stageList->at(i)->sys.stageIip3ToSystemIip3;
+            int color_r = 164.0*(ip3StageToIp3System_val*(0.56)+1.0);
+            int color_gb = 164.0-(164.0*ip3StageToIp3System_val);
+            table->item(RxTable::ip3StageToIp3System, i)->setBackgroundColor(QColor(color_r,color_gb,color_gb));
+
+            float p1backoff = system->stageList->at(i)->sys.powerOutBackoff;
+            if (p1backoff>10)
+                p1backoff=0;
+            else if (p1backoff<0)
+                p1backoff=1;
+            else
+                p1backoff=(10.0-p1backoff)/10.0;
+            p1backoff=0.5*p1backoff;
+            color_r = 164.0*(p1backoff*(0.56)+1.0);
+            color_gb = 164.0-(164.0*p1backoff);
+            table->item(RxTable::p_backoff, i)->setBackgroundColor(QColor(color_r,color_gb,color_gb));
+
+
+            float p1reakBackoff = system->stageList->at(i)->sys.peakPowerOutBackoff;
+            if (p1reakBackoff>10)
+                p1reakBackoff=0;
+            else if (p1reakBackoff<0)
+                p1reakBackoff=1;
+            else
+                p1reakBackoff=(10.0-p1reakBackoff)/10.0;
+            p1reakBackoff=0.5*p1reakBackoff;
+            color_r = 164.0*(p1reakBackoff*(0.56)+1.0);
+            color_gb = 164.0-(164.0*p1reakBackoff);
+            table->item(RxTable::p_backoff_peak, i)->setBackgroundColor(QColor(color_r,color_gb,color_gb));
+
+        }
+        else
+        {
+            table->item(RxTable::nfStageToNfSystem, i)->setBackgroundColor(Qt::gray);
+            table->item(RxTable::ip3StageToIp3System, i)->setBackgroundColor(Qt::gray);
+            table->item(RxTable::p_backoff, i)->setBackgroundColor(Qt::gray);
+            table->item(RxTable::p_backoff, i)->setBackgroundColor(Qt::gray);
+        }
+    }
+}

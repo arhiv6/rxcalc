@@ -26,7 +26,7 @@ RxTable::RxTable(QWidget *parent)
     m_sizeAfterDecimalPoint = 2;
     setItemPrototype(new RxTableCell);
     connect(horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(renameHeaders()));
-    horizontalHeader()->setMovable(true);
+    horizontalHeader()->setSectionsMovable(true);
     setSelectionMode(QAbstractItemView::NoSelection);
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotShowContextMenu(const QPoint &)));
@@ -253,6 +253,7 @@ void RxTable::createCount(int column)
         }
         else
         {
+            setRowHeight(row, 20);
             setItem(row, column, new RxTableCell);
             if (rows[row].writable == true)
             {
