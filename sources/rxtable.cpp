@@ -35,26 +35,22 @@ RxTable::RxTable(QWidget *parent)
     contextMenu = new QMenu();
 
     actionEnableStage = new QAction(tr("Enable stage"),this);
-    //actionEnableStage->setIcon(QIcon::fromTheme("dialog-yes", this->style()->standardIcon(QStyle::SP_DialogYesButton))); //TODO test in Windows
-    actionEnableStage->setIcon(QIcon::fromTheme("dialog-yes"));
+    actionEnableStage->setIcon(QIcon::fromTheme("dialog-yes", this->style()->standardIcon(QStyle::SP_DialogYesButton)));
     actionEnableStage->setIconVisibleInMenu(true);
     connect(actionEnableStage, SIGNAL(triggered()), this, SLOT(actionSlotEnableStage()));
 
     actionDisableStage = new QAction(tr("Disable stage"),this);
-    //actionDisableStage->setIcon(QIcon::fromTheme("dialog-no", this->style()->standardIcon(QStyle::SP_DialogNoButton))); //TODO test in Windows
-    actionDisableStage->setIcon(QIcon::fromTheme("dialog-no"));
+    actionDisableStage->setIcon(QIcon::fromTheme("dialog-no", this->style()->standardIcon(QStyle::SP_DialogNoButton)));
     actionDisableStage->setIconVisibleInMenu(true);
     connect(actionDisableStage, SIGNAL(triggered()), this, SLOT(actionSlotDisableStage()));
 
     actionMoveStageLeft = new QAction(tr("Move stage left"),this);
-    //actionMoveStageLeft->setIcon(QIcon::fromTheme("go-previous", this->style()->standardIcon(QStyle::SP_ArrowLeft))); //TODO test in Windows
-    actionMoveStageLeft->setIcon(QIcon::fromTheme("go-previous"));
+    actionMoveStageLeft->setIcon(QIcon::fromTheme("go-previous", this->style()->standardIcon(QStyle::SP_ArrowLeft)));
     actionMoveStageLeft->setIconVisibleInMenu(true);
     connect(actionMoveStageLeft, SIGNAL(triggered()), this, SLOT(actionSlotMoveStageLeft()));
 
     actionMoveStageRight = new QAction(tr("Move stage right"),this);
-    //actionMoveStageRight->setIcon(QIcon::fromTheme("go-next", this->style()->standardIcon(QStyle::SP_ArrowRight))); //TODO test in Windows
-    actionMoveStageRight->setIcon(QIcon::fromTheme("go-next"));
+    actionMoveStageRight->setIcon(QIcon::fromTheme("go-next", this->style()->standardIcon(QStyle::SP_ArrowRight)));
     actionMoveStageRight->setIconVisibleInMenu(true);
     connect(actionMoveStageRight, SIGNAL(triggered()), this, SLOT(actionSlotMoveStageRight()));
 
@@ -64,8 +60,7 @@ RxTable::RxTable(QWidget *parent)
     connect(actionAddStage, SIGNAL(triggered()), this, SLOT(actionSlotAddStage()));
 
     QAction *actionRemoveStage = new QAction(tr("Remove stage"),this);
-    //actionRemoveStage->setIcon(QIcon::fromTheme("list-remove", this->style()->standardIcon(QStyle::SP_BrowserStop))); //TODO test in Windows
-    actionRemoveStage->setIcon(QIcon::fromTheme("list-remove"));
+    actionRemoveStage->setIcon(QIcon::fromTheme("list-remove", this->style()->standardIcon(QStyle::SP_BrowserStop)));
     actionRemoveStage->setIconVisibleInMenu(true);
     connect(actionRemoveStage, SIGNAL(triggered()), this, SLOT(actionSlotRemoveStage()));
 
@@ -481,7 +476,7 @@ void RxTable::itemChanged(int row, int column)
         return;
     }
     else
-        item(row, column)->setBackgroundColor(Qt::white); //TODO сделать как troporf
+        item(row, column)->setBackgroundColor(Qt::white);
 
     disconnect(this, SIGNAL(cellChanged(int,int)), this, SLOT(itemChanged(int, int)));
 

@@ -35,35 +35,30 @@ RxCalcApp::RxCalcApp()
     QMenu *fileMenu = new QMenu(tr("File"));
 
     QAction *fileNew = new QAction(tr("New"), this);
-    //fileNew->setIcon(QIcon::fromTheme("document-new", this->style()->standardIcon(QStyle::SP_FileIcon))); //TODO test in Windows
-    fileNew->setIcon(QIcon::fromTheme("document-new"));
+    fileNew->setIcon(QIcon::fromTheme("document-new", this->style()->standardIcon(QStyle::SP_FileIcon)));
     fileNew->setIconVisibleInMenu(true);
     fileNew->setShortcut(Qt::CTRL+Qt::Key_N);
     connect(fileNew, SIGNAL(activated()), this, SLOT(slotNew()));
 
     QAction *fileOpen = new QAction(tr("Open"), this);
-    //fileOpen->setIcon(QIcon::fromTheme("document-open", this->style()->standardIcon(QStyle::SP_DialogOpenButton))); //TODO test in Windows
-    fileOpen->setIcon(QIcon::fromTheme("document-open"));
+    fileOpen->setIcon(QIcon::fromTheme("document-open", this->style()->standardIcon(QStyle::SP_DialogOpenButton)));
     fileOpen->setIconVisibleInMenu(true);
     fileOpen->setShortcut(Qt::CTRL+Qt::Key_O);
     connect(fileOpen, SIGNAL(activated()), this, SLOT(slotOpen()));
 
     QAction *fileSave = new QAction(tr("Save"), this);
-    //fileSave->setIcon(QIcon::fromTheme("document-save", this->style()->standardIcon(QStyle::SP_DialogSaveButton))); //TODO test in Windows
-    fileSave->setIcon(QIcon::fromTheme("document-save"));
+    fileSave->setIcon(QIcon::fromTheme("document-save", this->style()->standardIcon(QStyle::SP_DialogSaveButton)));
     fileSave->setIconVisibleInMenu(true);
     fileSave->setShortcut(Qt::CTRL+Qt::Key_S);
     connect(fileSave, SIGNAL(activated()), this, SLOT(slotSave()));
 
     QAction *fileSaveAs = new QAction(tr("Save as..."), this);
-    //fileSaveAs->setIcon(QIcon::fromTheme("document-save-as", this->style()->standardIcon(QStyle::))); //TODO test in Windows
     fileSaveAs->setIcon(QIcon::fromTheme("document-save-as"));
     fileSaveAs->setIconVisibleInMenu(true);
     fileSaveAs->setShortcut(Qt::SHIFT+Qt::CTRL+Qt::Key_S);
     connect(fileSaveAs, SIGNAL(activated()), this, SLOT(slotSaveAs()));
 
     QAction *fileQuit = new QAction(tr("Exit"), this);
-    //fileQuit->setIcon(QIcon::fromTheme("application-exit", this->style()->standardIcon(QStyle::))); //TODO test in Windows
     fileQuit->setIcon(QIcon::fromTheme("application-exit"));
     fileQuit->setIconVisibleInMenu(true);
     fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
@@ -81,8 +76,7 @@ RxCalcApp::RxCalcApp()
     QMenu *helpMenu = new QMenu(tr("Help"), this);
 
     QAction * helpHelp = new QAction(tr("Help"), this);
-    //helpHelp->setIcon(QIcon::fromTheme("help-contents", this->style()->standardIcon(QStyle::SP_DialogHelpButton))); //TODO test in Windows
-    helpHelp->setIcon(QIcon::fromTheme("help-contents"));
+    helpHelp->setIcon(QIcon::fromTheme("help-contents", this->style()->standardIcon(QStyle::SP_DialogHelpButton)));
     helpHelp->setIconVisibleInMenu(true);
     helpHelp->setShortcut(Qt::Key_F1);
     connect(helpHelp, SIGNAL(activated()), this, SLOT(slotHelp()));
@@ -762,41 +756,59 @@ void RxCalcApp::clickOnCalcButton()
     system->solve();
 
     //-----------------------------------------
-    gain_dB->setText(rounding(system->sys1.sysPowerGain));
-    noiseFigure_dB->setText(rounding(system->sys1.sysNoiseFigure));
-    inputIP3_dBm->setText(rounding(system->sys1.sysIip3));
-    outputIP3_dBm->setText(rounding(system->sys1.sysOip3));
-    inputP1dB_dBm->setText(rounding(system->sys1.sysIp1db));
-    outputP1dB_dBm->setText(rounding(system->sys1.sysOp1db));
-    outpupPower_dBm->setText(rounding(system->sys1.sysOutputPower));
-    noiseFloor_dBmHz->setText(rounding(system->sys1.sysNoiseFloor_dbmHz));
-    outputNSD_dBmHz->setText(rounding(system->sys1.sysOutputNsd_dbmHz));
-    outputNoiseFloor_dBm->setText(rounding(system->sys1.sysNoiseFloor_dbm));
-    snr_dB->setText(rounding(system->sys1.snr));
-    mds_dBm->setText(rounding(system->sys1.mds));
-    sensivity_dBm->setText(rounding(system->sys1.sensivity));
-    noiseTemperature_K->setText(rounding(system->sys1.noiseTemperature));
-    outpuiIMlevel_dBm->setText(rounding(system->sys1.outputImLevel_dBm));   // ?
-    outpuiIMlevel_dBc->setText(rounding(system->sys1.outputImLevel_dBc));  // ?
-    inpuiIMlevel_dBm->setText(rounding(system->sys1.inputImLevel_dBm));
-    inpuiIMlevel_dBc->setText(rounding(system->sys1.inputImLevel_dBc));
-    imd_dB->setText(rounding(system->sys1.imd));
-    sfdr_dB->setText(rounding(system->sys1.sfdr));
+    gain_dB->setText(QString::number(system->sys1.sysPowerGain,10,2));
+    noiseFigure_dB->setText(QString::number(system->sys1.sysNoiseFigure,10,2));
+    inputIP3_dBm->setText(QString::number(system->sys1.sysIip3,10,2));
+    outputIP3_dBm->setText(QString::number(system->sys1.sysOip3,10,2));
+    inputP1dB_dBm->setText(QString::number(system->sys1.sysIp1db,10,2));
+    outputP1dB_dBm->setText(QString::number(system->sys1.sysOp1db,10,2));
+    outpupPower_dBm->setText(QString::number(system->sys1.sysOutputPower,10,2));
+    noiseFloor_dBmHz->setText(QString::number(system->sys1.sysNoiseFloor_dbmHz,10,2));
+    outputNSD_dBmHz->setText(QString::number(system->sys1.sysOutputNsd_dbmHz,10,2));
+    outputNoiseFloor_dBm->setText(QString::number(system->sys1.sysNoiseFloor_dbm,10,2));
+    snr_dB->setText(QString::number(system->sys1.snr,10,2));
+    mds_dBm->setText(QString::number(system->sys1.mds,10,2));
+    sensivity_dBm->setText(QString::number(system->sys1.sensivity,10,2));
+    noiseTemperature_K->setText(QString::number(system->sys1.noiseTemperature,10,2));
+    outpuiIMlevel_dBm->setText(QString::number(system->sys1.outputImLevel_dBm,10,2));   // ?
+    outpuiIMlevel_dBc->setText(QString::number(system->sys1.outputImLevel_dBc,10,2));  // ?
+    inpuiIMlevel_dBm->setText(QString::number(system->sys1.inputImLevel_dBm,10,2));
+    inpuiIMlevel_dBc->setText(QString::number(system->sys1.inputImLevel_dBc,10,2));
+    imd_dB->setText(QString::number(system->sys1.imd,10,2));
+    sfdr_dB->setText(QString::number(system->sys1.sfdr,10,2));
 
     for (int i=0; i<table->columnCount(); i++ )
     {
-        table->cell(RxTable::stageGain, i)->setFloat(system->stageList->at(i)->sys.powerGain);
-        table->cell(RxTable::systemNF, i)->setFloat(system->stageList->at(i)->sys.noiseFigure);
-        table->cell(RxTable::systemIIP3, i)->setFloat(system->stageList->at(i)->sys.iip3);
-        table->cell(RxTable::systemOIP3, i)->setFloat(system->stageList->at(i)->sys.oip3);
-        table->cell(RxTable::systemIP1, i)->setFloat(system->stageList->at(i)->sys.ip1db);
-        table->cell(RxTable::systemOP1, i)->setFloat(system->stageList->at(i)->sys.op1db);
-        table->cell(RxTable::inputPower, i)->setFloat(system->stageList->at(i)->sys.inputPower);
-        table->cell(RxTable::outputPower, i)->setFloat(system->stageList->at(i)->sys.outputPower);
-        table->cell(RxTable::nfStageToNfSystem, i)->setFloat(system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);
-        table->cell(RxTable::ip3StageToIp3System, i)->setFloat(system->stageList->at(i)->sys.stageIip3ToSystemIip3);
-        table->cell(RxTable::p_backoff, i)->setFloat(system->stageList->at(i)->sys.powerOutBackoff);
-        table->cell(RxTable::p_backoff_peak, i)->setFloat(system->stageList->at(i)->sys.peakPowerOutBackoff);
+        if (system->stageList->at(i)->enabled() == true)
+        {
+            table->cell(RxTable::stageGain, i)->setFloat(system->stageList->at(i)->sys.powerGain);
+            table->cell(RxTable::systemNF, i)->setFloat(system->stageList->at(i)->sys.noiseFigure);
+            table->cell(RxTable::systemIIP3, i)->setFloat(system->stageList->at(i)->sys.iip3);
+            table->cell(RxTable::systemOIP3, i)->setFloat(system->stageList->at(i)->sys.oip3);
+            table->cell(RxTable::systemIP1, i)->setFloat(system->stageList->at(i)->sys.ip1db);
+            table->cell(RxTable::systemOP1, i)->setFloat(system->stageList->at(i)->sys.op1db);
+            table->cell(RxTable::inputPower, i)->setFloat(system->stageList->at(i)->sys.inputPower);
+            table->cell(RxTable::outputPower, i)->setFloat(system->stageList->at(i)->sys.outputPower);
+            table->cell(RxTable::nfStageToNfSystem, i)->setFloat(system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);
+            table->cell(RxTable::ip3StageToIp3System, i)->setFloat(system->stageList->at(i)->sys.stageIip3ToSystemIip3);
+            table->cell(RxTable::p_backoff, i)->setFloat(system->stageList->at(i)->sys.powerOutBackoff);
+            table->cell(RxTable::p_backoff_peak, i)->setFloat(system->stageList->at(i)->sys.peakPowerOutBackoff);
+        }
+        else
+        {
+            table->cell(RxTable::stageGain, i)->setText("");
+            table->cell(RxTable::systemNF, i)->setText("");
+            table->cell(RxTable::systemIIP3, i)->setText("");
+            table->cell(RxTable::systemOIP3, i)->setText("");
+            table->cell(RxTable::systemIP1, i)->setText("");
+            table->cell(RxTable::systemOP1, i)->setText("");
+            table->cell(RxTable::inputPower, i)->setText("");
+            table->cell(RxTable::outputPower, i)->setText("");
+            table->cell(RxTable::nfStageToNfSystem, i)->setText("");
+            table->cell(RxTable::ip3StageToIp3System, i)->setText("");
+            table->cell(RxTable::p_backoff, i)->setText("");
+            table->cell(RxTable::p_backoff_peak, i)->setText("");
+        }
     }
 
     table->update(false);
@@ -814,8 +826,8 @@ void RxCalcApp::clickOnCalcButton()
     table->update(true);
 }
 
-QString RxCalcApp::rounding (float input)
-{
-    float tmp=qRound(input*1000.0);
-    return QString::number(tmp/1000.0);
-}
+//QString RxCalcApp::rounding (float input)
+//{
+//    float tmp=qRound(input*1000.0);
+//    return QString::number(tmp/1000.0);
+//}

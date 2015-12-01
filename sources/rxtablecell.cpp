@@ -32,11 +32,12 @@ RxTableCell::~RxTableCell()
 
 void RxTableCell::setFloat(float number)
 {
-    setText(QString::number(rounding((number))));
+    //setText(QString::number(rounding((number))));
+    setText(QString::number(number,10,2));
 }
 
-float RxTableCell::rounding (float input)
-{
-    float tmp=qRound(input*1000.0);
-    return tmp/1000.0;
-}
+//float RxTableCell::rounding (float input)
+//{
+//    float tmp=qRound(input*1000.0);
+//    return tmp/1000.0;
+//}

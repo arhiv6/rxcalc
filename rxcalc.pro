@@ -18,7 +18,7 @@
  #
 
 TARGET   = rxcalc
-VERSION  = 0.1
+VERSION  = 0.6
 TEMPLATE = app
 
 QT += core gui

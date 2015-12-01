@@ -31,7 +31,6 @@ public:
     void setFloat(float number);
 
 private:
-    float rounding (float input);
     unsigned int m_sizeAfterDecimalPoint;
 };
 

@@ -244,7 +244,6 @@ void System::solveSysIp3()
         {
             stageList->at(i)->sys.iip3 = NAN; // add data in paramList
             stageList->at(i)->sys.oip3 = NAN; // add data in paramList
-            //TODO
             continue;
         }
 
