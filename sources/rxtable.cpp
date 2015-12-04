@@ -226,8 +226,8 @@ void RxTable::createCount(int column)
     {
         if (row == pic)
         {
-           setRowHeight(row, 100);
-           setColumnWidth(column, 100);
+           setRowHeight(row, 92);
+           setColumnWidth(column, 92);
 
             QLabel *label = new QLabel;
             label->setAlignment(Qt::AlignCenter);
@@ -241,6 +241,7 @@ void RxTable::createCount(int column)
         }
         else if (row == type)
         {
+            setRowHeight(row, 24);
             QComboBox *test = new QComboBox;
             for (int a=0; a<END_STAGE_TYPE; a++)
                 test->addItem(stageType[a].name);
@@ -253,7 +254,7 @@ void RxTable::createCount(int column)
         }
         else
         {
-            setRowHeight(row, 20);
+            setRowHeight(row, 22);
             setItem(row, column, new RxTableCell);
             if (rows[row].writable == true)
             {

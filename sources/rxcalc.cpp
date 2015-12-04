@@ -905,7 +905,7 @@ void RxCalcApp::colorize()
             table->item(RxTable::nfStageToNfSystem, i)->setBackgroundColor(Qt::gray);
             table->item(RxTable::ip3StageToIp3System, i)->setBackgroundColor(Qt::gray);
             table->item(RxTable::p_backoff, i)->setBackgroundColor(Qt::gray);
-            table->item(RxTable::p_backoff, i)->setBackgroundColor(Qt::gray);
+            table->item(RxTable::p_backoff_peak, i)->setBackgroundColor(Qt::gray);
         }
     }
 }
