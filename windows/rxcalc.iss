@@ -1,10 +1,8 @@
 #define AppName     "RxCalc"
 #define AppVersion  "{VERSION}"
 #define InputDir    "{INPUTDIR}"
-#define LibDir      "{LIBDIR}"
 #define OutputDir   "."
 [Setup]
-;AppId={{D2FCF7BC-D43A-478F-A98B-EAE90B435375}
 AppName={#AppName}
 AppVersion={#AppVersion}
 AppPublisher="Verkhovin Vyacheslav"
@@ -51,17 +49,10 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 [Files]
-Source: "{#OutputDir}\release\rxcalc.exe"; DestDir: "{app}"; Flags: replacesameversion
-;Source: "{#InputDir}\translations\*.qm"; DestDir: "{app}\translations"; Flags: replacesameversion
-Source: "{#InputDir}\windows\gpl.txt"; DestDir: "{app}"; Flags: replacesameversion
+Source: "{#OutputDir}\release\*"; DestDir: "{app}"; Flags: replacesameversion recursesubdirs createallsubdirs
+Source: "{#InputDir}\LICENSE"; DestDir: "{app}"; Flags: replacesameversion
 ;Source: "{#InputDir}\docs\*"; DestDir: "{app}\docs"; Flags: replacesameversion
-Source: "{#LibDir}\mingwm10.dll"; DestDir: "{app}"; Flags: replacesameversion
-Source: "{#LibDir}\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: replacesameversion
-Source: "{#LibDir}\QtCore4.dll"; DestDir: "{app}"; Flags: replacesameversion
-Source: "{#LibDir}\QtGui4.dll"; DestDir: "{app}"; Flags: replacesameversion
-Source: "{#LibDir}\QtSvg4.dll"; DestDir: "{app}"; Flags: replacesameversion
-Source: "{#LibDir}\QtXml4.dll"; DestDir: "{app}"; Flags: replacesameversion
-Source: "{#LibDir}\..\plugins\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats"; Flags: replacesameversion
+;Source: "{#InputDir}\translations\*.qm"; DestDir: "{app}\translations"; Flags: replacesameversion
 [Icons]
 Name: "{group}\RxCalc"; Filename: "{app}\rxcalc.exe"
 Name: "{group}\{cm:ProgramOnTheWeb,RxCalc}"; Filename: "http://sourceforge.net/projects/rxcalc"

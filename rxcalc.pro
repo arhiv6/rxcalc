@@ -18,7 +18,7 @@
  #
 
 TARGET   = rxcalc
-VERSION  = 0.6.2
+VERSION  = 0.6.3
 TEMPLATE = app
 
 QT += core gui
@@ -46,7 +46,8 @@ RESOURCES   +=  resources/images.qrc
 OTHER_FILES +=  README.md \
                 LICENSE \
                 windows/replace.bat \
-                windows/rxcalc.iss
+                windows/rxcalc.iss \
+                resources/images.qrc
 
 # use 'make build' for create .deb package
 unix {
@@ -88,16 +89,12 @@ unix {
 
 win32 {
     QMAKE_TARGET_COPYRIGHT = (c) Verkhovin Vyacheslav
-    RC_ICONS = windows/rxcalc.ico
+    RC_ICONS = resources/rxcalc.ico
 
-    #CONFIG+=release
-#    QMAKE_EXTRA_TARGETS += build
-#    build.CONFIG = phony
-    #build.depends = release
-#    build.commands = echo 123 > 123
-#winedeployqt $$CD_OUT_PWD\release\rxcalc.exe
-#    build.commands = $$CD_PWD\\windows\\replace.bat $$CD_PWD\\windows\\rxcalc.iss \"{VERSION}\" \"$$VERSION\" > $$CD_OUT_PWD\\rxcalc.iss.tmp1 && \
-#        $$CD_PWD\\windows\\replace.bat $$CD_OUT_PWD\\rxcalc.iss.tmp1 \"{INPUTDIR}\" \"$$CD_PWD\" > $$CD_OUT_PWD\\rxcalc.iss.tmp2 && \
-#        $$CD_PWD\\windows\\replace.bat $$CD_OUT_PWD\\rxcalc.iss.tmp2 \"{LIBDIR}\" \"$$QMAKE_LIBDIR_QT\\..\\bin\" > $$CD_OUT_PWD\\rxcalc.iss && \
-#        DEL $$CD_OUT_PWD\\rxcalc.iss.tmp1 && DEL $$CD_OUT_PWD\\rxcalc.iss.tmp2 # iscc.exe rxcalc.iss
+    QMAKE_EXTRA_TARGETS += build
+    build.depends = release
+    build.commands = windeployqt .\\release\\rxcalc.exe && \
+        $$PWD\\windows\\replace.bat     $$PWD\\windows\\rxcalc.iss  \"{VERSION}\"   \"$$VERSION\"   > .\\rxcalc.tmp && \
+        $$PWD\\windows\\replace.bat     .\\rxcalc.tmp               \"{INPUTDIR}\"  \"$$PWD\"       > .\\rxcalc.iss && \
+        DEL .\\rxcalc.tmp && DEL .\\release\\*.o && DEL .\\release\\*.cpp && iscc.exe rxcalc.iss
 }

@@ -28,7 +28,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     setCentralWidget(centralWidget);
 
     // set application icon
-    setWindowIcon(QPixmap(":/img/rxcalc.png"));
+    setWindowIcon(QPixmap(":/img/rxcalc.ico"));
     setWindowTitle(APP_NAME " " APP_VERSION);
 
     // --------  create menubar  -------------------
@@ -489,6 +489,7 @@ void RxCalcApp::saveSettings()
     settings.setValue("windowGeometry",this->saveGeometry());
     settings.setValue("windowsState",this->saveState());
     settings.setValue("pathForSaveProjects",defaultPath);
+    settings.sync();
 }
 
 void RxCalcApp::loadSettings()
@@ -497,6 +498,9 @@ void RxCalcApp::loadSettings()
     this->restoreGeometry(settings.value("windowGeometry",this->saveGeometry()).toByteArray());
     this->restoreState(settings.value("windowsState",this->saveState()).toByteArray());
     defaultPath = settings.value("pathForSaveProjects",QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).toString();
+    QFileInfo fileno(defaultPath);
+    if (fileno.isFile())
+        defaultPath = fileno.absoluteDir().absolutePath();
 }
 
 void RxCalcApp::slotNew()
@@ -526,7 +530,7 @@ void RxCalcApp::openProjectFile(QString fileName)
     QFileInfo fileInfo(defaultPath);
 //    if (fileInfo.isDir() == false)
 //        defaultPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
-    if (!fileInfo.isFile()) // Если это не файл
+    if (!fileInfo.isFile() && !fileInfo.isDir()) // Если это не файл
     {
        defaultPath = fileInfo.absoluteDir().absolutePath(); // Пробуем получить директорию
         if (!fileInfo.isDir()) // Если и это не получилось
@@ -620,7 +624,7 @@ void RxCalcApp::slotSaveAs()
     QFileInfo fileInfo(defaultPath);
 //    if (fileInfo.isDir() == false)
 //        defaultPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
-    if (!fileInfo.isFile()) // Если это не файл
+    if (!fileInfo.isFile() && !fileInfo.isDir()) // Если это не файл
     {
         defaultPath = fileInfo.absoluteDir().absolutePath(); // Пробуем получить директорию
         if (!fileInfo.isDir()) // Если и это не получилось
@@ -694,6 +698,9 @@ void RxCalcApp::saveProjectAs(QString fileName)
         save.setValue(satgeSection+"iip1_color",table->item(RxTable::ip1db, stage)->backgroundColor().name());
         save.setValue(satgeSection+"oip1_color",table->item(RxTable::op1db, stage)->backgroundColor().name());
     }
+    qDebug() << save.status();
+    qDebug() << save.fileName();
+    save.sync();
 }
 
 void RxCalcApp::slotHelp()
@@ -864,7 +871,10 @@ void RxCalcApp::colorize()
     {
         if (system->stageList->at(i)->enabled() == true)
         {
+
             float nt_nf_val=0.5*system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure;
+            if (system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure != system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure)//NAN
+                {nt_nf_val = 0;}
             int color_bl = 164.0*(nt_nf_val*(0.56)+1.0);
             int color_gr = 164.0-(164.0*nt_nf_val);
             table->item(RxTable::nfStageToNfSystem, i)->setBackgroundColor(QColor(color_gr,color_gr,color_bl));
