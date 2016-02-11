@@ -544,12 +544,12 @@ void RxCalcApp::openProjectFile(QString fileName)
     // Verify file
     if (fileName.isEmpty())
         return;
-    QFile file(fileName);
+    /*QFile file(fileName);
     if (!file.open(QFile::ReadWrite | QFile::Text))
     {
         QMessageBox::warning(this, APP_NAME, QString(tr("Cannot read file") + " %1:\n%2.").arg(fileName).arg(file.errorString()));
         return;
-    }
+    }*/
 
     // Save default path
     fileInfo.setFile(fileName);
@@ -646,12 +646,12 @@ void RxCalcApp::saveProjectAs(QString fileName)
     // Verify file
     if (fileName.isEmpty())
         return;
-    QFile file(fileName);
+    /*QFile file(fileName);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
         QMessageBox::warning(this, APP_NAME, QString(tr("Cannot write file") + "%1:\n%2.").arg(fileName).arg(file.errorString()));
         return;
-    }
+    }*/
 
     // Save default path
     QFileInfo fileInfo(fileName);

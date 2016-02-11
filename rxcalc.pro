@@ -1,4 +1,4 @@
- #
+` #
  # Copyright 2014, 2015 Verkhovin Vyacheslav
  #
  # This file is part of RxCalc.
@@ -18,7 +18,7 @@
  #
 
 TARGET   = rxcalc
-VERSION  = 0.6.3
+VERSION  = 0.6.4
 TEMPLATE = app
 
 QT += core gui
