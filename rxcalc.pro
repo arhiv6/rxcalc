@@ -1,4 +1,4 @@
-` #
+ #
  # Copyright 2014, 2015 Verkhovin Vyacheslav
  #
  # This file is part of RxCalc.
