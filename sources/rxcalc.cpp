@@ -773,20 +773,24 @@ void RxCalcApp::clickOnCalcButton()
 {
     system->stageList->clear();
 
+     int stage;
+
     for (int i=0; i<table->columnCount(); i++ )
     {
+        stage=table->horizontalHeader()->logicalIndex(i);
+
         Stage* st = new Stage();
-        st->setEnabled((QLabel*)table->cellWidget(RxTable::pic, i)->isEnabled());
-        st->setPowerGain(table->item(RxTable::gain, i)->text().toFloat());
-        st->setNoiseFigure(table->item(RxTable::noiseFigure, i)->text().toFloat());
-        if (table->item(RxTable::oip3, i)->backgroundColor() == Qt::white)
-            st->setOip3(table->item(RxTable::oip3, i)->text().toFloat());
-        if (table->item(RxTable::iip3, i)->backgroundColor() == Qt::white)
-            st->setIip3(table->item(RxTable::iip3, i)->text().toFloat());
-        if (table->item(RxTable::op1db, i)->backgroundColor() == Qt::white)
-            st->setOp1db(table->item(RxTable::op1db, i)->text().toFloat());
-        if (table->item(RxTable::ip1db, i)->backgroundColor() == Qt::white)
-            st->setIp1db(table->item(RxTable::ip1db, i)->text().toFloat());
+        st->setEnabled((QLabel*)table->cellWidget(RxTable::pic, stage)->isEnabled());
+        st->setPowerGain(table->item(RxTable::gain, stage)->text().toFloat());
+        st->setNoiseFigure(table->item(RxTable::noiseFigure, stage)->text().toFloat());
+        if (table->item(RxTable::oip3, stage)->backgroundColor() == Qt::white)
+            st->setOip3(table->item(RxTable::oip3, stage)->text().toFloat());
+        if (table->item(RxTable::iip3, stage)->backgroundColor() == Qt::white)
+            st->setIip3(table->item(RxTable::iip3, stage)->text().toFloat());
+        if (table->item(RxTable::op1db, stage)->backgroundColor() == Qt::white)
+            st->setOp1db(table->item(RxTable::op1db, stage)->text().toFloat());
+        if (table->item(RxTable::ip1db, stage)->backgroundColor() == Qt::white)
+            st->setIp1db(table->item(RxTable::ip1db, stage)->text().toFloat());
 
         system->stageList->append(st);
     }
@@ -816,49 +820,53 @@ void RxCalcApp::clickOnCalcButton()
 
     for (int i=0; i<table->columnCount(); i++ )
     {
+        stage=table->horizontalHeader()->logicalIndex(i);
+
         if (system->stageList->at(i)->enabled() == true)
         {
-            table->cell(RxTable::stageGain, i)->setFloat(system->stageList->at(i)->sys.powerGain);
-            table->cell(RxTable::systemNF, i)->setFloat(system->stageList->at(i)->sys.noiseFigure);
-            table->cell(RxTable::systemIIP3, i)->setFloat(system->stageList->at(i)->sys.iip3);
-            table->cell(RxTable::systemOIP3, i)->setFloat(system->stageList->at(i)->sys.oip3);
-            table->cell(RxTable::systemIP1, i)->setFloat(system->stageList->at(i)->sys.ip1db);
-            table->cell(RxTable::systemOP1, i)->setFloat(system->stageList->at(i)->sys.op1db);
-            table->cell(RxTable::inputPower, i)->setFloat(system->stageList->at(i)->sys.inputPower);
-            table->cell(RxTable::outputPower, i)->setFloat(system->stageList->at(i)->sys.outputPower);
-            table->cell(RxTable::nfStageToNfSystem, i)->setFloat(system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);
-            table->cell(RxTable::ip3StageToIp3System, i)->setFloat(system->stageList->at(i)->sys.stageIip3ToSystemIip3);
-            table->cell(RxTable::p_backoff, i)->setFloat(system->stageList->at(i)->sys.powerOutBackoff);
-            table->cell(RxTable::p_backoff_peak, i)->setFloat(system->stageList->at(i)->sys.peakPowerOutBackoff);
+            table->cell(RxTable::stageGain, stage)->setFloat(system->stageList->at(i)->sys.powerGain);
+            table->cell(RxTable::systemNF, stage)->setFloat(system->stageList->at(i)->sys.noiseFigure);
+            table->cell(RxTable::systemIIP3, stage)->setFloat(system->stageList->at(i)->sys.iip3);
+            table->cell(RxTable::systemOIP3, stage)->setFloat(system->stageList->at(i)->sys.oip3);
+            table->cell(RxTable::systemIP1, stage)->setFloat(system->stageList->at(i)->sys.ip1db);
+            table->cell(RxTable::systemOP1, stage)->setFloat(system->stageList->at(i)->sys.op1db);
+            table->cell(RxTable::inputPower, stage)->setFloat(system->stageList->at(i)->sys.inputPower);
+            table->cell(RxTable::outputPower, stage)->setFloat(system->stageList->at(i)->sys.outputPower);
+            table->cell(RxTable::nfStageToNfSystem, stage)->setFloat(system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);
+            table->cell(RxTable::ip3StageToIp3System, stage)->setFloat(system->stageList->at(i)->sys.stageIip3ToSystemIip3);
+            table->cell(RxTable::p_backoff, stage)->setFloat(system->stageList->at(i)->sys.powerOutBackoff);
+            table->cell(RxTable::p_backoff_peak, stage)->setFloat(system->stageList->at(i)->sys.peakPowerOutBackoff);
         }
         else
         {
-            table->cell(RxTable::stageGain, i)->setText("");
-            table->cell(RxTable::systemNF, i)->setText("");
-            table->cell(RxTable::systemIIP3, i)->setText("");
-            table->cell(RxTable::systemOIP3, i)->setText("");
-            table->cell(RxTable::systemIP1, i)->setText("");
-            table->cell(RxTable::systemOP1, i)->setText("");
-            table->cell(RxTable::inputPower, i)->setText("");
-            table->cell(RxTable::outputPower, i)->setText("");
-            table->cell(RxTable::nfStageToNfSystem, i)->setText("");
-            table->cell(RxTable::ip3StageToIp3System, i)->setText("");
-            table->cell(RxTable::p_backoff, i)->setText("");
-            table->cell(RxTable::p_backoff_peak, i)->setText("");
+            table->cell(RxTable::stageGain, stage)->setText("");
+            table->cell(RxTable::systemNF, stage)->setText("");
+            table->cell(RxTable::systemIIP3, stage)->setText("");
+            table->cell(RxTable::systemOIP3, stage)->setText("");
+            table->cell(RxTable::systemIP1, stage)->setText("");
+            table->cell(RxTable::systemOP1, stage)->setText("");
+            table->cell(RxTable::inputPower, stage)->setText("");
+            table->cell(RxTable::outputPower, stage)->setText("");
+            table->cell(RxTable::nfStageToNfSystem, stage)->setText("");
+            table->cell(RxTable::ip3StageToIp3System, stage)->setText("");
+            table->cell(RxTable::p_backoff, stage)->setText("");
+            table->cell(RxTable::p_backoff_peak, stage)->setText("");
         }
     }
 
     table->update(false);
     for (int i=0; i<table->columnCount(); i++ )
     {
-        if (table->item(RxTable::oip3, i)->text().isEmpty())
-            table->cell(RxTable::oip3, i)->setFloat(system->stageList->at(i)->oip3());
-        if (table->item(RxTable::iip3, i)->text().isEmpty())
-            table->cell(RxTable::iip3, i)->setFloat(system->stageList->at(i)->iip3());
-        if (table->item(RxTable::op1db, i)->text().isEmpty())
-            table->cell(RxTable::op1db, i)->setFloat(system->stageList->at(i)->op1db());
-        if (table->item(RxTable::ip1db, i)->text().isEmpty())
-            table->cell(RxTable::ip1db, i)->setFloat(system->stageList->at(i)->ip1db());
+        stage=table->horizontalHeader()->logicalIndex(i);
+
+        if (table->item(RxTable::oip3, stage)->text().isEmpty())
+            table->cell(RxTable::oip3, stage)->setFloat(system->stageList->at(i)->oip3());
+        if (table->item(RxTable::iip3, stage)->text().isEmpty())
+            table->cell(RxTable::iip3, stage)->setFloat(system->stageList->at(i)->iip3());
+        if (table->item(RxTable::op1db, stage)->text().isEmpty())
+            table->cell(RxTable::op1db, stage)->setFloat(system->stageList->at(i)->op1db());
+        if (table->item(RxTable::ip1db, stage)->text().isEmpty())
+            table->cell(RxTable::ip1db, stage)->setFloat(system->stageList->at(i)->ip1db());
     }
     table->update(true);
 
@@ -867,22 +875,25 @@ void RxCalcApp::clickOnCalcButton()
 
 void RxCalcApp::colorize()
 {
+    int stage;
+
     for (int i=0; i<table->columnCount(); i++ )
     {
+        stage=table->horizontalHeader()->logicalIndex(i);
+
         if (system->stageList->at(i)->enabled() == true)
         {
-
             float nt_nf_val=0.5*system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure;
             if (system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure != system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure)//NAN
                 {nt_nf_val = 0;}
             int color_bl = 164.0*(nt_nf_val*(0.56)+1.0);
             int color_gr = 164.0-(164.0*nt_nf_val);
-            table->item(RxTable::nfStageToNfSystem, i)->setBackgroundColor(QColor(color_gr,color_gr,color_bl));
+            table->item(RxTable::nfStageToNfSystem, stage)->setBackgroundColor(QColor(color_gr,color_gr,color_bl));
 
             float ip3StageToIp3System_val=0.5*system->stageList->at(i)->sys.stageIip3ToSystemIip3;
             int color_r = 164.0*(ip3StageToIp3System_val*(0.56)+1.0);
             int color_gb = 164.0-(164.0*ip3StageToIp3System_val);
-            table->item(RxTable::ip3StageToIp3System, i)->setBackgroundColor(QColor(color_r,color_gb,color_gb));
+            table->item(RxTable::ip3StageToIp3System, stage)->setBackgroundColor(QColor(color_r,color_gb,color_gb));
 
             float p1backoff = system->stageList->at(i)->sys.powerOutBackoff;
             if (p1backoff>10)
@@ -894,7 +905,7 @@ void RxCalcApp::colorize()
             p1backoff=0.5*p1backoff;
             color_r = 164.0*(p1backoff*(0.56)+1.0);
             color_gb = 164.0-(164.0*p1backoff);
-            table->item(RxTable::p_backoff, i)->setBackgroundColor(QColor(color_r,color_gb,color_gb));
+            table->item(RxTable::p_backoff, stage)->setBackgroundColor(QColor(color_r,color_gb,color_gb));
 
 
             float p1reakBackoff = system->stageList->at(i)->sys.peakPowerOutBackoff;
@@ -907,15 +918,15 @@ void RxCalcApp::colorize()
             p1reakBackoff=0.5*p1reakBackoff;
             color_r = 164.0*(p1reakBackoff*(0.56)+1.0);
             color_gb = 164.0-(164.0*p1reakBackoff);
-            table->item(RxTable::p_backoff_peak, i)->setBackgroundColor(QColor(color_r,color_gb,color_gb));
+            table->item(RxTable::p_backoff_peak, stage)->setBackgroundColor(QColor(color_r,color_gb,color_gb));
 
         }
         else
         {
-            table->item(RxTable::nfStageToNfSystem, i)->setBackgroundColor(Qt::gray);
-            table->item(RxTable::ip3StageToIp3System, i)->setBackgroundColor(Qt::gray);
-            table->item(RxTable::p_backoff, i)->setBackgroundColor(Qt::gray);
-            table->item(RxTable::p_backoff_peak, i)->setBackgroundColor(Qt::gray);
+            table->item(RxTable::nfStageToNfSystem, stage)->setBackgroundColor(Qt::gray);
+            table->item(RxTable::ip3StageToIp3System, stage)->setBackgroundColor(Qt::gray);
+            table->item(RxTable::p_backoff, stage)->setBackgroundColor(Qt::gray);
+            table->item(RxTable::p_backoff_peak, stage)->setBackgroundColor(Qt::gray);
         }
     }
 }
