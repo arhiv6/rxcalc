@@ -47,6 +47,9 @@
 #include <QFileInfo>
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrintDialog>
+#include <QPainter>
 
 class RxCalcApp : public QMainWindow
 {
@@ -88,6 +91,7 @@ public slots:
     void slotNew();
     void slotOpen();
     void slotSave();
+    void slotPrint();
     void slotSaveAs();
     void slotHelp();
     void slotAbout();
