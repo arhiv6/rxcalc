@@ -18,10 +18,10 @@
  #
 
 TARGET   = rxcalc
-VERSION  = 0.6.4
+VERSION  = 0.6.5
 TEMPLATE = app
 
-QT += core gui
+QT += core gui printsupport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"

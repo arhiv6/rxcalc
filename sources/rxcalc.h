@@ -47,6 +47,9 @@
 #include <QFileInfo>
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrintDialog>
+#include <QPainter>
 
 class RxCalcApp : public QMainWindow
 {
@@ -70,7 +73,8 @@ private:
     QString openProjectPath;
     System *system;
 
-    enum freqUnits {
+    enum freqUnits
+    {
         Hz,
         kHz,
         MHz,
@@ -80,7 +84,7 @@ private:
 signals:
 
 protected:
-    void closeEvent(QCloseEvent*);
+    void closeEvent(QCloseEvent *);
 
 public slots:
     void saveSettings();
@@ -88,6 +92,8 @@ public slots:
     void slotNew();
     void slotOpen();
     void slotSave();
+    void slotPrint();
+    void printPreview(QPrinter *printer);
     void slotSaveAs();
     void slotHelp();
     void slotAbout();
