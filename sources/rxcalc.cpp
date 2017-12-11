@@ -61,7 +61,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     QAction *filePrint = new QAction(tr("Print"), this);
     filePrint->setIcon(QIcon::fromTheme("document-print"));
     filePrint->setIconVisibleInMenu(true);
-    filePrint->setShortcut(Qt::CTRL+Qt::Key_S);
+    filePrint->setShortcut(Qt::CTRL+Qt::Key_P);
     connect(filePrint, SIGNAL(triggered()), this, SLOT(slotPrint()));
 
     QAction *fileQuit = new QAction(tr("Exit"), this);
