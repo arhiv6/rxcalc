@@ -73,7 +73,8 @@ private:
     QString openProjectPath;
     System *system;
 
-    enum freqUnits {
+    enum freqUnits
+    {
         Hz,
         kHz,
         MHz,
@@ -83,7 +84,7 @@ private:
 signals:
 
 protected:
-    void closeEvent(QCloseEvent*);
+    void closeEvent(QCloseEvent *);
 
 public slots:
     void saveSettings();
