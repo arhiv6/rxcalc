@@ -64,6 +64,12 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     fileSaveAs->setShortcut(Qt::SHIFT + Qt::CTRL + Qt::Key_S);
     connect(fileSaveAs, SIGNAL(triggered()), this, SLOT(slotSaveAs()));
 
+    QAction *filePrint = new QAction(tr("Print"), this);
+    filePrint->setIcon(QIcon::fromTheme("document-print"));
+    filePrint->setIconVisibleInMenu(true);
+    filePrint->setShortcut(Qt::CTRL+Qt::Key_P);
+    connect(filePrint, SIGNAL(triggered()), this, SLOT(slotPrint()));
+
     QAction *fileQuit = new QAction(tr("Exit"), this);
     fileQuit->setIcon(QIcon::fromTheme("application-exit"));
     fileQuit->setIconVisibleInMenu(true);
@@ -637,6 +643,45 @@ void RxCalcApp::slotSave()
     }
 
     saveProjectAs(openProjectPath);
+}
+
+
+void RxCalcApp::slotPrint()
+{
+
+    QPixmap pixelMap=QWidget::grab();
+    //QRect rect (0, 0, 288, 180);
+    //QPixmap pixelMap=QPixmap::grabWidget(this, rect);
+
+
+
+    //QImage img;// = qvariant_cast<QImage>(data);
+    QPrinter printer;
+    QPrintDialog *dlg = new QPrintDialog(&printer,0);
+    if(dlg->exec() == QDialog::Accepted)
+    {
+        //QPainter painter(&printer);
+        QPainter painter;
+        printer.setPageSize(QPrinter::A4);
+        //pixelMap.scaled(printer.pageSize().A4, Qt::KeepAspectRatio);
+        qDebug() << "------";
+        qDebug() << pixelMap.width();
+        qDebug() << pixelMap.height();
+        pixelMap.scaled(printer.width(), printer.height(), Qt::IgnoreAspectRatio);
+        qDebug() << printer.width();
+        qDebug() << printer.height();
+        qDebug() << pixelMap.width();
+        qDebug() << pixelMap.height();
+
+
+        //painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+        //painter.drawImage(QPoint(0,0),img);
+        painter.begin (&printer);
+        painter.drawPixmap(0,0,pixelMap);
+        //printer.setFullPage(true);
+        painter.end();
+    }
+
 }
 
 void RxCalcApp::slotSaveAs()
