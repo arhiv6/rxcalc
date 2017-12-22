@@ -20,9 +20,9 @@
 
 #include "system.h"
 
-System::System():QObject()
+System::System(): QObject()
 {
-    stageList  = new QList<Stage*> ();
+    stageList  = new QList<Stage *> ();
 
     setInputPower(-60);
     setNoiseBand(1000);
@@ -142,7 +142,6 @@ void System::solve()
     solveSysP1db();//fifth
     solveSysNoiseParam();//sixth
     solveDynamicParam(); //saeventh
-    postSolveParam(); //eighth
 
     sys1.sysPowerGain = m_sysPowerGain;
     sys1.sysNoiseFigure = m_sysNoiseFigure;
@@ -164,16 +163,23 @@ void System::solve()
     sys1.outputImLevel_dBc = m_outputImLevel_dBc;
     sys1.imd = m_imd;
     sys1.sfdr = m_sfdr;
+
+    postSolveParam(); //eighth
 }
 
 float System::converdBtoKp(float dB)
 {
-    return pow(10.0, dB/(10.0));
+    return pow(10.0, dB / (10.0));
+}
+
+float System::converdBtoW(float W)
+{
+    return  pow(10.0, W / (10.0)) / 1000.0;
 }
 
 float System::converKptodB(float Kp)
 {
-    return 10.0*log10(Kp);
+    return 10.0 * log10(Kp);
 }
 
 void System::solveSysPowerGain()
@@ -182,7 +188,7 @@ void System::solveSysPowerGain()
 
     m_sysPowerGain = 0;
 
-    for (int i=0; i<stageList->count(); i++)
+    for (int i = 0; i < stageList->count(); i++)
     {
         if (stageList->at(i)->enabled() == false)
         {
@@ -201,9 +207,9 @@ void System::solveSysNoiseFigure()
 
     bool firstStage = true;
     float tmp_gain = 0;
-    m_sysNoiseFigure=0;
+    m_sysNoiseFigure = 0;
 
-    for (int i=0; i<stageList->count(); i++)
+    for (int i = 0; i < stageList->count(); i++)
     {
         if (stageList->at(i)->enabled() == false)
         {
@@ -220,13 +226,13 @@ void System::solveSysNoiseFigure()
         else
         {
             // other stages
-            m_sysNoiseFigure += (converdBtoKp(stageList->at(i)->noiseFigure()) - 1)/converdBtoKp(tmp_gain);
+            m_sysNoiseFigure += (converdBtoKp(stageList->at(i)->noiseFigure()) - 1) / converdBtoKp(tmp_gain);
         }
 
         tmp_gain += stageList->at(i)->powerGain();
         stageList->at(i)->sys.noiseFigure = converKptodB(m_sysNoiseFigure); // add data in paramList
     }
-     m_sysNoiseFigure = converKptodB(m_sysNoiseFigure);
+    m_sysNoiseFigure = converKptodB(m_sysNoiseFigure);
 }
 
 
@@ -236,9 +242,9 @@ void System::solveSysIp3()
     // m_sysIip3 = m_sysOip3 - sysGain;
 
     bool firstStage = true;
-    m_sysOip3=0;
+    m_sysOip3 = 0;
 
-    for (int i=0; i<stageList->count(); i++)
+    for (int i = 0; i < stageList->count(); i++)
     {
         if (stageList->at(i)->enabled() == false)
         {
@@ -256,14 +262,14 @@ void System::solveSysIp3()
         else
         {
             // other stages
-            m_sysOip3 = 1/((1/(m_sysOip3*converdBtoKp(stageList->at(i)->powerGain())))+(1/converdBtoKp(stageList->at(i)->oip3())));
+            m_sysOip3 = 1 / ((1 / (m_sysOip3 * converdBtoKp(stageList->at(i)->powerGain()))) + (1 / converdBtoKp(stageList->at(i)->oip3())));
         }
 
         stageList->at(i)->sys.oip3 = converKptodB(m_sysOip3); // add data in paramList
         stageList->at(i)->sys.iip3 =  stageList->at(i)->sys.oip3 -  stageList->at(i)->sys.powerGain; // add data in paramList
     }
-     m_sysOip3 = converKptodB(m_sysOip3);
-     m_sysIip3 = m_sysOip3 - m_sysPowerGain;
+    m_sysOip3 = converKptodB(m_sysOip3);
+    m_sysIip3 = m_sysOip3 - m_sysPowerGain;
 }
 
 void System::solveSysP1db()
@@ -272,9 +278,9 @@ void System::solveSysP1db()
     // m_sysIp1db = m_sysOp1db - (sysGain - 1);
 
     bool firstStage = true;
-    m_sysOp1db=0;
+    m_sysOp1db = 0;
 
-    for (int i=0; i<stageList->count(); i++)
+    for (int i = 0; i < stageList->count(); i++)
     {
         if (stageList->at(i)->enabled() == false)
         {
@@ -292,7 +298,7 @@ void System::solveSysP1db()
         else
         {
             // other stages
-            m_sysOp1db = 1/((1/(m_sysOp1db*converdBtoKp(stageList->at(i)->powerGain())))+(1/converdBtoKp(stageList->at(i)->op1db())));
+            m_sysOp1db = 1 / ((1 / (m_sysOp1db * converdBtoKp(stageList->at(i)->powerGain()))) + (1 / converdBtoKp(stageList->at(i)->op1db())));
         }
         stageList->at(i)->sys.op1db = converKptodB(m_sysOp1db);
         stageList->at(i)->sys.ip1db = stageList->at(i)->sys.op1db - (stageList->at(i)->sys.powerGain - 1);
@@ -300,8 +306,8 @@ void System::solveSysP1db()
         stageList->at(i)->sys.powerOutBackoff = stageList->at(i)->op1db() - stageList->at(i)->sys.outputPower; // add data in paramList
         stageList->at(i)->sys.peakPowerOutBackoff = stageList->at(i)->sys.powerOutBackoff - m_peakToRatio; // add data in paramList
     }
-     m_sysOp1db = converKptodB(m_sysOp1db);
-     m_sysIp1db = m_sysOp1db - (m_sysPowerGain - 1);
+    m_sysOp1db = converKptodB(m_sysOp1db);
+    m_sysIp1db = m_sysOp1db - (m_sysPowerGain - 1);
 }
 
 void System::solveSysOutputPower()
@@ -309,7 +315,7 @@ void System::solveSysOutputPower()
     bool firstStage = true;
     float tmp_OutputPower = 0;
 
-    for (int i=0; i<stageList->count(); i++)
+    for (int i = 0; i < stageList->count(); i++)
     {
         if (stageList->at(i)->enabled() == false)
         {
@@ -337,8 +343,8 @@ void System::solveSysOutputPower()
 
 void System::solveSysNoiseParam()
 {
-    float pinNoiseHz_dbm = 10.0*(log10(1.3806488*m_temperature_K) - 23.0 +3.0); // = k*T (where k = 1.3806488*10^-23, +3.0-milliwatt)
-    float pinnoise = pinNoiseHz_dbm + 10.0*log10(m_noiseBand);
+    float pinNoiseHz_dbm = 10.0 * (log10(1.3806488 * m_temperature_K) - 23.0 + 3.0); // = k*T (where k = 1.3806488*10^-23, +3.0-milliwatt)
+    float pinnoise = pinNoiseHz_dbm + 10.0 * log10(m_noiseBand);
     float poutNoise = m_sysPowerGain + m_sysNoiseFigure + pinnoise;
 
     m_sysNoiseFloor_dbmHz = pinNoiseHz_dbm + m_sysNoiseFigure ;
@@ -346,54 +352,60 @@ void System::solveSysNoiseParam()
     m_sysNoiseFloor_dbm = poutNoise;
     m_snr = m_sysOutputPower - poutNoise;
     m_mds = pinnoise + m_sysNoiseFigure;
-    m_noiseTemperature = m_temperature_K*(converdBtoKp(m_sysNoiseFigure)-1);
+    m_noiseTemperature = m_temperature_K * (converdBtoKp(m_sysNoiseFigure) - 1);
     m_sensivity = pinnoise + m_sysNoiseFigure + m_minSignalToNoise;
 }
 
 void System::solveDynamicParam()
 {
-    float outpIMLevel = m_sysOutputPower - 2*(m_sysOip3 - m_sysOutputPower);
-    float inIMLevel = m_inputPower - 2*((m_sysOip3-m_sysPowerGain) - m_inputPower);
+    float outpIMLevel = m_sysOutputPower - 2 * (m_sysOip3 - m_sysOutputPower);
+    float inIMLevel = m_inputPower - 2 * ((m_sysOip3 - m_sysPowerGain) - m_inputPower);
 
     m_inputImLevel_dBm = inIMLevel;
     m_outputImLevel_dBm = outpIMLevel;
     m_outputImLevel_dBc = outpIMLevel - m_sysOutputPower;
     m_inputImLevel_dBc = inIMLevel - m_inputPower;
-    m_imd = 2*((m_sysOutputPower-3.0) - m_sysOip3);
-    m_sfdr = (2.0/3.0)*(m_sysOip3 - m_sysNoiseFloor_dbm);
+    m_imd = 2 * ((m_sysOutputPower - 3.0) - m_sysOip3);
+    m_sfdr = (2.0 / 3.0) * (m_sysOip3 - m_sysNoiseFloor_dbm);
 }
+
+#include <cfloat>
 
 void System::postSolveParam()
 {
     bool firstStage = true;
-    float ip3_0_val = 0;
     float oldNF = 0;
-    float oldIP = 0;
+    float oldIIP = 0;
+    float oldOIP = 0;
 
-    for (int i=0; i<stageList->count(); i++)
+    for (int i = 0; i < stageList->count(); i++)
     {
         if (stageList->at(i)->enabled() == false)
         {
             stageList->at(i)->sys.stageIip3ToSystemIip3 = NAN; // add data in paramList
             stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = NAN; // add data in paramList
+            stageList->at(i)->sys.oip3StageToOp3System = NAN; // add data in paramList
             continue;
         }
 
         if (firstStage == true)
         {
             // only first stage
-            stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = stageList->at(i)->sys.noiseFigure/m_sysNoiseFigure; // add data in paramList
-            stageList->at(i)->sys.stageIip3ToSystemIip3 = 0; // add data in paramList
-            ip3_0_val= stageList->at(i)->sys.iip3;
+            stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = stageList->at(i)->sys.noiseFigure / m_sysNoiseFigure; // add data in paramList
+            stageList->at(i)->sys.stageIip3ToSystemIip3 = (1.0 / converdBtoW(stageList->at(i)->sys.iip3)) / (1.0 / converdBtoW(m_sysIip3));
+            stageList->at(i)->sys.oip3StageToOp3System = (1.0 / converdBtoW(stageList->at(i)->sys.oip3)) / (1.0 / converdBtoW(m_sysOip3));
             firstStage = false;
         }
         else
         {
             // other stages
-            stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = (stageList->at(i)->sys.noiseFigure- oldNF )/m_sysNoiseFigure;
-            stageList->at(i)->sys.stageIip3ToSystemIip3 = (oldIP - stageList->at(i)->sys.iip3)/(ip3_0_val-m_sysIip3); // add data in paramList
+            stageList->at(i)->sys.noiseFigureToSystemNoiseFigure = (stageList->at(i)->sys.noiseFigure - oldNF) / m_sysNoiseFigure;
+            stageList->at(i)->sys.stageIip3ToSystemIip3 = ((1.0 / converdBtoW(stageList->at(i)->sys.iip3)) - (1.0 / converdBtoW(oldIIP))) / (1.0 / converdBtoW(m_sysIip3));
+            stageList->at(i)->sys.oip3StageToOp3System = ((1.0 / converdBtoW(stageList->at(i)->sys.oip3)) - (1.0 / converdBtoW(oldOIP))) / (1.0 / converdBtoW(m_sysOip3));
         }
-        oldNF=stageList->at(i)->sys.noiseFigure;
-        oldIP=stageList->at(i)->sys.iip3;
+        oldNF = stageList->at(i)->sys.noiseFigure;
+        oldOIP = stageList->at(i)->sys.oip3;
+        oldIIP = stageList->at(i)->sys.iip3;
     }
+
 }

@@ -93,6 +93,7 @@ public slots:
     void slotOpen();
     void slotSave();
     void slotPrint();
+    void printPreview(QPrinter *printer);
     void slotSaveAs();
     void slotHelp();
     void slotAbout();

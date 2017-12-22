@@ -30,12 +30,12 @@
 
 class System : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     System();
     ~System();
-    QList<Stage*> *stageList;
+    QList<Stage *> *stageList;
     // System params:
     typedef struct
     {
@@ -61,7 +61,8 @@ public:
         float sfdr;
     } sysStruct;
     sysStruct sys1;
-    enum temperatureUnits {
+    enum temperatureUnits
+    {
         celsius,
         kelvin
     };
@@ -85,6 +86,7 @@ public slots:
 
 private slots:
     float converdBtoKp(float dB);
+    float converdBtoW(float W);
     float converKptodB(float Kp);
     void solveSysPowerGain();
     void solveSysNoiseFigure();

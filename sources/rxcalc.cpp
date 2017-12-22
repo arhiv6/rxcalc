@@ -52,12 +52,6 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     fileSave->setShortcut(Qt::CTRL + Qt::Key_S);
     connect(fileSave, SIGNAL(triggered()), this, SLOT(slotSave()));
 
-    QAction *filePrint = new QAction(tr("Print"), this);
-    filePrint->setIcon(QIcon::fromTheme("document-print"));
-    filePrint->setIconVisibleInMenu(true);
-    filePrint->setShortcut(Qt::CTRL + Qt::Key_S);
-    connect(filePrint, SIGNAL(triggered()), this, SLOT(slotPrint()));
-
     QAction *fileSaveAs = new QAction(tr("Save as..."), this);
     fileSaveAs->setIcon(QIcon::fromTheme("document-save-as"));
     fileSaveAs->setIconVisibleInMenu(true);
@@ -67,7 +61,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     QAction *filePrint = new QAction(tr("Print"), this);
     filePrint->setIcon(QIcon::fromTheme("document-print"));
     filePrint->setIconVisibleInMenu(true);
-    filePrint->setShortcut(Qt::CTRL+Qt::Key_P);
+    filePrint->setShortcut(Qt::CTRL + Qt::Key_P);
     connect(filePrint, SIGNAL(triggered()), this, SLOT(slotPrint()));
 
     QAction *fileQuit = new QAction(tr("Exit"), this);
@@ -632,6 +626,8 @@ void RxCalcApp::openProjectFile(QString fileName)
         table->item(RxTable::op1db, stage)->setBackgroundColor(QColor(open.value(satgeSection + "oip1_color", "#ffffff").toString()));
     }
     table->update(true);
+
+    clickOnCalcButton();
 }
 
 void RxCalcApp::slotSave()
@@ -643,45 +639,6 @@ void RxCalcApp::slotSave()
     }
 
     saveProjectAs(openProjectPath);
-}
-
-
-void RxCalcApp::slotPrint()
-{
-
-    QPixmap pixelMap=QWidget::grab();
-    //QRect rect (0, 0, 288, 180);
-    //QPixmap pixelMap=QPixmap::grabWidget(this, rect);
-
-
-
-    //QImage img;// = qvariant_cast<QImage>(data);
-    QPrinter printer;
-    QPrintDialog *dlg = new QPrintDialog(&printer,0);
-    if(dlg->exec() == QDialog::Accepted)
-    {
-        //QPainter painter(&printer);
-        QPainter painter;
-        printer.setPageSize(QPrinter::A4);
-        //pixelMap.scaled(printer.pageSize().A4, Qt::KeepAspectRatio);
-        qDebug() << "------";
-        qDebug() << pixelMap.width();
-        qDebug() << pixelMap.height();
-        pixelMap.scaled(printer.width(), printer.height(), Qt::IgnoreAspectRatio);
-        qDebug() << printer.width();
-        qDebug() << printer.height();
-        qDebug() << pixelMap.width();
-        qDebug() << pixelMap.height();
-
-
-        //painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-        //painter.drawImage(QPoint(0,0),img);
-        painter.begin (&printer);
-        painter.drawPixmap(0,0,pixelMap);
-        //printer.setFullPage(true);
-        painter.end();
-    }
-
 }
 
 void RxCalcApp::slotSaveAs()
@@ -949,6 +906,7 @@ void RxCalcApp::clickOnCalcButton()
             table->cell(RxTable::outputPower, stage)->setFloat(system->stageList->at(i)->sys.outputPower);
             table->cell(RxTable::nfStageToNfSystem, stage)->setFloat(system->stageList->at(i)->sys.noiseFigureToSystemNoiseFigure);
             table->cell(RxTable::ip3StageToIp3System, stage)->setFloat(system->stageList->at(i)->sys.stageIip3ToSystemIip3);
+            //table->cell(RxTable::oip3StageToOp3System, stage)->setFloat(system->stageList->at(i)->sys.oip3StageToOp3System);
             table->cell(RxTable::p_backoff, stage)->setFloat(system->stageList->at(i)->sys.powerOutBackoff);
             table->cell(RxTable::p_backoff_peak, stage)->setFloat(system->stageList->at(i)->sys.peakPowerOutBackoff);
         }
@@ -964,6 +922,7 @@ void RxCalcApp::clickOnCalcButton()
             table->cell(RxTable::outputPower, stage)->setText("");
             table->cell(RxTable::nfStageToNfSystem, stage)->setText("");
             table->cell(RxTable::ip3StageToIp3System, stage)->setText("");
+            //table->cell(RxTable::oip3StageToOp3System, stage)->setText("");
             table->cell(RxTable::p_backoff, stage)->setText("");
             table->cell(RxTable::p_backoff_peak, stage)->setText("");
         }
@@ -1019,6 +978,11 @@ void RxCalcApp::colorize()
             int color_r = 164.0 * (ip3StageToIp3System_val * (0.56) + 1.0);
             int color_gb = 164.0 - (164.0 * ip3StageToIp3System_val);
             table->item(RxTable::ip3StageToIp3System, stage)->setBackgroundColor(QColor(color_r, color_gb, color_gb));
+
+//            float oip3StageToOp3System = 0.5 * system->stageList->at(i)->sys.oip3StageToOp3System;
+//            color_r = 164.0 * (oip3StageToOp3System * (0.56) + 1.0);
+//            color_gb = 164.0 - (164.0 * oip3StageToOp3System);
+//            table->item(RxTable::oip3StageToOp3System, stage)->setBackgroundColor(QColor(color_r, color_gb, color_gb));
 
             float p1backoff = system->stageList->at(i)->sys.powerOutBackoff;
             if (p1backoff > 10)

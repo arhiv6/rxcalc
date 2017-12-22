@@ -27,7 +27,8 @@
 class Stage
 {
 public:
-    enum priority {
+    enum priority
+    {
         undifinited,
         input,
         output
@@ -66,6 +67,7 @@ public:
         float outputPower;
         float noiseFigureToSystemNoiseFigure;
         float stageIip3ToSystemIip3;
+        float oip3StageToOp3System;
         float powerOutBackoff;
         float peakPowerOutBackoff;
     } sysStruct;

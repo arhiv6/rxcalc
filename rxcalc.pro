@@ -18,7 +18,7 @@
  #
 
 TARGET   = rxcalc
-VERSION  = 0.6.5
+VERSION  = 0.6.6
 TEMPLATE = app
 
 QT += core gui printsupport
@@ -47,7 +47,8 @@ OTHER_FILES +=  README.md \
                 LICENSE \
                 windows/replace.bat \
                 windows/rxcalc.iss \
-                resources/images.qrc
+                resources/images.qrc \
+                .gitignore
 
 # use 'make build' for create .deb package
 unix {

@@ -38,12 +38,13 @@ class RxTable : public QTableWidget
 public:
     RxTable(QWidget *parent = 0);
     ~RxTable();
-    void setSizeAfterDecimalPoint (unsigned int size);
+    void setSizeAfterDecimalPoint(unsigned int size);
     RxTableCell *cell(int row, int column) const;
     void setStageCount(int newStageNumber);
     void update(bool update);
 
-    enum rowNames {
+    enum rowNames
+    {
         type,
         //input freq
         //df_gain
@@ -75,7 +76,7 @@ public:
         nfStageToNfSystem,
         //nf_gain
         ip3StageToIp3System,
-        //oip3StageToOp3System,
+//        oip3StageToOp3System,
         p_backoff,
         p_backoff_peak,
         END_ROW_NAMES
@@ -88,7 +89,8 @@ public:
     } Row;
     Row *rows;
 
-    enum stageTypes {
+    enum stageTypes
+    {
         other,
         amplifier,
         filter,
@@ -103,7 +105,7 @@ public:
     } Type;
     Type *stageType;
 
-    QMap<QComboBox*,int> comboboxToImage;
+    QMap<QComboBox *, int> comboboxToImage;
 
 private:
     unsigned int m_sizeAfterDecimalPoint;
@@ -128,7 +130,7 @@ private slots:
     void itemChanged(int row, int column);
 
 signals:
-    void editColumnCount(int value);    
+    void editColumnCount(int value);
 };
 
 #endif // RXTABLE_H
