@@ -59,6 +59,7 @@ public:
         float outputImLevel_dBc;
         float imd;
         float sfdr;
+        float bdr;
     } sysStruct;
     sysStruct sys1;
     enum temperatureUnits
@@ -126,6 +127,7 @@ private:
     float m_outputImLevel_dBc;
     float m_imd;
     float m_sfdr;
+    float m_bdr;
     temperatureUnits m_useCelsium;
 };
 

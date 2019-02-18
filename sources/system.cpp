@@ -52,6 +52,7 @@ System::System(): QObject()
     sys1.outputImLevel_dBc = NAN;
     sys1.imd = NAN;
     sys1.sfdr = NAN;
+    sys1.bdr = NAN;
 }
 
 System::~System()
@@ -163,6 +164,7 @@ void System::solve()
     sys1.outputImLevel_dBc = m_outputImLevel_dBc;
     sys1.imd = m_imd;
     sys1.sfdr = m_sfdr;
+    sys1.bdr = m_bdr;
 
     postSolveParam(); //eighth
 }
@@ -367,6 +369,7 @@ void System::solveDynamicParam()
     m_inputImLevel_dBc = inIMLevel - m_inputPower;
     m_imd = 2 * ((m_sysOutputPower - 3.0) - m_sysOip3);
     m_sfdr = (2.0 / 3.0) * (m_sysOip3 - m_sysNoiseFloor_dbm);
+    m_bdr = m_sysIp1db - m_mds;
 }
 
 #include <cfloat>

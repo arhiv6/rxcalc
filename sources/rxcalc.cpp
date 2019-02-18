@@ -464,11 +464,11 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     QLabel *Label47 = new QLabel(tr("dB"), this);
     gbox4->addWidget(Label47, 5, 2);
 
-    QLabel *Label48 = new QLabel(tr("ILDR:"), this);
+    QLabel *Label48 = new QLabel(tr("BRD:"), this);
     gbox4->addWidget(Label48, 6, 0);
-    ildr_dB = new QLineEdit("", this);
-    ildr_dB->setReadOnly(true);
-    gbox4->addWidget(ildr_dB, 6, 1);
+    bdr_dB = new QLineEdit("", this);
+    bdr_dB->setReadOnly(true);
+    gbox4->addWidget(bdr_dB, 6, 1);
     QLabel *Label49 = new QLabel(tr("dB"), this);
     gbox4->addWidget(Label49, 6, 2);
 
@@ -889,6 +889,7 @@ void RxCalcApp::clickOnCalcButton()
     inpuiIMlevel_dBc->setText(QString::number(system->sys1.inputImLevel_dBc, 10, 2));
     imd_dB->setText(QString::number(system->sys1.imd, 10, 2));
     sfdr_dB->setText(QString::number(system->sys1.sfdr, 10, 2));
+    bdr_dB->setText(QString::number(system->sys1.bdr, 10, 2));
 
     for (int i = 0; i < table->columnCount(); i++)
     {
