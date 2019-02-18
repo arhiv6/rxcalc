@@ -242,7 +242,8 @@ void RxTable::createCount(int column)
             QLabel *label = new QLabel;
             label->setAlignment(Qt::AlignCenter);
             label->setPixmap(stageType[other].picture);
-            //label->setScaledContents(true);
+            label->setMinimumSize(92, 92);
+            label->resize(92, 92);
 
             setCellWidget(row, column, label);
             label->installEventFilter(this);
@@ -299,6 +300,9 @@ void RxTable::slotSetPicture(int types)
 
     QLabel *label = (QLabel *)cellWidget(pic, stage);
     label->setPixmap(stageType[types].picture);
+    label->setMinimumSize(92, 92);
+    label->resize(92, 92);
+    label->setAlignment(Qt::AlignCenter);
 }
 
 bool RxTable::eventFilter(QObject *obj, QEvent *event)
