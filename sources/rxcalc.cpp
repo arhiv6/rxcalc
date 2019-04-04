@@ -480,8 +480,8 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     loadSettings();
     if (argc > 1)
     {
-        openProjectFile(argv[1]);
-        qDebug() << argv[1];
+        qDebug() << QString::fromLocal8Bit(argv[1]);
+        openProjectFile(QString::fromLocal8Bit(argv[1]));
     }
 }
 
