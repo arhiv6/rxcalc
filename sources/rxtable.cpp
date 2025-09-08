@@ -272,11 +272,11 @@ void RxTable::createCount(int column)
             if (rows[row].writable == true)
             {
                 item(row, column)->setText(rows[row].defaultValue);
-                item(row, column)->setBackgroundColor(Qt::white);
+                item(row, column)->setBackground(QBrush(Qt::white));
             }
             else
             {
-                item(row, column)->setBackgroundColor(Qt::gray);
+                item(row, column)->setBackground(QBrush(Qt::gray));
             }
         }
     }
@@ -516,55 +516,55 @@ void RxTable::itemChanged(int row, int column)
     float value = item(row, column)->text().toFloat(&toFloat);
     if ((toFloat != true) || ((row == noiseFigure) && (value < 0)))
     {
-        item(row, column)->setBackgroundColor(Qt::red);
+        item(row, column)->setBackground(QBrush(Qt::red));
         return;
     }
     else
     {
-        item(row, column)->setBackgroundColor(Qt::white);
+        item(row, column)->setBackground(QBrush(Qt::white));
     }
 
     disconnect(this, SIGNAL(cellChanged(int, int)), this, SLOT(itemChanged(int, int)));
 
     if (row == oip3)
     {
-        item(oip3, column)->setBackgroundColor(Qt::white);
-        item(iip3, column)->setBackgroundColor(Qt::lightGray);
+        item(oip3, column)->setBackground(QBrush(Qt::white));
+        item(iip3, column)->setBackground(QBrush(Qt::lightGray));
         item(iip3, column)->setText("");
     }
     else if (row == iip3)
     {
-        item(iip3, column)->setBackgroundColor(Qt::white);
-        item(oip3, column)->setBackgroundColor(Qt::lightGray);
+        item(iip3, column)->setBackground(QBrush(Qt::white));
+        item(oip3, column)->setBackground(QBrush(Qt::lightGray));
         item(oip3, column)->setText("");
     }
     else if (row == ip1db)
     {
-        item(ip1db, column)->setBackgroundColor(Qt::white);
-        item(op1db, column)->setBackgroundColor(Qt::lightGray);
+        item(ip1db, column)->setBackground(QBrush(Qt::white));
+        item(op1db, column)->setBackground(QBrush(Qt::lightGray));
         item(op1db, column)->setText("");
     }
     else if (row == op1db)
     {
-        item(op1db, column)->setBackgroundColor(Qt::white);
-        item(ip1db, column)->setBackgroundColor(Qt::lightGray);
+        item(op1db, column)->setBackground(QBrush(Qt::white));
+        item(ip1db, column)->setBackground(QBrush(Qt::lightGray));
         item(ip1db, column)->setText("");
     }
     else if (row == gain)
     {
-        if (item(ip1db, column)->backgroundColor() == Qt::lightGray)
+        if (item(ip1db, column)->background().color() == Qt::lightGray)
         {
             item(ip1db, column)->setText("");
         }
-        if (item(op1db, column)->backgroundColor() == Qt::lightGray)
+        if (item(op1db, column)->background().color() == Qt::lightGray)
         {
             item(op1db, column)->setText("");
         }
-        if (item(iip3, column)->backgroundColor() == Qt::lightGray)
+        if (item(iip3, column)->background().color() == Qt::lightGray)
         {
             item(iip3, column)->setText("");
         }
-        if (item(oip3, column)->backgroundColor() == Qt::lightGray)
+        if (item(oip3, column)->background().color() == Qt::lightGray)
         {
             item(oip3, column)->setText("");
         }

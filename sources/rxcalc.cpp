@@ -18,6 +18,8 @@
  *
  */
 
+#include <QStandardPaths>
+
 #include "rxcalc.h"
 
 RxCalcApp::RxCalcApp(int argc, char *argv[])
@@ -37,37 +39,37 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     QAction *fileNew = new QAction(tr("New"), this);
     fileNew->setIcon(QIcon::fromTheme("document-new", this->style()->standardIcon(QStyle::SP_FileIcon)));
     fileNew->setIconVisibleInMenu(true);
-    fileNew->setShortcut(Qt::CTRL + Qt::Key_N);
+    fileNew->setShortcut(QKeySequence::New);
     connect(fileNew, SIGNAL(triggered()), this, SLOT(slotNew()));
 
     QAction *fileOpen = new QAction(tr("Open"), this);
     fileOpen->setIcon(QIcon::fromTheme("document-open", this->style()->standardIcon(QStyle::SP_DialogOpenButton)));
     fileOpen->setIconVisibleInMenu(true);
-    fileOpen->setShortcut(Qt::CTRL + Qt::Key_O);
+    fileOpen->setShortcut(QKeySequence::Open);
     connect(fileOpen, SIGNAL(triggered()), this, SLOT(slotOpen()));
 
     QAction *fileSave = new QAction(tr("Save"), this);
     fileSave->setIcon(QIcon::fromTheme("document-save", this->style()->standardIcon(QStyle::SP_DialogSaveButton)));
     fileSave->setIconVisibleInMenu(true);
-    fileSave->setShortcut(Qt::CTRL + Qt::Key_S);
+    fileSave->setShortcut(QKeySequence::Save);
     connect(fileSave, SIGNAL(triggered()), this, SLOT(slotSave()));
 
     QAction *fileSaveAs = new QAction(tr("Save as..."), this);
     fileSaveAs->setIcon(QIcon::fromTheme("document-save-as"));
     fileSaveAs->setIconVisibleInMenu(true);
-    fileSaveAs->setShortcut(Qt::SHIFT + Qt::CTRL + Qt::Key_S);
+    fileSaveAs->setShortcut(QKeySequence::SaveAs);
     connect(fileSaveAs, SIGNAL(triggered()), this, SLOT(slotSaveAs()));
 
     QAction *filePrint = new QAction(tr("Print"), this);
     filePrint->setIcon(QIcon::fromTheme("document-print"));
     filePrint->setIconVisibleInMenu(true);
-    filePrint->setShortcut(Qt::CTRL + Qt::Key_P);
+    filePrint->setShortcut(QKeySequence::Print);
     connect(filePrint, SIGNAL(triggered()), this, SLOT(slotPrint()));
 
     QAction *fileQuit = new QAction(tr("Exit"), this);
     fileQuit->setIcon(QIcon::fromTheme("application-exit"));
     fileQuit->setIconVisibleInMenu(true);
-    fileQuit->setShortcut(Qt::CTRL + Qt::Key_Q);
+    fileQuit->setShortcut(QKeySequence::Quit);
     connect(fileQuit, SIGNAL(triggered()), qApp, SLOT(closeAllWindows())); // see closeEvent()
 
     fileMenu->addAction(fileNew);
@@ -89,7 +91,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     helpHelp->setShortcut(Qt::Key_F1);
     connect(helpHelp, SIGNAL(triggered()), this, SLOT(slotHelp()));
 
-    QAction *helpAbout = new QAction(tr("About "APP_NAME"..."), this);
+    QAction *helpAbout = new QAction(tr("About %1...").arg(APP_NAME), this);
     helpAbout->setIcon(QIcon::fromTheme("help-about"));
     helpAbout->setIconVisibleInMenu(true);
     helpMenu->addAction(helpAbout);
@@ -118,9 +120,9 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     all->setSpacing(3);
     top->setSpacing(3);
     bot->setSpacing(3);
-    all->setMargin(3);
-    top->setMargin(3);
-    bot->setMargin(3);
+    all->setContentsMargins(3,3,3,3);
+    top->setContentsMargins(3,3,3,3);
+    bot->setContentsMargins(3,3,3,3);
 
     // assign layout to central widget
     centralWidget->setLayout(all);
@@ -134,7 +136,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     QGridLayout *gbox1 = new QGridLayout();
     gbox1->setVerticalSpacing(0);
     gbox1->setHorizontalSpacing(3);
-    gbox1->setMargin(3);
+    gbox1->setContentsMargins(3,3,3,3);
 
     box1->setLayout(gbox1);
 
@@ -194,8 +196,8 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     connect(temperature_K_C, SIGNAL(valueChanged(double)), this, SLOT(validateTemperature()));
     gbox1->addWidget(temperature_K_C, 3, 1);
     temperatureUnit = new QComboBox(this);
-    temperatureUnit->addItem(QString(Qt::Key_degree) + tr("C")); // see enum temperatureUnits
-    temperatureUnit->addItem(QString(Qt::Key_degree) + tr("K"));
+    temperatureUnit->addItem(tr("°C"));
+    temperatureUnit->addItem(tr("°K"));
     temperatureUnit->setCurrentIndex(system->useCelsium());
     connect(temperatureUnit, SIGNAL(currentIndexChanged(int)), SLOT(validateTemperature()));
     gbox1->addWidget(temperatureUnit, 3, 2);
@@ -262,7 +264,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     QGridLayout *gbox2 = new QGridLayout();
     gbox2->setVerticalSpacing(0);
     gbox2->setHorizontalSpacing(3);
-    gbox2->setMargin(3);
+    gbox2->setContentsMargins(3,3,3,3);
 
     box2->setLayout(gbox2);
 
@@ -336,7 +338,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     QGridLayout *gbox3 = new QGridLayout();
     gbox3->setVerticalSpacing(0);
     gbox3->setHorizontalSpacing(3);
-    gbox3->setMargin(3);
+    gbox3->setContentsMargins(3,3,3,3);
 
     box3->setLayout(gbox3);
 
@@ -395,7 +397,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     noiseTemperature_K = new QLineEdit("", this);
     noiseTemperature_K->setReadOnly(true);
     gbox3->addWidget(noiseTemperature_K, 6, 1);
-    QLabel *Label35 = new QLabel(QString(Qt::Key_degree) + tr("K"), this);
+    QLabel *Label35 = new QLabel(tr("°K"), this);
     gbox3->addWidget(Label35, 6, 2);
 
     // ...........................................................
@@ -410,7 +412,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
     QGridLayout *gbox4 = new QGridLayout();
     gbox4->setVerticalSpacing(0);
     gbox4->setHorizontalSpacing(3);
-    gbox4->setMargin(3);
+    gbox4->setContentsMargins(3,3,3,3);
 
     box4->setLayout(gbox4);
 
@@ -474,7 +476,7 @@ RxCalcApp::RxCalcApp(int argc, char *argv[])
 
     // ...........................................................
     QSpacerItem *spacer2 = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    bot->insertSpacerItem(6, spacer2);
+    bot->insertSpacerItem(5, spacer2);
 
     // -------  finally set initial state  --------
     loadSettings();
@@ -554,7 +556,7 @@ void RxCalcApp::openProjectFile(QString fileName)
     }
 
     // Select file
-    if (fileName == NULL)
+    if (fileName.isNull())
     {
         fileName = QFileDialog::getOpenFileName(this, tr("Select file"), defaultPath, QString("RxCalc projects (*.rxcp);;All files (*)"));
     }
@@ -620,10 +622,10 @@ void RxCalcApp::openProjectFile(QString fileName)
         table->item(RxTable::oip3, stage)->setText(open.value(satgeSection + "oip3").toString());
         table->item(RxTable::ip1db, stage)->setText(open.value(satgeSection + "iip1").toString());
         table->item(RxTable::op1db, stage)->setText(open.value(satgeSection + "oip1").toString());
-        table->item(RxTable::iip3, stage)->setBackgroundColor(QColor(open.value(satgeSection + "iip3_color", "#ffffff").toString()));
-        table->item(RxTable::oip3, stage)->setBackgroundColor(QColor(open.value(satgeSection + "oip3_color", "#ffffff").toString()));
-        table->item(RxTable::ip1db, stage)->setBackgroundColor(QColor(open.value(satgeSection + "iip1_color", "#ffffff").toString()));
-        table->item(RxTable::op1db, stage)->setBackgroundColor(QColor(open.value(satgeSection + "oip1_color", "#ffffff").toString()));
+        table->item(RxTable::iip3, stage)->setBackground(QBrush(QColor(open.value(satgeSection + "iip3_color", "#ffffff").toString())));
+        table->item(RxTable::oip3, stage)->setBackground(QBrush(QColor(open.value(satgeSection + "oip3_color", "#ffffff").toString())));
+        table->item(RxTable::ip1db, stage)->setBackground(QBrush(QColor(open.value(satgeSection + "iip1_color", "#ffffff").toString())));
+        table->item(RxTable::op1db, stage)->setBackground(QBrush(QColor(open.value(satgeSection + "oip1_color", "#ffffff").toString())));
     }
     table->update(true);
 
@@ -721,10 +723,10 @@ void RxCalcApp::saveProjectAs(QString fileName)
         save.setValue(satgeSection + "oip3", table->item(RxTable::oip3, stage)->text());
         save.setValue(satgeSection + "iip1", table->item(RxTable::ip1db, stage)->text());
         save.setValue(satgeSection + "oip1", table->item(RxTable::op1db, stage)->text());
-        save.setValue(satgeSection + "iip3_color", table->item(RxTable::iip3, stage)->backgroundColor().name());
-        save.setValue(satgeSection + "oip3_color", table->item(RxTable::oip3, stage)->backgroundColor().name());
-        save.setValue(satgeSection + "iip1_color", table->item(RxTable::ip1db, stage)->backgroundColor().name());
-        save.setValue(satgeSection + "oip1_color", table->item(RxTable::op1db, stage)->backgroundColor().name());
+        save.setValue(satgeSection + "iip3_color", table->item(RxTable::iip3, stage)->background().color().name());
+        save.setValue(satgeSection + "oip3_color", table->item(RxTable::oip3, stage)->background().color().name());
+        save.setValue(satgeSection + "iip1_color", table->item(RxTable::ip1db, stage)->background().color().name());
+        save.setValue(satgeSection + "oip1_color", table->item(RxTable::op1db, stage)->background().color().name());
     }
     qDebug() << save.status();
     qDebug() << save.fileName();
@@ -736,8 +738,8 @@ void RxCalcApp::saveProjectAs(QString fileName)
 void RxCalcApp::slotPrint()
 {
     QPrinter printer(QPrinter::HighResolution);
-    printer.setOrientation(QPrinter::Landscape);
-    printer.setPaperSize(QPrinter::A4);
+    printer.setPageOrientation(QPageLayout::Landscape);
+    printer.setPageSize(QPageSize(QPageSize::A4));
 
     QPrintPreviewDialog preview(&printer, this);
     preview.setWindowFlags(Qt::Window);
@@ -750,11 +752,7 @@ void RxCalcApp::printPreview(QPrinter *printer)
     QPainter painter(printer);
     painter.setRenderHints(QPainter::Antialiasing |
                            QPainter::TextAntialiasing |
-                           QPainter::SmoothPixmapTransform |
-
-                           QPainter::HighQualityAntialiasing |
-                           QPainter::NonCosmeticDefaultPen  |
-                           QPainter::Qt4CompatiblePainting);
+                           QPainter::SmoothPixmapTransform);
 
     QPixmap pixelMap = QWidget::grab();
     pixelMap = pixelMap.scaled(printer->width(), printer->height(), Qt::KeepAspectRatio);
@@ -847,19 +845,19 @@ void RxCalcApp::clickOnCalcButton()
         st->setEnabled((QLabel *)table->cellWidget(RxTable::pic, stage)->isEnabled());
         st->setPowerGain(table->item(RxTable::gain, stage)->text().toFloat());
         st->setNoiseFigure(table->item(RxTable::noiseFigure, stage)->text().toFloat());
-        if (table->item(RxTable::oip3, stage)->backgroundColor() == Qt::white)
+        if (table->item(RxTable::oip3, stage)->background().color() == Qt::white)
         {
             st->setOip3(table->item(RxTable::oip3, stage)->text().toFloat());
         }
-        if (table->item(RxTable::iip3, stage)->backgroundColor() == Qt::white)
+        if (table->item(RxTable::iip3, stage)->background().color() == Qt::white)
         {
             st->setIip3(table->item(RxTable::iip3, stage)->text().toFloat());
         }
-        if (table->item(RxTable::op1db, stage)->backgroundColor() == Qt::white)
+        if (table->item(RxTable::op1db, stage)->background().color() == Qt::white)
         {
             st->setOp1db(table->item(RxTable::op1db, stage)->text().toFloat());
         }
-        if (table->item(RxTable::ip1db, stage)->backgroundColor() == Qt::white)
+        if (table->item(RxTable::ip1db, stage)->background().color() == Qt::white)
         {
             st->setIp1db(table->item(RxTable::ip1db, stage)->text().toFloat());
         }
@@ -973,17 +971,17 @@ void RxCalcApp::colorize()
             }
             int color_bl = 164.0 * (nt_nf_val * (0.56) + 1.0);
             int color_gr = 164.0 - (164.0 * nt_nf_val);
-            table->item(RxTable::nfStageToNfSystem, stage)->setBackgroundColor(QColor(color_gr, color_gr, color_bl));
+            table->item(RxTable::nfStageToNfSystem, stage)->setBackground(QBrush(QColor(color_gr, color_gr, color_bl)));
 
             float ip3StageToIp3System_val = 0.5 * system->stageList->at(i)->sys.stageIip3ToSystemIip3;
             int color_r = 164.0 * (ip3StageToIp3System_val * (0.56) + 1.0);
             int color_gb = 164.0 - (164.0 * ip3StageToIp3System_val);
-            table->item(RxTable::ip3StageToIp3System, stage)->setBackgroundColor(QColor(color_r, color_gb, color_gb));
+            table->item(RxTable::ip3StageToIp3System, stage)->setBackground(QBrush(QColor(color_r, color_gb, color_gb)));
 
 //            float oip3StageToOp3System = 0.5 * system->stageList->at(i)->sys.oip3StageToOp3System;
 //            color_r = 164.0 * (oip3StageToOp3System * (0.56) + 1.0);
 //            color_gb = 164.0 - (164.0 * oip3StageToOp3System);
-//            table->item(RxTable::oip3StageToOp3System, stage)->setBackgroundColor(QColor(color_r, color_gb, color_gb));
+//            table->item(RxTable::oip3StageToOp3System, stage)->setBackground(QBrush(QColor(color_r, color_gb, color_gb));
 
             float p1backoff = system->stageList->at(i)->sys.powerOutBackoff;
             if (p1backoff > 10)
@@ -1001,7 +999,7 @@ void RxCalcApp::colorize()
             p1backoff = 0.5 * p1backoff;
             color_r = 164.0 * (p1backoff * (0.56) + 1.0);
             color_gb = 164.0 - (164.0 * p1backoff);
-            table->item(RxTable::p_backoff, stage)->setBackgroundColor(QColor(color_r, color_gb, color_gb));
+            table->item(RxTable::p_backoff, stage)->setBackground(QBrush(QColor(color_r, color_gb, color_gb)));
 
 
             float p1reakBackoff = system->stageList->at(i)->sys.peakPowerOutBackoff;
@@ -1020,15 +1018,15 @@ void RxCalcApp::colorize()
             p1reakBackoff = 0.5 * p1reakBackoff;
             color_r = 164.0 * (p1reakBackoff * (0.56) + 1.0);
             color_gb = 164.0 - (164.0 * p1reakBackoff);
-            table->item(RxTable::p_backoff_peak, stage)->setBackgroundColor(QColor(color_r, color_gb, color_gb));
+            table->item(RxTable::p_backoff_peak, stage)->setBackground(QBrush(QColor(color_r, color_gb, color_gb)));
 
         }
         else
         {
-            table->item(RxTable::nfStageToNfSystem, stage)->setBackgroundColor(Qt::gray);
-            table->item(RxTable::ip3StageToIp3System, stage)->setBackgroundColor(Qt::gray);
-            table->item(RxTable::p_backoff, stage)->setBackgroundColor(Qt::gray);
-            table->item(RxTable::p_backoff_peak, stage)->setBackgroundColor(Qt::gray);
+            table->item(RxTable::nfStageToNfSystem, stage)->setBackground(QBrush(Qt::gray));
+            table->item(RxTable::ip3StageToIp3System, stage)->setBackground(QBrush(Qt::gray));
+            table->item(RxTable::p_backoff, stage)->setBackground(QBrush(Qt::gray));
+            table->item(RxTable::p_backoff_peak, stage)->setBackground(QBrush(Qt::gray));
         }
     }
 }
