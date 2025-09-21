@@ -109,7 +109,7 @@ IF(APPLE)
   # set where in the bundle to put the icns file
   SET_SOURCE_FILES_PROPERTIES(mac/rxcalc.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
   # include the icns file in the target
-  SET(RXCALC_SRCS ${RCALC_SRCS} mac/rxcalc.icns)
+  SET(RXCALC_SRCS ${RXCALC_SRCS} mac/rxcalc.icns)
 
 ENDIF(APPLE)
 
