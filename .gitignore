@@ -4,3 +4,9 @@
 *.pro.user.*
 *Makefile
 bin
+*.o
+moc_*.cpp
+qrc_*.cpp
+moc_*.h
+rxcalc
+*.stash
