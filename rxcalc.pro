@@ -22,7 +22,6 @@ VERSION  = 0.7.0
 TEMPLATE = app
 
 QT += core gui printsupport svg
-greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"

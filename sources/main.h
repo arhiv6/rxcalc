@@ -24,7 +24,7 @@
 #include "rxcalc.h"
 
 #include <QApplication>
-#include <QTextCodec>
+//#include <QTextCodec>
 
 RxCalcApp *RxCalc;
 
